@@ -40,7 +40,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     volumes:
-        - pgadmin:/var/lib/pgadmin
+        - "./pgadmin/servers.json:/pgadmin4/servers.json:Z"
     ports:
       - "${PGADMIN_PORT:-5050}:80"
     networks:
