@@ -1,6 +1,7 @@
 #!/bin/sh
 
 set -e
+set -x
 
 # Perform all actions as $POSTGRES_USER
 export PGUSER="$POSTGRES_USER"
@@ -17,3 +18,11 @@ for DB in template_timescaledb "$POSTGRES_DB"; do
 		CREATE EXTENSION IF NOT EXISTS timescaledb;
 EOSQL
 done
+
+# # Grafana setup
+# # See https://grafana.com/docs/grafana/v7.5/datasources/postgres/#database-user-permissions-important
+# psql -U $PGUSER <<- 'EOSQL'
+# CREATE USER grafanareader WITH PASSWORD 'example';
+# GRANT USAGE ON SCHEMA schema TO grafanareader;
+# GRANT SELECT ON schema.table TO grafanareader;
+# EOSQL
