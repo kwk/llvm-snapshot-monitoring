@@ -10,7 +10,7 @@ deleteDatasources:
     orgId: 1
 
 datasources:
-  - name: Postgres Data
+  - name: Postgres Data Source
     type: postgres
     # <bool> mark as default datasource. Max one per org
     # TODO(kkleine): which one is correct: default or isDefault?
@@ -27,7 +27,7 @@ datasources:
     jsonData:
       sslmode: "disable"
       timescaledb: true
-      postgresVersion: 1000  # 903=9.3, 904=9.4, 905=9.5, 906=9.6, 1000=10 (or above)
+      postgresVersion: 1200  # 903=9.3, 904=9.4, 905=9.5, 906=9.6, 1000=10 (or above)
     version: 1
     # <bool> allow users to edit datasources from the UI.
     editable: false

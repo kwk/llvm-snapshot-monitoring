@@ -13,4 +13,4 @@ build:
 
 .PHONY: up
 up:
-	podman-compose up
+	podman-compose up --force-recreate --renew-anon-volumes
