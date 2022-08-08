@@ -14,5 +14,5 @@ build:
 
 .PHONY: start
 start:
-	$(DOCKER_COMPOSE_BIN) up --force-recreate --renew-anon-volumes -d
+	-$(DOCKER_COMPOSE_BIN) up --force-recreate --renew-anon-volumes -d
 	$(DOCKER_COMPOSE_BIN) logs -f
