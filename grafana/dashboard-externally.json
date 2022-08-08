@@ -62,7 +62,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_POSTGRESQL}"
+        "uid": "ds_postgres"
       },
       "description": "",
       "fieldConfig": {
@@ -140,7 +140,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_POSTGRESQL}"
+            "uid": "ds_postgres"
           },
           "format": "time_series",
           "group": [],
@@ -232,7 +232,7 @@
         "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "${DS_POSTGRESQL}"
+          "uid": "ds_postgres"
         },
         "definition": "SELECT DISTINCT(owner_name||'/'||project_name) from copr_build_logs;",
         "hide": 0,
@@ -252,7 +252,7 @@
         "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "${DS_POSTGRESQL}"
+          "uid": "ds_postgres"
         },
         "definition": "SELECT DISTINCT(unnest(chroots)) FROM copr_build_logs;",
         "hide": 0,
