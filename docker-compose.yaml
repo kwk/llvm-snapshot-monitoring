@@ -3,6 +3,7 @@ version: "3.8"
 services:
 
   postgres:
+    image: konradkleine/copr-monitoring-postgres
     build:
       context: ./postgres
     container_name: postgres-container
@@ -16,7 +17,7 @@ services:
       retries: 3
       start_period: 1s
     volumes:
-      - "./postgres/data:/var/lib/postgresql/data:Z"
+      # - "./postgres/data:/var/lib/postgresql/data:Z"
       - "./postgres/config:/etc/postgresql/config:Z"
     command:
       - "-c"
@@ -26,7 +27,7 @@ services:
     environment:
       POSTGRES_PASSWORD: example
       POSTGRES_USER: postgres
-      PGDATA: /var/lib/postgresql/data/pgdata
+      # PGDATA: /var/lib/postgresql/data/pgdata
 
   adminer:
     image: adminer
@@ -39,35 +40,37 @@ services:
       - postgres-net
     ports:
       - "8080:8080"
-  pgadmin:
-    container_name: pgadmin-container
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    volumes:
-        - "./pgadmin/servers.json:/pgadmin4/servers.json:Z"
-    ports:
-      - "${PGADMIN_PORT:-5050}:80"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks:
-      - postgres-net
-    restart: unless-stopped
+#  pgadmin:
+#    container_name: pgadmin-container
+#    image: dpage/pgadmin4
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+#      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+#      PGADMIN_CONFIG_SERVER_MODE: 'False'
+#    volumes:
+#        - "./pgadmin/servers.json:/pgadmin4/servers.json:Z"
+#    ports:
+#      - "${PGADMIN_PORT:-5050}:80"
+#    depends_on:
+#      postgres:
+#        condition: service_healthy
+#    networks:
+#      - postgres-net
+#    restart: unless-stopped
   grafana:
-    #image: quay.io/grafana/grafana-oss:9.0.5-ubuntu
+    image: konradkleine/copr-monitoring-grafana
     build:
       context: ./grafana
       args:
         - "GRAFANA_VERSION=9.0.5"
         # https://grafana.com/docs/grafana/next/setup-grafana/installation/docker/#build-with-grafana-image-renderer-plugin-pre-installed
         - "GF_INSTALL_IMAGE_RENDERER_PLUGIN=true"
-        - "GF_INSTALL_PLUGINS=grafana-github-datasource 1.0.15,marcusolsson-treemap-panel 2.0.0,pgillich-tree-panel 0.1.9,snuids-trafficlights-panel 1.5.1,fifemon-graphql-datasource 1.3.0,grafana-jira-datasource 1.0.8,grafana-piechart-panel 1.6.2,grafana-clock-panel 2.1.0,grafana-worldmap-panel 0.3.3,digiapulssi-breadcrumb-panel 1.1.7,digiapulssi-organisations-panel 1.3.1,grafana-clock-panel 2.1.0,grafana-simple-json-datasource 1.4.2"
+        - "GF_INSTALL_PLUGINS=grafana-github-datasource 1.0.15,marcusolsson-treemap-panel 2.0.0,pgillich-tree-panel 0.1.9,snuids-trafficlights-panel 1.5.1,fifemon-graphql-datasource 1.3.0,grafana-piechart-panel 1.6.2,grafana-clock-panel 2.1.0,grafana-worldmap-panel 0.3.3,digiapulssi-breadcrumb-panel 1.1.7,digiapulssi-organisations-panel 1.3.1,grafana-clock-panel 2.1.0,grafana-simple-json-datasource 1.4.2"
     volumes:
-      - "./grafana/config/grafana.ini:/etc/grafana/grafana.ini:Z"
-      - "./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:Z"
+      - "./grafana/etc/grafana/grafana.ini:/etc/grafana/grafana.ini:Z"
+      - "./grafana/etc/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:Z"
+      - "./grafana/etc/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:Z"
+      - "./grafana/var/lib/grafana/dashboards:/var/lib/grafana/dashboards:Z"
     container_name: grafana-container
     restart: unless-stopped
     depends_on:
