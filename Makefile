@@ -1,16 +1,18 @@
-.PHONY: all
-all: clean build up
+DOCKER_BIN ?= docker
+DOCKER_COMPOSE_BIN ?= docker-compose
 
-.PHONY: clean
-clean:
-	sudo rm -rf postgres/data
-	mkdir -pv postgres/data
-	-podman rm -f --volumes postgres-container grafana-container adminer-container pgadmin-container
+.PHONY: all
+all: stop build start
+
+.PHONY: stop
+stop:
+	$(DOCKER_COMPOSE_BIN) down --volumes --timeout 0
 
 .PHONY: build
 build:
-	podman-compose build
+	$(DOCKER_COMPOSE_BIN) build
 
-.PHONY: up
-up:
-	podman-compose up --force-recreate --renew-anon-volumes
+.PHONY: start
+start:
+	$(DOCKER_COMPOSE_BIN) up --force-recreate --renew-anon-volumes -d
+	$(DOCKER_COMPOSE_BIN) logs -f
