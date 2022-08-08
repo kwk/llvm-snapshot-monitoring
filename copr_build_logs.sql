@@ -22,9 +22,9 @@ CREATE TABLE "public"."copr_build_logs" (
     "build_id" bigint NOT NULL,
 
     "started_on_ts"  TIMESTAMP WITHOUT TIME ZONE,
-    "started_on_date" DATE GENERATED ALWAYS AS started_on_ts::date STORED,
+    "started_on_date" DATE GENERATED ALWAYS AS (started_on_ts::date) STORED,
     "ended_on_ts" TIMESTAMP WITHOUT TIME ZONE,
-    "ended_on_date" DATE GENERATED ALWAYS AS ended_on_ts::date STORED,
+    "ended_on_date" DATE GENERATED ALWAYS AS (ended_on_ts::date) STORED,
     "build_time_secs" bigint GENERATED ALWAYS AS (EXTRACT(epoch FROM ended_on_ts) - EXTRACT(epoch FROM started_on_ts)) STORED,
 
     "started_on_year" integer GENERATED ALWAYS AS (EXTRACT (year FROM started_on_ts)) STORED,
