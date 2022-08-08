@@ -18,6 +18,26 @@
           "type": "dashboard"
         },
         "type": "dashboard"
+      },
+      {
+        "annotation": {
+          "datasource": "GitHub",
+          "field": "name",
+          "owner": "llvm",
+          "queryType": "Releases",
+          "refId": "",
+          "repository": "llvm-project",
+          "timeField": "published_at"
+        },
+        "datasource": {
+          "type": "grafana-github-datasource",
+          "uid": "HGMeOziVk"
+        },
+        "datasourceId": 2,
+        "enable": true,
+        "iconColor": "#A352CC",
+        "name": "LLVM Releases",
+        "rawQuery": "SELECT\n  extract(epoch from time_column) AS time,\n  text_column as text,\n  tags_column as tags\nFROM\n  metric_table\nWHERE\n  $__timeFilter(time_column)\n"
       }
     ]
   },
@@ -32,18 +52,19 @@
         "type": "postgres",
         "uid": "ds_postgres"
       },
-      "description": "",
+      "description": "This graph shows the build times of the various LLVM sub-projects for a given build state and in the given time frame.",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisGridShow": true,
             "axisLabel": "Build time",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 15,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -52,7 +73,7 @@
             },
             "lineInterpolation": "linear",
             "lineWidth": 1,
-            "pointSize": 5,
+            "pointSize": 7,
             "scaleDistribution": {
               "type": "linear"
             },
@@ -66,6 +87,7 @@
               "mode": "off"
             }
           },
+          "links": [],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -73,10 +95,6 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -94,13 +112,16 @@
       "options": {
         "legend": {
           "calcs": [
-            "count"
+            "count",
+            "mean"
           ],
-          "displayMode": "list",
-          "placement": "right"
+          "displayMode": "table",
+          "placement": "right",
+          "sortBy": "Count",
+          "sortDesc": true
         },
         "tooltip": {
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         }
       },
@@ -139,6 +160,7 @@
         }
       ],
       "title": "Build time of LLVM packages (state(s) = $build_state)",
+      "transparent": true,
       "type": "timeseries"
     }
   ],
@@ -150,14 +172,18 @@
     "list": [
       {
         "current": {
-          "selected": false,
-          "text": "failed",
-          "value": "failed"
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "postgres",
+          "uid": "ds_postgres"
         },
         "definition": "SELECT unnest(enum_range(NULL::copr_build_logs_state_type));",
         "description": "A list of all possible build states (not only those being used).",
         "hide": 0,
-        "includeAll": false,
+        "includeAll": true,
         "label": "Build states",
         "multi": false,
         "name": "build_state",
@@ -171,9 +197,9 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": "@fedora-llvm-team/llvm-snapshots",
+          "value": "@fedora-llvm-team/llvm-snapshots"
         },
         "datasource": {
           "type": "postgres",
@@ -197,8 +223,12 @@
       {
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "type": "postgres",
@@ -228,6 +258,6 @@
   "timezone": "",
   "title": "Build Times",
   "uid": "NBh0bIk4k",
-  "version": 1,
+  "version": 5,
   "weekStart": ""
 }
