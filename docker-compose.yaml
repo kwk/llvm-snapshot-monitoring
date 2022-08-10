@@ -34,6 +34,9 @@ services:
     image: adminer
     container_name: adminer-container
     restart: unless-stopped
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+      ADMINER_DESIGN: nette
     depends_on:
       postgres:
         condition: service_healthy

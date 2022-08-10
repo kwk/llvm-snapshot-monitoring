@@ -15,6 +15,29 @@ DROP TABLE IF EXISTS "copr_build_logs";
 DROP TYPE IF EXISTS copr_build_logs_state_type;
 CREATE TYPE copr_build_logs_state_type AS ENUM ('failed', 'succeeded', 'canceled', 'running', 'pending', 'skipped', 'starting', 'importing', 'forked', 'waiting', 'unknown');
 
+-- This creates a dynamic lookup table for the states that looks like this:
+--
+-- SELECT * FROM copr_build_logs_state_lut;
+--
+-- state     state_enum
+-- --------  ----------
+-- failed    1
+-- succeeded 2
+-- canceled  3
+-- running   4
+-- pending   5
+-- skipped   6
+-- starting  7
+-- importing 8
+-- forked    9
+-- waiting   10
+-- unknown   11
+CREATE OR REPLACE VIEW copr_build_logs_state_lut AS
+  SELECT s.state, ROW_NUMBER() OVER (ORDER BY 1) as state_enum FROM
+  (SELECT unnest(enum_range(NULL::copr_build_logs_state_type)) as "state") as s;
+
+
+
 CREATE TABLE "public"."copr_build_logs" (
     "owner_name" text NOT NULL,
     "project_name" text NOT NULL,
