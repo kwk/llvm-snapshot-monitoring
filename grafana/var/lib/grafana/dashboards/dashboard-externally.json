@@ -21,7 +21,7 @@
       },
       {
         "annotation": {
-          "datasource": "GitHub",
+          "datasource": "ds_github",
           "field": "name",
           "owner": "llvm",
           "queryType": "Releases",
@@ -31,7 +31,7 @@
         },
         "datasource": {
           "type": "grafana-github-datasource",
-          "uid": "HGMeOziVk"
+          "uid": "ds_github"
         },
         "datasourceId": 2,
         "enable": true,

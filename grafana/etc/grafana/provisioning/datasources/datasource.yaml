@@ -7,7 +7,7 @@ apiVersion: 1
 # list of datasources that should be deleted from the database
 deleteDatasources:
   - name: "Postgres Data Source (ds_postgres)"
-    orgId: 1
+  - name: "Github Data Source (ds_github)"
   
 datasources:
   - name: "Postgres Data Source (ds_postgres)"
@@ -31,3 +31,15 @@ datasources:
     version: 1
     # <bool> allow users to edit datasources from the UI.
     editable: false
+
+  - name: "Github Data Source (ds_github)"
+    type: grafana-github-datasource
+    # <bool> mark as default datasource. Max one per org
+    # TODO(kkleine): which one is correct: default or isDefault?
+    isDefault: false
+    default: false
+    # <string> custom UID which can be used to reference this datasource in other parts of the configuration, if not specified will be generated automatically
+    uid: ds_github
+    version: 1
+    # <bool> allow users to edit datasources from the UI.
+    editable: true
