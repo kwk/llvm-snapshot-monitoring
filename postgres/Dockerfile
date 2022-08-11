@@ -1,4 +1,4 @@
-FROM postgres:14-bullseye
+FROM docker.io/library/postgres:14-bullseye
 
 LABEL maintainer="LLVM Fedora Team"
 

@@ -1,6 +1,6 @@
-ARG GRAFANA_VERSION="latest"
+ARG GRAFANA_VERSION="9.0.5"
 
-FROM grafana/grafana-oss:${GRAFANA_VERSION}-ubuntu
+FROM docker.io/grafana/grafana-oss:9.0.5-ubuntu
 
 USER root
 
