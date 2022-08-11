@@ -111,8 +111,8 @@
       "options": {
         "alignValue": "left",
         "legend": {
-          "displayMode": "list",
-          "placement": "bottom"
+          "displayMode": "table",
+          "placement": "right"
         },
         "mergeValues": true,
         "rowHeight": 0.9,
@@ -431,6 +431,68 @@
               "type": "expression"
             }
           ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_POSTGRES_DATA SOURCE (DS_POSTGRES)}"
+          },
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "source_package_name"
+              ],
+              "type": "column"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  started_on_date AS \"time\",\n  state AS \"mlir\"\nFROM copr_build_logs\nWHERE\n  $__timeFilter(started_on_date) AND source_package_name = 'mlir'\nORDER BY 1",
+          "refId": "mlir",
+          "select": [
+            [
+              {
+                "params": [
+                  "state"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "avg"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "state"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "copr_build_logs",
+          "timeColumn": "started_on_date",
+          "timeColumnType": "date",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "source_package_name",
+                "=",
+                "'llvm'"
+              ],
+              "type": "expression"
+            }
+          ]
         }
       ],
       "title": "Build state timeline",
@@ -452,6 +514,6 @@
   "timezone": "",
   "title": "Build Status",
   "uid": "4pv9wNiVz",
-  "version": 2,
+  "version": 5,
   "weekStart": ""
 }
