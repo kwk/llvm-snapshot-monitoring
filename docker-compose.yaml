@@ -44,23 +44,7 @@ services:
       - postgres-net
     ports:
       - "8080:8080"
-#  pgadmin:
-#    container_name: pgadmin-container
-#    image: dpage/pgadmin4
-#    environment:
-#      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-#      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-#      PGADMIN_CONFIG_SERVER_MODE: 'False'
-#    volumes:
-#        - "./pgadmin/servers.json:/pgadmin4/servers.json:Z"
-#    ports:
-#      - "${PGADMIN_PORT:-5050}:80"
-#    depends_on:
-#      postgres:
-#        condition: service_healthy
-#    networks:
-#      - postgres-net
-#    restart: unless-stopped
+
   grafana:
     image: konradkleine/copr-monitoring-grafana
     build:
