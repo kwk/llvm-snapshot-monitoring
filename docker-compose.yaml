@@ -3,7 +3,7 @@ version: "3.8"
 services:
 
   postgres:
-    image: konradkleine/copr-monitoring-postgres
+    image: docker.io/konradkleine/copr-monitoring-postgres:latest
     build:
       context: ./postgres
     container_name: postgres-container

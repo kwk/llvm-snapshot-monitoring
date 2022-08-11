@@ -10,8 +10,7 @@ To run this project locally and have grafana provisioned with dashboards and
 postgres prefilled with example data all you need to do is to run:
 
 ```
-DOCKER_BIN=podman \
-DOCKER_COMPOSE_BIN=podman-compose \
+make pull
 make start
 ```
 
