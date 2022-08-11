@@ -10,20 +10,19 @@ deleteDatasources:
   - name: "Github Data Source (ds_github)"
   
 datasources:
-  - name: "Postgres Data Source (ds_postgres)"
+  - name: "ds_postgres"
     type: postgres
     # <bool> mark as default datasource. Max one per org
     # TODO(kkleine): which one is correct: default or isDefault?
     isDefault: true
     default: true
     url: postgres:5432
-    database: postgres
-    user: postgres
-    password: example
+    database: grafana
+    user: grafanareader
     # <string> custom UID which can be used to reference this datasource in other parts of the configuration, if not specified will be generated automatically
     uid: ds_postgres
     secureJsonData:
-      password: example
+      password: grafanareader_password
     jsonData:
       sslmode: "disable"
       timescaledb: true

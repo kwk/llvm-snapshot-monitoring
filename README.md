@@ -24,3 +24,4 @@ The go to http://localhost:3000 to see the Grafana.
 
 * Separate log data from grafana
 * Have proper passwords and security before going live
+  * Default to podman and use secrets mapped to files similar to this one: https://github.com/kwk/llvm-build-standalone/blob/main/Makefile 

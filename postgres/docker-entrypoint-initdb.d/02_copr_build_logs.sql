@@ -1,3 +1,6 @@
+-- Use the copr database
+SET search_path = 'copr';
+
 DROP TABLE IF EXISTS "copr_build_logs";
 
 -- See common/copr_common/enums.py for the definition of the enum
