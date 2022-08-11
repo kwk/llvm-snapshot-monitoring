@@ -25,8 +25,8 @@
     },
     {
       "type": "panel",
-      "id": "state-timeline",
-      "name": "State timeline",
+      "id": "status-history",
+      "name": "Status history",
       "version": ""
     }
   ],
@@ -62,7 +62,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_POSTGRES_DATA SOURCE (DS_POSTGRES)}"
+        "uid": "ds_postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -71,8 +71,7 @@
           },
           "custom": {
             "fillOpacity": 70,
-            "lineWidth": 0,
-            "spanNulls": false
+            "lineWidth": 1
           },
           "mappings": [
             {
@@ -87,6 +86,16 @@
                 }
               },
               "type": "value"
+            },
+            {
+              "options": {
+                "match": "null+nan",
+                "result": {
+                  "color": "transparent",
+                  "index": 2
+                }
+              },
+              "type": "special"
             }
           ],
           "thresholds": {
@@ -107,14 +116,14 @@
         "x": 0,
         "y": 0
       },
-      "id": 4,
+      "id": 5,
+      "maxPerRow": 2,
       "options": {
-        "alignValue": "left",
+        "colWidth": 0.9,
         "legend": {
-          "displayMode": "table",
-          "placement": "right"
+          "displayMode": "list",
+          "placement": "bottom"
         },
-        "mergeValues": true,
         "rowHeight": 0.9,
         "showValue": "auto",
         "tooltip": {
@@ -122,11 +131,13 @@
           "sort": "none"
         }
       },
+      "repeat": "chroot",
+      "repeatDirection": "h",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_POSTGRES_DATA SOURCE (DS_POSTGRES)}"
+            "uid": "ds_postgres"
           },
           "format": "time_series",
           "group": [
@@ -139,7 +150,7 @@
           ],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  started_on_date AS \"time\",\n  state AS llvm\nFROM copr_build_logs\nWHERE\n  $__timeFilter(started_on_date) AND source_package_name = 'llvm'\nORDER BY 1",
+          "rawSql": "SELECT\n  started_on_date AS \"time\",\n  state AS llvm\nFROM copr_build_logs\nWHERE\n  $__timeFilter(started_on_date) AND source_package_name = 'llvm' AND chroots <@ ARRAY[${chroot:sqlstring}] AND owner_and_project in (${owner_and_project:sqlstring})\nORDER BY 1",
           "refId": "llvm",
           "select": [
             [
@@ -187,7 +198,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_POSTGRES_DATA SOURCE (DS_POSTGRES)}"
+            "uid": "ds_postgres"
           },
           "format": "time_series",
           "group": [
@@ -201,7 +212,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  started_on_date AS \"time\",\n  state AS \"clang\"\nFROM copr_build_logs\nWHERE\n  $__timeFilter(started_on_date) AND source_package_name = 'clang'\nORDER BY 1",
+          "rawSql": "SELECT\n  started_on_date AS \"time\",\n  state AS \"clang\"\nFROM copr_build_logs\nWHERE \n  $__timeFilter(started_on_date) AND source_package_name = 'clang' AND chroots <@ ARRAY[${chroot:sqlstring}] AND owner_and_project in (${owner_and_project:sqlstring})\nORDER BY 1",
           "refId": "clang",
           "select": [
             [
@@ -249,7 +260,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_POSTGRES_DATA SOURCE (DS_POSTGRES)}"
+            "uid": "ds_postgres"
           },
           "format": "time_series",
           "group": [
@@ -263,7 +274,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  started_on_date AS \"time\",\n  state AS \"python-lit\"\nFROM copr_build_logs\nWHERE\n  $__timeFilter(started_on_date) AND source_package_name = 'python-lit'\nORDER BY 1",
+          "rawSql": "SELECT\n  started_on_date AS \"time\",\n  state AS \"python-lit\"\nFROM copr_build_logs\nWHERE\n  $__timeFilter(started_on_date) AND source_package_name = 'python-lit' AND chroots <@ ARRAY[${chroot:sqlstring}] AND owner_and_project in (${owner_and_project:sqlstring})\nORDER BY 1",
           "refId": "python-lit",
           "select": [
             [
@@ -311,7 +322,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_POSTGRES_DATA SOURCE (DS_POSTGRES)}"
+            "uid": "ds_postgres"
           },
           "format": "time_series",
           "group": [
@@ -325,7 +336,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  started_on_date AS \"time\",\n  state AS \"libomp\"\nFROM copr_build_logs\nWHERE\n  $__timeFilter(started_on_date) AND source_package_name = 'libomp'\nORDER BY 1",
+          "rawSql": "SELECT\n  started_on_date AS \"time\",\n  state AS \"libomp\"\nFROM copr_build_logs\nWHERE\n  $__timeFilter(started_on_date) AND source_package_name = 'libomp' AND chroots <@ ARRAY[${chroot:sqlstring}] AND owner_and_project in (${owner_and_project:sqlstring})\nORDER BY 1",
           "refId": "libomp",
           "select": [
             [
@@ -373,7 +384,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_POSTGRES_DATA SOURCE (DS_POSTGRES)}"
+            "uid": "ds_postgres"
           },
           "format": "time_series",
           "group": [
@@ -387,7 +398,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  started_on_date AS \"time\",\n  state AS \"compiler-rt\"\nFROM copr_build_logs\nWHERE\n  $__timeFilter(started_on_date) AND source_package_name = 'compiler-rt'\nORDER BY 1",
+          "rawSql": "SELECT\n  started_on_date AS \"time\",\n  state AS \"compiler-rt\"\nFROM copr_build_logs\nWHERE\n  $__timeFilter(started_on_date) AND source_package_name = 'compiler-rt' AND chroots <@ ARRAY[${chroot:sqlstring}] AND owner_and_project in (${owner_and_project:sqlstring})\nORDER BY 1",
           "refId": "compiler-rt",
           "select": [
             [
@@ -435,7 +446,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_POSTGRES_DATA SOURCE (DS_POSTGRES)}"
+            "uid": "ds_postgres"
           },
           "format": "time_series",
           "group": [
@@ -449,7 +460,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  started_on_date AS \"time\",\n  state AS \"mlir\"\nFROM copr_build_logs\nWHERE\n  $__timeFilter(started_on_date) AND source_package_name = 'mlir'\nORDER BY 1",
+          "rawSql": "SELECT\n  started_on_date AS \"time\",\n  state AS \"mlir\"\nFROM copr_build_logs\nWHERE\n  $__timeFilter(started_on_date) AND source_package_name = 'mlir' AND chroots <@ ARRAY[${chroot:sqlstring}] AND owner_and_project in (${owner_and_project:sqlstring})\nORDER BY 1",
           "refId": "mlir",
           "select": [
             [
@@ -495,8 +506,8 @@
           ]
         }
       ],
-      "title": "Build state timeline",
-      "type": "state-timeline"
+      "title": "Build state history (chroot=$chroot)",
+      "type": "status-history"
     }
   ],
   "refresh": false,
@@ -504,11 +515,42 @@
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {},
+        "definition": "SELECT DISTINCT(unnest(chroots)) FROM copr_build_logs;",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "chroot",
+        "options": [],
+        "query": "SELECT DISTINCT(unnest(chroots)) FROM copr_build_logs;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "definition": "SELECT DISTINCT owner_and_project FROM copr_build_logs",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "owner_and_project",
+        "options": [],
+        "query": "SELECT DISTINCT owner_and_project FROM copr_build_logs",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
   },
   "time": {
-    "from": "2022-07-28T21:18:20.771Z",
-    "to": "2022-08-15T22:18:45.947Z"
+    "from": "now-30d",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "",
