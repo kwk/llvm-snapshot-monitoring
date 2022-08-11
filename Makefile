@@ -1,5 +1,5 @@
-DOCKER_BIN ?= docker
-DOCKER_COMPOSE_BIN ?= docker-compose
+DOCKER_BIN ?= podman
+DOCKER_COMPOSE_BIN ?= podman-compose
 
 .PHONY: all
 all: stop build start
