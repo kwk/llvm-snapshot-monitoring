@@ -1,6 +1,11 @@
 DOCKER_BIN ?= podman
 DOCKER_COMPOSE_BIN ?= podman-compose
 
+.PHONY: show
+show:
+	@echo "DOCKER_BIN: ${DOCKER_BIN}"
+	@echo "DOCKER_COMPOSE_BIN: ${DOCKER_COMPOSE_BIN}"
+
 .PHONY: all
 all: start
 
