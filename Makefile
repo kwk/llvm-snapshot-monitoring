@@ -21,6 +21,10 @@ build:
 push:
 	$(DOCKER_COMPOSE_BIN) push
 
+.PHONY: pull
+pull:
+	$(DOCKER_COMPOSE_BIN) pull
+
 .PHONY: start
 start:
 	-$(DOCKER_COMPOSE_BIN) up --force-recreate --renew-anon-volumes -d
