@@ -1,11 +1,15 @@
 #!/bin/bash
 
-FILEPATH=-
-if (($# == 1)); then
-        FILEPATH=$1
-elif (($# > 1)); then
-        echo "ERROR: Either use standard input or pass one file name only." 1>&2
+INPUT=-
+OUTPUT=/dev/stdout
+if (($# >= 1)); then
+    if (($# == 2)); then
+        INPUT=$1
+        OUTPUT=$2
+    else
+        echo "ERROR: Either use standard input/output or pass input and output files to $0." 1>&2
         exit 1;
+    fi
 fi
 
 # The dollar sign below is important; otherwise you cannot contain single quotes.
@@ -73,4 +77,4 @@ jq -r $'
         chroots=excluded.chroots
     ;
 ")
-' $FILEPATH
+' $INPUT > $OUTPUT
