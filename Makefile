@@ -36,7 +36,7 @@ pull:
 	$(DOCKER_COMPOSE_BIN) pull
 
 .PHONY: start
-## Starts all services
+## Starts all services and follows the logs of each service
 start: start-all logs-all
 
 # When wildcard is "all", it will be thrown away to start all services.
@@ -52,7 +52,7 @@ logs-%:
 	$(DOCKER_COMPOSE_BIN) logs -f  $(service)
 	
 .PHONY: secret-files
-## DUMMY: This creates placeholder comments in ./secrets to be overwritten with
+## DUMMY: This creates placeholder passwords in ./secrets to be overwritten with
 ## the actual secrets.
 secret-files:
 	@mkdir -p secrets
@@ -60,20 +60,23 @@ secret-files:
 	@echo "grafanawriter_password" > ./secrets/grafanawriter_password.txt
 	@echo "logwriter_password" > ./secrets/logwriter_password.txt
 	@echo "postgres_password" > ./secrets/postgres_password.txt
+	@echo "admin1" > ./secrets/grafana_admin_password.txt
 
 .PHONY: remove-secrets
 ## Removes the podman/docker secrets defined by the "secrets" target".
 remove-secrets:
-	-$(DOCKER_BIN) secret rm secret_grafanareader &>/dev/null
-	-$(DOCKER_BIN) secret rm secret_grafanawriter &>/dev/null
-	-$(DOCKER_BIN) secret rm secret_logwriter &>/dev/null
-	-$(DOCKER_BIN) secret rm secret_postgres &>/dev/null
+	-$(DOCKER_BIN) secret rm secret_grafanareader_password &>/dev/null
+	-$(DOCKER_BIN) secret rm secret_grafanawriter_password &>/dev/null
+	-$(DOCKER_BIN) secret rm secret_logwriter_password &>/dev/null
+	-$(DOCKER_BIN) secret rm secret_postgres_password &>/dev/null
+	-$(DOCKER_BIN) secret rm secret_grafana_admin_password &>/dev/null
 
 .PHONY: secrets
 ## Takes the secrets defined in ./secrets and makes podman/docker secrets out of
 ## it.
 secrets: remove-secrets secret-files 
-	$(DOCKER_BIN) secret create secret_grafanareader ./secrets/grafanareader_password.txt
-	$(DOCKER_BIN) secret create secret_grafanawriter ./secrets/grafanawriter_password.txt
-	$(DOCKER_BIN) secret create secret_logwriter ./secrets/logwriter_password.txt
-	$(DOCKER_BIN) secret create secret_postgres ./secrets/postgres_password.txt
+	$(DOCKER_BIN) secret create secret_grafanareader_password ./secrets/grafanareader_password.txt
+	$(DOCKER_BIN) secret create secret_grafanawriter_password ./secrets/grafanawriter_password.txt
+	$(DOCKER_BIN) secret create secret_logwriter_password ./secrets/logwriter_password.txt
+	$(DOCKER_BIN) secret create secret_postgres_password ./secrets/postgres_password.txt
+	$(DOCKER_BIN) secret create secret_grafana_admin_password ./secrets/grafana_admin_password.txt

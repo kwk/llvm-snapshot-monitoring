@@ -26,9 +26,11 @@ services:
     networks:
       - postgres-net
     environment:
-      POSTGRES_PASSWORD: example
+      POSTGRES_PASSWORD_FILE: /run/secrets/secret_postgres_password
       POSTGRES_USER: postgres
       # PGDATA: /var/lib/postgresql/data/pgdata
+    secrets:
+      - secret_postgres_password
 
   adminer:
     image: docker.io/library/adminer:latest
@@ -47,6 +49,7 @@ services:
 
   grafana:
     image: docker.io/konradkleine/copr-monitoring-grafana
+    container_name: grafana-container
     build:
       context: ./grafana
       args:
@@ -54,12 +57,16 @@ services:
         # https://grafana.com/docs/grafana/next/setup-grafana/installation/docker/#build-with-grafana-image-renderer-plugin-pre-installed
         - "GF_INSTALL_IMAGE_RENDERER_PLUGIN=true"
         - "GF_INSTALL_PLUGINS=grafana-github-datasource 1.0.15,marcusolsson-treemap-panel 2.0.0,pgillich-tree-panel 0.1.9,snuids-trafficlights-panel 1.5.1,fifemon-graphql-datasource 1.3.0,grafana-piechart-panel 1.6.2,grafana-clock-panel 2.1.0,grafana-worldmap-panel 0.3.3,digiapulssi-breadcrumb-panel 1.1.7,digiapulssi-organisations-panel 1.3.1,grafana-clock-panel 2.1.0,grafana-simple-json-datasource 1.4.2"
+        - "GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/secret_grafana_admin_password"
     volumes:
       - "./grafana/etc/grafana/grafana.ini:/etc/grafana/grafana.ini:Z"
       - "./grafana/etc/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:Z"
       - "./grafana/etc/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:Z"
       - "./grafana/var/lib/grafana/dashboards:/var/lib/grafana/dashboards:Z"
-    container_name: grafana-container
+    secrets:
+      - secret_grafanareader_password
+      - secret_grafanawriter_password
+      - secret_grafana_admin_password
     restart: unless-stopped
     depends_on:
       postgres:
