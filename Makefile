@@ -3,8 +3,8 @@ SHELL := /bin/bash
 
 include ./help.mk
 
-DOCKER_BIN ?= podman
-DOCKER_COMPOSE_BIN ?= podman-compose
+DOCKER_BIN ?= docker
+DOCKER_COMPOSE_BIN ?= docker-compose
 
 .PHONY: all
 ## Runs the "start" target
@@ -60,7 +60,7 @@ secret-files:
 	@echo "grafanawriter_password" > ./secrets/grafanawriter_password.txt
 	@echo "logwriter_password" > ./secrets/logwriter_password.txt
 	@echo "postgres_password" > ./secrets/postgres_password.txt
-	@echo "admin1" > ./secrets/grafana_admin_password.txt
+	@echo "admin" > ./secrets/grafana_admin_password.txt
 
 .PHONY: remove-secrets
 ## Removes the podman/docker secrets defined by the "secrets" target".
@@ -74,7 +74,7 @@ remove-secrets:
 .PHONY: secrets
 ## Takes the secrets defined in ./secrets and makes podman/docker secrets out of
 ## it.
-secrets: remove-secrets secret-files 
+secrets: remove-secrets secret-files
 	$(DOCKER_BIN) secret create secret_grafanareader_password ./secrets/grafanareader_password.txt
 	$(DOCKER_BIN) secret create secret_grafanawriter_password ./secrets/grafanawriter_password.txt
 	$(DOCKER_BIN) secret create secret_logwriter_password ./secrets/logwriter_password.txt
