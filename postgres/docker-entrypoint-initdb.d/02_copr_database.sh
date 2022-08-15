@@ -1,6 +1,14 @@
--- Use the copr database
-SET search_path = 'copr';
+#!/bin/bash
+set -e
 
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+	CREATE USER logwriter PASSWORD 'logwriter_password';
+  CREATE USER grafanareader PASSWORD 'grafanareader_password';
+  CREATE DATABASE logs;
+	GRANT ALL PRIVILEGES ON DATABASE logs TO logwriter;
+EOSQL
+
+psql -v ON_ERROR_STOP=1 --username "logwriter" --dbname "logs" <<-EOSQL
 DROP TABLE IF EXISTS "copr_build_logs";
 
 -- See common/copr_common/enums.py for the definition of the enum
@@ -83,15 +91,18 @@ CREATE TABLE "public"."copr_build_logs" (
 );
 
 CREATE OR REPLACE FUNCTION update_last_modified()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER AS \$\$
 BEGIN
     NEW.last_modified = now();
     RETURN NEW;
 END;
-$$ language 'plpgsql';
+\$\$ language 'plpgsql';
 
 CREATE OR REPLACE TRIGGER copr_logs_last_modified
 BEFORE INSERT OR UPDATE
 ON copr_build_logs
 FOR EACH ROW
 EXECUTE PROCEDURE update_last_modified();
+
+GRANT SELECT ON copr_build_logs TO grafanareader;
+EOSQL
