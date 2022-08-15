@@ -1,5 +1,13 @@
 #!/bin/bash
 
+FILEPATH=-
+if (($# == 1)); then
+        FILEPATH=$1
+elif (($# > 1)); then
+        echo "ERROR: Either use standard input or pass one file name only." 1>&2
+        exit 1;
+fi
+
 # The dollar sign below is important; otherwise you cannot contain single quotes.
 jq -r $'
 ("INSERT INTO copr_build_logs (
@@ -65,4 +73,4 @@ jq -r $'
         chroots=excluded.chroots
     ;
 ")
-'
+' $FILEPATH
