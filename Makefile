@@ -5,8 +5,13 @@ DOCKER_COMPOSE_BIN ?= podman-compose
 all: start
 
 .PHONY: stop
-stop:
-	$(DOCKER_COMPOSE_BIN) down --volumes --timeout 0
+stop: stop-all
+
+# When wildcard is "all", it will be thrown away to start all services.
+stop-%:
+	$(eval service:=$(subst stop-,,$@))
+	$(eval service:=$(subst all,,$(service)))
+	$(DOCKER_COMPOSE_BIN) down --volumes --timeout 0 $(service)
 
 .PHONY: build
 build:
