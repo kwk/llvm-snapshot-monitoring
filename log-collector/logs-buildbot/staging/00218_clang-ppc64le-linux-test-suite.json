@@ -1,0 +1,105 @@
+{
+  "builds": [
+    {
+      "builderid": 218,
+      "buildid": 356637,
+      "buildrequestid": 4732041,
+      "complete": true,
+      "complete_at": 1657292779,
+      "masterid": 2,
+      "number": 1,
+      "properties": {},
+      "results": 0,
+      "started_at": 1657291031,
+      "state_string": "build successful",
+      "workerid": 175
+    },
+    {
+      "builderid": 218,
+      "buildid": 356681,
+      "buildrequestid": 4733424,
+      "complete": true,
+      "complete_at": 1657293630,
+      "masterid": 2,
+      "number": 3,
+      "properties": {},
+      "results": 0,
+      "started_at": 1657293030,
+      "state_string": "build successful",
+      "workerid": 175
+    },
+    {
+      "builderid": 218,
+      "buildid": 356671,
+      "buildrequestid": 4733424,
+      "complete": true,
+      "complete_at": 1657292985,
+      "masterid": 2,
+      "number": 2,
+      "properties": {},
+      "results": 5,
+      "started_at": 1657292778,
+      "state_string": "building",
+      "workerid": 175
+    },
+    {
+      "builderid": 218,
+      "buildid": 356715,
+      "buildrequestid": 4733976,
+      "complete": true,
+      "complete_at": 1657295799,
+      "masterid": 2,
+      "number": 4,
+      "properties": {},
+      "results": 0,
+      "started_at": 1657293881,
+      "state_string": "build successful",
+      "workerid": 175
+    },
+    {
+      "builderid": 218,
+      "buildid": 356757,
+      "buildrequestid": 4735284,
+      "complete": true,
+      "complete_at": 1657297229,
+      "masterid": 2,
+      "number": 5,
+      "properties": {},
+      "results": 0,
+      "started_at": 1657296501,
+      "state_string": "build successful",
+      "workerid": 175
+    },
+    {
+      "builderid": 218,
+      "buildid": 356776,
+      "buildrequestid": 4735462,
+      "complete": true,
+      "complete_at": 1657299076,
+      "masterid": 2,
+      "number": 6,
+      "properties": {},
+      "results": 0,
+      "started_at": 1657298354,
+      "state_string": "build successful",
+      "workerid": 175
+    },
+    {
+      "builderid": 218,
+      "buildid": 356791,
+      "buildrequestid": 4735610,
+      "complete": true,
+      "complete_at": 1657299877,
+      "masterid": 2,
+      "number": 7,
+      "properties": {},
+      "results": 0,
+      "started_at": 1657299207,
+      "state_string": "build successful",
+      "workerid": 175
+    }
+  ],
+  "meta": {
+    "total": 7
+  }
+}

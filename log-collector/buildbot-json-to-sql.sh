@@ -2,13 +2,17 @@
 
 set -e
 
+# possible values: staging or buildbot (for production)
+BUILDBOT_INSTANCE=${BUILDBOT_INSTANCE:-staging}
+API_URL_BASE=https://lab.llvm.org/${BUILDBOT_INSTANCE}/api/v2
+
 get_all_builders() {
     local refresh_cache=${1:-false}
     if [ "$refresh_cache" == "true" ]; then
         rm -f all_builders.json
     fi
     if [ ! -f all_builders.json ]; then
-        curl -Ls https://lab.llvm.org/staging/api/v2/builders > all_builders.json
+        curl -Ls ${API_URL_BASE}/builders > all_builders.json
     fi
 }
 
@@ -63,14 +67,14 @@ for builder_idx in $(seq 0 1 $((count_builders - 1)) ); do
     builder_values=$(builder_values $builder_idx)
     builder_id=$(builder_idx_to_id $builder_idx)
     builder_name=$(builder_idx_to_name $builder_idx)
-    log_file_base=logs-buildbot/$(printf "%05d" $builder_id)_$builder_name
+    log_file_base=logs-buildbot/${BUILDBOT_INSTANCE}/$(printf "%05d" $builder_id)_$builder_name
     json_file=$log_file_base.json
     sql_file=$log_file_base.sql
 
     echo -n "Processing $builder_name ($builder_id/$count_builders)..JSON..."
 
     # The dollar sign below is important; otherwise you cannot contain single quotes.
-    curl -Ls https://lab.llvm.org/staging/api/v2/builders/$builder_id/builds > $json_file
+    curl -Ls ${API_URL_BASE}/builders/$builder_id/builds > $json_file
    
     if [[ ! -f $json_file ]] || [[ "$(cat $json_file | jq '.meta.total')" == "0" ]]; then
         echo "No logs for $builder_name"

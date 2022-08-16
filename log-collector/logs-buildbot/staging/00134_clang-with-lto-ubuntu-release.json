@@ -1,0 +1,63 @@
+{
+  "builds": [
+    {
+      "builderid": 134,
+      "buildid": 96387,
+      "buildrequestid": 979881,
+      "complete": true,
+      "complete_at": 1620754978,
+      "masterid": 2,
+      "number": 1,
+      "properties": {},
+      "results": 6,
+      "started_at": 1620754928,
+      "state_string": "cancelled build (cancelled)",
+      "workerid": 52
+    },
+    {
+      "builderid": 134,
+      "buildid": 96388,
+      "buildrequestid": 1036379,
+      "complete": true,
+      "complete_at": 1620755243,
+      "masterid": 2,
+      "number": 2,
+      "properties": {},
+      "results": 6,
+      "started_at": 1620754977,
+      "state_string": "cancelled build (cancelled)",
+      "workerid": 52
+    },
+    {
+      "builderid": 134,
+      "buildid": 97464,
+      "buildrequestid": 1046383,
+      "complete": true,
+      "complete_at": 1620817976,
+      "masterid": 2,
+      "number": 3,
+      "properties": {},
+      "results": 2,
+      "started_at": 1620817529,
+      "state_string": "failed build (failure)",
+      "workerid": 52
+    },
+    {
+      "builderid": 134,
+      "buildid": 98333,
+      "buildrequestid": 1054618,
+      "complete": true,
+      "complete_at": 1620926893,
+      "masterid": 2,
+      "number": 4,
+      "properties": {},
+      "results": 6,
+      "started_at": 1620903291,
+      "state_string": "build (cancelled)",
+      "workerid": 52
+    }
+  ],
+  "meta": {
+    "total": 4
+  }
+}
