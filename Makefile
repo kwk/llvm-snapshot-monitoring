@@ -3,8 +3,8 @@ SHELL := /bin/bash
 
 include ./help.mk
 
-DOCKER_BIN ?= docker
-DOCKER_COMPOSE_BIN ?= docker-compose
+DOCKER_BIN ?= podman
+DOCKER_COMPOSE_BIN ?= podman-compose
 
 .PHONY: all
 ## Runs the "start" target
@@ -19,6 +19,7 @@ stop-%:
 	$(eval service:=$(subst stop-,,$@))
 	$(eval service:=$(subst all,,$(service)))
 	$(DOCKER_COMPOSE_BIN) down --volumes --timeout 0 $(service)
+	$(DOCKER_BIN) volume rm -f $(shell $(DOCKER_BIN) volume ls -q)
 
 .PHONY: build
 ## Builds the image for all services

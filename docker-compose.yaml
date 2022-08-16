@@ -88,14 +88,15 @@ networks:
     postgres-net:
       driver: bridge
 
+# See "make secrets" for how the secrets are generated
 secrets:
   secret_grafana_admin_password:
-    file: ./secrets/grafana_admin_password.txt
+    external: true
   secret_grafanareader_password:
-    file: ./secrets/grafanareader_password.txt
+    external: true
   secret_grafanawriter_password:
-    file: ./secrets/grafanawriter_password.txt
+    external: true
   secret_postgres_password:
-    file: ./secrets/postgres_password.txt
+    external: true
   secret_logwriter_password:
-    file: ./secrets/logwriter_password.txt
+    external: true
