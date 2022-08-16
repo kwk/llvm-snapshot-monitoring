@@ -36,6 +36,7 @@ Available targets
 <dt><code>push</code></dt><dd>Pushes the images for all services to the container registry</dd>
 <dt><code>pull</code></dt><dd>Pulls all the images for all servies from the registry</dd>
 <dt><code>start</code></dt><dd>Starts all services and follows the logs of each service</dd>
+<dt><code>logs</code></dt><dd>Shows and follows the logs of all services</dd>
 <dt><code>secret-files</code></dt><dd>DUMMY: This creates placeholder passwords in ./secrets to be overwritten with<br/>
  the actual secrets.</dd>
 <dt><code>remove-secrets</code></dt><dd>Removes the podman/docker secrets defined by the "secrets" target".</dd>
@@ -44,3 +45,4 @@ Available targets
 <dt><code>help</code></dt><dd>Display this help text.</dd>
 <dt><code>help-html</code></dt><dd>Display this help text as an HTML definition list for better documentation generation</dd>
 </dl>
+
