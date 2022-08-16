@@ -114,7 +114,7 @@ for builder_idx in $(seq 0 1 $((count_builders - 1)) ); do
                             .number,
                             .results,
                             .workerid
-                        ] | join(", ")),
+                        ] | map(.|tostring) | join(", ")),
                         "\'\'",
                         "\'"+(.properties | tostring)+"\'",
                         ([.complete_at, .started_at] | map("to_timestamp("+(.|tostring)+")") | join(", "))
