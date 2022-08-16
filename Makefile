@@ -46,6 +46,10 @@ start-%:
 	$(eval service:=$(subst all,,$(service)))
 	-$(DOCKER_COMPOSE_BIN) up --no-build --force-recreate --renew-anon-volumes -d $(service)
 
+.PHONY: logs
+## Shows and follows the logs of all services
+logs: logs-all
+
 # When wildcard is "all", it will be thrown away to output logs for all services.
 logs-%:
 	$(eval service:=$(subst logs-,,$@))

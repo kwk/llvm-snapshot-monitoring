@@ -1,7 +1,5 @@
 FROM docker.io/library/postgres:14-bullseye
 
-LABEL maintainer="LLVM Fedora Team"
-
 ENV TIMESCALEDB_MAJOR 2
 ENV TIMESCALEDB_VERSION 2.7.2
 ENV POSTGRES_USER postgres

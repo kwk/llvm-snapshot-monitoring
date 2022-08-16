@@ -1,0 +1,58 @@
+INSERT INTO buildbot_build_logs (
+        builder_builderid,
+        builder_description,
+        builder_masterids,
+        builder_name,
+        builder_tags,
+        build_buildid,
+        build_buildrequestid,
+        build_complete,
+        build_masterid,
+        build_number,
+        build_results,
+        build_workerid,
+        build_state_string,
+        build_properties,
+        build_complete_at,
+        build_started_at
+    ) VALUES 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 378256, 5073651, true, 2, 1, 2, 4, '', '{}', to_timestamp(1660268372), to_timestamp(1660268368)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 378319, 5075172, true, 2, 2, 2, 4, '', '{}', to_timestamp(1660285058), to_timestamp(1660278550)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 378614, 5078423, true, 2, 3, 2, 4, '', '{}', to_timestamp(1660315075), to_timestamp(1660309084)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 378750, 5080378, true, 2, 4, 6, 4, '', '{}', to_timestamp(1660330810), to_timestamp(1660329790)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 378770, 5101039, true, 2, 5, 2, 4, '', '{}', to_timestamp(1660591725), to_timestamp(1660587420)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 378951, 5104508, true, 2, 7, 2, 4, '', '{}', to_timestamp(1660605609), to_timestamp(1660601416)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 378879, 5103864, true, 2, 6, 5, 4, '', '{}', to_timestamp(1660601181), to_timestamp(1660597298)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 379007, 5104925, true, 2, 8, 2, 4, '', '{}', to_timestamp(1660610497), to_timestamp(1660605611)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 379059, 5106030, true, 2, 9, 2, 4, '', '{}', to_timestamp(1660614794), to_timestamp(1660610500)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 379102, 5106818, true, 2, 10, 2, 4, '', '{}', to_timestamp(1660618500), to_timestamp(1660614796)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 379138, 5107137, true, 2, 11, 2, 4, '', '{}', to_timestamp(1660622218), to_timestamp(1660618503)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 379223, 5107745, true, 2, 12, 2, 4, '', '{}', to_timestamp(1660633050), to_timestamp(1660629228)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 379264, 5107897, true, 2, 13, 2, 4, '', '{}', to_timestamp(1660636949), to_timestamp(1660633052)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 379350, 5108496, true, 2, 14, 5, 4, '', '{}', to_timestamp(1660643644), to_timestamp(1660642909)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 379354, 5108496, true, 2, 15, 5, 4, '', '{}', to_timestamp(1660647608), to_timestamp(1660643649)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 379379, 5108496, true, 2, 16, 2, 4, '', '{}', to_timestamp(1660651270), to_timestamp(1660647664)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 379502, 5110065, true, 2, 18, 2, 4, '', '{}', to_timestamp(1660658655), to_timestamp(1660655013)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 379442, 5109906, true, 2, 17, 2, 4, '', '{}', to_timestamp(1660655010), to_timestamp(1660651273)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 379663, 5112041, true, 2, 19, 2, 4, '', '{}', to_timestamp(1660667698), to_timestamp(1660663995)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 379741, 5112486, true, 2, 21, 2, 4, '', '{}', to_timestamp(1660674328), to_timestamp(1660671369)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 379717, 5112184, true, 2, 20, 2, 4, '', '{}', to_timestamp(1660671367), to_timestamp(1660667701)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 379772, 5112514, true, 2, 22, 2, 4, '', '{}', to_timestamp(1660678197), to_timestamp(1660674331)), 
+(228, 'null', ARRAY[2]::integer[], 'sanitizer-aarch64-linux-bootstrap-hwasan', ARRAY['sanitizer']::text[], 379845, 5113759, false, 2, 23, , 4, '', '{}', to_timestamp(null), to_timestamp(1660684548))
+
+        ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
+        DO UPDATE SET
+            builder_description=excluded.builder_description,
+            builder_masterids=excluded.builder_masterids,
+            builder_name=excluded.builder_name,
+            builder_tags=excluded.builder_tags,
+            build_complete=excluded.build_complete,
+            build_masterid=excluded.build_masterid,
+            build_number=excluded.build_number,
+            build_results=excluded.build_results,
+            build_workerid=excluded.build_workerid,
+            build_state_string=excluded.build_state_string,
+            build_properties=excluded.build_properties,
+            build_complete_at=excluded.build_complete_at
+        ;
+    

@@ -2,8 +2,6 @@
 set -e
 
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
-	CREATE USER logwriter PASSWORD 'logwriter_password';
-  CREATE USER grafanareader PASSWORD 'grafanareader_password';
   CREATE DATABASE logs;
 	GRANT ALL PRIVILEGES ON DATABASE logs TO logwriter;
 EOSQL

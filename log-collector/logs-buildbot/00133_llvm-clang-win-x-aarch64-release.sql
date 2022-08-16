@@ -1,0 +1,58 @@
+INSERT INTO buildbot_build_logs (
+        builder_builderid,
+        builder_description,
+        builder_masterids,
+        builder_name,
+        builder_tags,
+        build_buildid,
+        build_buildrequestid,
+        build_complete,
+        build_masterid,
+        build_number,
+        build_results,
+        build_workerid,
+        build_state_string,
+        build_properties,
+        build_complete_at,
+        build_started_at
+    ) VALUES 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 268807, 3066280, true, 2, 4, 4, 43, '', '{}', to_timestamp(1646350387), to_timestamp(1646350385)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 268803, 1305255, true, 2, 1, 4, 43, '', '{}', to_timestamp(1646350312), to_timestamp(1646350309)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 268804, 1420321, true, 2, 2, 4, 43, '', '{}', to_timestamp(1646350323), to_timestamp(1646350321)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 268809, 3522032, true, 2, 5, 4, 43, '', '{}', to_timestamp(1646350469), to_timestamp(1646350467)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 268805, 3004824, true, 2, 3, 4, 43, '', '{}', to_timestamp(1646350345), to_timestamp(1646350343)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 268902, 3548666, true, 2, 6, 0, 43, '', '{}', to_timestamp(1646373149), to_timestamp(1646367710)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 268936, 3548669, true, 2, 7, 0, 43, '', '{}', to_timestamp(1646378883), to_timestamp(1646373148)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 269836, 3559990, true, 2, 8, 2, 43, '', '{}', to_timestamp(1646516577), to_timestamp(1646515852)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 269850, 3562189, true, 2, 9, 2, 43, '', '{}', to_timestamp(1646525651), to_timestamp(1646524947)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 270320, 3568834, true, 2, 10, 2, 43, '', '{}', to_timestamp(1646657431), to_timestamp(1646656738)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 270697, 3577118, true, 2, 11, 2, 43, '', '{}', to_timestamp(1646700144), to_timestamp(1646699440)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 270863, 3578845, true, 2, 12, 2, 43, '', '{}', to_timestamp(1646723524), to_timestamp(1646722827)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 271516, 3588058, true, 2, 13, 2, 43, '', '{}', to_timestamp(1646805431), to_timestamp(1646804733)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 271522, 3588073, true, 2, 14, 2, 43, '', '{}', to_timestamp(1646806126), to_timestamp(1646805431)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 272642, 3604788, true, 2, 15, 2, 43, '', '{}', to_timestamp(1646949266), to_timestamp(1646948567)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 273231, 3614467, true, 2, 16, 2, 43, '', '{}', to_timestamp(1647028588), to_timestamp(1647027895)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 273303, 3615010, true, 2, 17, 2, 43, '', '{}', to_timestamp(1647040092), to_timestamp(1647039400)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 273358, 3616067, true, 2, 18, 0, 43, '', '{}', to_timestamp(1647051464), to_timestamp(1647045565)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 275038, 3641702, true, 2, 19, 2, 43, '', '{}', to_timestamp(1647357955), to_timestamp(1647357176)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 275310, 3647069, true, 2, 20, 2, 43, '', '{}', to_timestamp(1647468090), to_timestamp(1647467394)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 275342, 3651834, true, 2, 21, 2, 43, '', '{}', to_timestamp(1647553146), to_timestamp(1647552450)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 278133, 3716351, true, 2, 22, 2, 43, '', '{}', to_timestamp(1647953957), to_timestamp(1647953259)), 
+(133, 'null', ARRAY[2]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 281566, 3780058, true, 2, 23, 0, 164, '', '{}', to_timestamp(1648511871), to_timestamp(1648504889))
+
+        ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
+        DO UPDATE SET
+            builder_description=excluded.builder_description,
+            builder_masterids=excluded.builder_masterids,
+            builder_name=excluded.builder_name,
+            builder_tags=excluded.builder_tags,
+            build_complete=excluded.build_complete,
+            build_masterid=excluded.build_masterid,
+            build_number=excluded.build_number,
+            build_results=excluded.build_results,
+            build_workerid=excluded.build_workerid,
+            build_state_string=excluded.build_state_string,
+            build_properties=excluded.build_properties,
+            build_complete_at=excluded.build_complete_at
+        ;
+    
