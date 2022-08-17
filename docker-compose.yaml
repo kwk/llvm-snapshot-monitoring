@@ -62,7 +62,6 @@ services:
         GF_DATABASE_PASSWORD__FILE: /run/secrets/secret_grafanawriter_password
     volumes:
       - "./grafana/etc/grafana/grafana.ini:/etc/grafana/grafana.ini:Z"
-      - "./grafana/etc/grafana/ldap.toml:/etc/grafana/ldap.toml:Z"
       - "./grafana/etc/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:Z"
       - "./grafana/etc/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:Z"
       - "./grafana/var/lib/grafana/dashboards:/var/lib/grafana/dashboards:Z"
