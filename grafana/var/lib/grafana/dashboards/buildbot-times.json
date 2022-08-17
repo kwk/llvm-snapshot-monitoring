@@ -37,26 +37,7 @@
     }
   ],
   "annotations": {
-    "list": [
-      {
-        "builtIn": 1,
-        "datasource": {
-          "type": "grafana",
-          "uid": "-- Grafana --"
-        },
-        "enable": true,
-        "hide": true,
-        "iconColor": "rgba(0, 211, 255, 1)",
-        "name": "Annotations & Alerts",
-        "target": {
-          "limit": 100,
-          "matchAny": false,
-          "tags": [],
-          "type": "dashboard"
-        },
-        "type": "dashboard"
-      }
-    ]
+    "list": []
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
@@ -104,12 +85,13 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
-        "w": 12,
+        "h": 9,
+        "w": 24,
         "x": 0,
         "y": 0
       },
       "id": 4,
+      "links": [],
       "options": {
         "barRadius": 0,
         "barWidth": 0.96,
@@ -148,7 +130,7 @@
           ],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroup(\"build_started_at\", '24h'),\n  SUM(CASE WHEN build_results<>0 THEN 1 ELSE 0 END) as \"value\",\n  builder_name as \"metric\"\nFROM buildbot_build_logs\nWHERE\n  $__timeFilter(build_started_at)\n  AND build_complete = true\n  AND buildbot_instance in (${buildbot_instance:sqlstring})\nGROUP BY \"time\", builder_name\nORDER BY 1",
+          "rawSql": "SELECT\n  $__timeGroup(\"build_started_at\", '24h'),\n  count(*) as \"value\",\n  builder_name as \"metric\"\nFROM buildbot_build_logs\nWHERE\n  $__timeFilter(build_started_at)\n  AND build_complete = true\n  AND buildbot_instance in (${buildbot_instance:sqlstring})\n  AND build_results <> 0\nGROUP BY \"time\", builder_name\nORDER BY 1",
           "refId": "no success",
           "select": [
             [
@@ -244,7 +226,7 @@
         "h": 20,
         "w": 23,
         "x": 0,
-        "y": 20
+        "y": 18
       },
       "id": 2,
       "options": {
@@ -357,6 +339,6 @@
   "timezone": "",
   "title": "Buildbot times",
   "uid": "rN3rX8iVk",
-  "version": 1,
+  "version": 6,
   "weekStart": ""
 }
