@@ -86,9 +86,9 @@ secrets: remove-secrets secret-files
 	$(DOCKER_BIN) secret create secret_postgres_password ./secrets/postgres_password.txt
 	$(DOCKER_BIN) secret create secret_grafana_admin_password ./secrets/grafana_admin_password.txt
 
-.PHONY: load_buildbot_logs
+.PHONY: load-buildbot-logs
 ## Takes the buildbot logs and loads them into the database.
-load_buildbot_logs:
+load-buildbot-logs:
 	$(DOCKER_BIN) exec -it postgres-container rm -rf /logs-buildbot
 	$(DOCKER_BIN) cp log-collector/logs-buildbot postgres-container:/
 	$(DOCKER_BIN) exec -it postgres-container psql -v ON_STOP_ERROR=1 --username "postgres" --dbname "logs" -c "SELECT COUNT(*) FROM buildbot_build_logs;"
