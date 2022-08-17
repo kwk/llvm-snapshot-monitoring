@@ -8,7 +8,7 @@ export PGUSER="$POSTGRES_USER"
 TIMESCALEDB_VERSION="${TIMESCALEDB_VERSION%%+*}"
 
 # Load timescale into both template_database and $POSTGRES_DB
-for DB in template_timescaledb "$POSTGRES_DB" "${@}"; do
+for DB in template_timescaledb "$POSTGRES_DB" "logs" "${@}"; do
     echo "Updating TimescaleDB extensions '$DB' to $TIMESCALEDB_VERSION"
     psql -U $PGUSER --dbname="$DB" -c "
         -- Upgrade TimescaleDB
