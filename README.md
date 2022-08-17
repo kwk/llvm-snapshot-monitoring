@@ -42,6 +42,7 @@ Available targets
 <dt><code>remove-secrets</code></dt><dd>Removes the podman/docker secrets defined by the "secrets" target".</dd>
 <dt><code>secrets</code></dt><dd>Takes the secrets defined in ./secrets and makes podman/docker secrets out of<br/>
  it.</dd>
+<dt><code>load-buildbot-logs</code></dt><dd>Takes the buildbot logs and loads them into the database.</dd>
 <dt><code>help</code></dt><dd>Display this help text.</dd>
 <dt><code>help-html</code></dt><dd>Display this help text as an HTML definition list for better documentation generation</dd>
 </dl>
