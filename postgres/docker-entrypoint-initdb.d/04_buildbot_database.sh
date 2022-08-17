@@ -69,6 +69,8 @@ CREATE TABLE "public"."buildbot_build_logs" (
     
     "buildbot_instance" buildbot_instance_type NOT NULL,
 
+    "build_time_secs" bigint GENERATED ALWAYS AS (EXTRACT(epoch FROM build_complete_at) - EXTRACT(epoch FROM build_started_at)) STORED,
+
     CONSTRAINT "buildbot_build_logs_pkey" PRIMARY KEY ("builder_builderid", "build_buildid", "buildbot_instance")
 );
 
