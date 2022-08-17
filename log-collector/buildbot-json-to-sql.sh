@@ -2,10 +2,6 @@
 
 set -e
 
-# possible values: staging or buildbot (for production)
-BUILDBOT_INSTANCE=${BUILDBOT_INSTANCE:-staging}
-API_URL_BASE=https://lab.llvm.org/${BUILDBOT_INSTANCE}/api/v2
-
 get_all_builders() {
     local refresh_cache=${1:-false}
     if [ "$refresh_cache" == "true" ]; then
@@ -15,6 +11,7 @@ get_all_builders() {
         curl -Ls ${API_URL_BASE}/builders > all_builders.json
     fi
 }
+export -f get_all_builders
 
 # Returns the SQL lines of values for a given builder index in the array of
 # builders.
@@ -36,6 +33,7 @@ builder_values() {
             ) + "]::text[]"
         )] | join(", ")'
 }
+export -f builder_values
 
 # I'm not sure if the index a builder has in the array of builders is the same
 # as its id but we're translating it anyways just to be on the safe side.
@@ -46,6 +44,7 @@ builder_idx_to_id() {
         .builders[($builder_idx | tonumber)].builderid
     '
 }
+export -f builder_idx_to_id
 
 builder_idx_to_name() {
     local builder_idx=$1
@@ -54,11 +53,10 @@ builder_idx_to_name() {
         .builders[($builder_idx | tonumber)].name
     '
 }
+export -f builder_idx_to_name
 
-get_all_builders true
-count_builders=$(cat all_builders.json | jq '.meta.total')
-
-for builder_idx in $(seq 0 1 $((count_builders - 1)) ); do
+dowork() {
+    builder_idx=$1
     # if [[ "$builder_idx" == "1" ]]; then
     #     # echo "EXITING because we wanna"
     #     exit 0
@@ -78,7 +76,7 @@ for builder_idx in $(seq 0 1 $((count_builders - 1)) ); do
    
     if [[ ! -f $json_file ]] || [[ "$(cat $json_file | jq '.meta.total')" == "0" ]]; then
         echo "No logs for $builder_name"
-        continue
+        return 0
     fi
 
     echo "SQL"
@@ -150,4 +148,18 @@ for builder_idx in $(seq 0 1 $((count_builders - 1)) ); do
     ")
     ' \
     > $sql_file
-done
+}
+export -f dowork
+
+main() {
+    # possible values: staging or buildbot (for production)
+    export BUILDBOT_INSTANCE=${BUILDBOT_INSTANCE:-staging}
+    export API_URL_BASE=https://lab.llvm.org/${BUILDBOT_INSTANCE}/api/v2
+
+    get_all_builders true
+    export count_builders=$(cat all_builders.json | jq '.meta.total')
+
+    seq 0 1 $((count_builders - 1)) | parallel -j$(nproc) --eta dowork {}
+}
+
+main
