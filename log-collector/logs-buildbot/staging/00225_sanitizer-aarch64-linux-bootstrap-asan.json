@@ -377,9 +377,79 @@
       "started_at": 1660689023,
       "state_string": "build successful",
       "workerid": 4
+    },
+    {
+      "builderid": 225,
+      "buildid": 380044,
+      "buildrequestid": 5116197,
+      "complete": true,
+      "complete_at": 1660693768,
+      "masterid": 2,
+      "number": 28,
+      "properties": {},
+      "results": 0,
+      "started_at": 1660693765,
+      "state_string": "build successful",
+      "workerid": 4
+    },
+    {
+      "builderid": 225,
+      "buildid": 380124,
+      "buildrequestid": 5117296,
+      "complete": true,
+      "complete_at": 1660706583,
+      "masterid": 2,
+      "number": 29,
+      "properties": {},
+      "results": 0,
+      "started_at": 1660706579,
+      "state_string": "build successful",
+      "workerid": 4
+    },
+    {
+      "builderid": 225,
+      "buildid": 380167,
+      "buildrequestid": 5117777,
+      "complete": true,
+      "complete_at": 1660711856,
+      "masterid": 2,
+      "number": 30,
+      "properties": {},
+      "results": 0,
+      "started_at": 1660711852,
+      "state_string": "build successful",
+      "workerid": 4
+    },
+    {
+      "builderid": 225,
+      "buildid": 380181,
+      "buildrequestid": 5117903,
+      "complete": true,
+      "complete_at": 1660719006,
+      "masterid": 2,
+      "number": 31,
+      "properties": {},
+      "results": 0,
+      "started_at": 1660719002,
+      "state_string": "build successful",
+      "workerid": 4
+    },
+    {
+      "builderid": 225,
+      "buildid": 380262,
+      "buildrequestid": 5118031,
+      "complete": true,
+      "complete_at": 1660727315,
+      "masterid": 2,
+      "number": 32,
+      "properties": {},
+      "results": 0,
+      "started_at": 1660727311,
+      "state_string": "build successful",
+      "workerid": 4
     }
   ],
   "meta": {
-    "total": 27
+    "total": 32
   }
 }

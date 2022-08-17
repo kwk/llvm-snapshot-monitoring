@@ -97,9 +97,23 @@
       "started_at": 1660684541,
       "state_string": "build successful",
       "workerid": 4
+    },
+    {
+      "builderid": 226,
+      "buildid": 380116,
+      "buildrequestid": 5116198,
+      "complete": true,
+      "complete_at": 1660706579,
+      "masterid": 2,
+      "number": 8,
+      "properties": {},
+      "results": 0,
+      "started_at": 1660706575,
+      "state_string": "build successful",
+      "workerid": 4
     }
   ],
   "meta": {
-    "total": 7
+    "total": 8
   }
 }

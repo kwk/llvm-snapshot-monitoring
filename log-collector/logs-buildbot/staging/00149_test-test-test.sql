@@ -14,10 +14,11 @@ INSERT INTO buildbot_build_logs (
         build_state_string,
         build_properties,
         build_complete_at,
-        build_started_at
+        build_started_at,
+        buildbot_instance
     ) VALUES 
-(149, 'null', ARRAY[]::integer[], 'test-test-test', ARRAY['libcxx']::text[], 39967, 624130, true, 2, 1, 2, 98, '', '{}', to_timestamp(1616223967), to_timestamp(1616223643)), 
-(149, 'null', ARRAY[]::integer[], 'test-test-test', ARRAY['libcxx']::text[], 40211, 625204, true, 2, 2, 2, 98, '', '{}', to_timestamp(1616262136), to_timestamp(1616262127))
+(149, 'null', ARRAY[]::integer[], 'test-test-test', ARRAY['libcxx']::text[], 39967, 624130, true, 2, 1, 2, 98, '', '{}', to_timestamp(1616223967), to_timestamp(1616223643), 'staging'), 
+(149, 'null', ARRAY[]::integer[], 'test-test-test', ARRAY['libcxx']::text[], 40211, 625204, true, 2, 2, 2, 98, '', '{}', to_timestamp(1616262136), to_timestamp(1616262127), 'staging')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET
@@ -32,6 +33,7 @@ INSERT INTO buildbot_build_logs (
             build_workerid=excluded.build_workerid,
             build_state_string=excluded.build_state_string,
             build_properties=excluded.build_properties,
-            build_complete_at=excluded.build_complete_at
+            build_complete_at=excluded.build_complete_at,
+            buildbot_instance=excluded.buildbot_instance
         ;
     

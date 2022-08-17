@@ -326,18 +326,88 @@
       "builderid": 228,
       "buildid": 379937,
       "buildrequestid": 5115195,
-      "complete": false,
-      "complete_at": null,
+      "complete": true,
+      "complete_at": 1660693765,
       "masterid": 2,
       "number": 24,
       "properties": {},
-      "results": null,
+      "results": 2,
       "started_at": 1660689026,
+      "state_string": "'python ../sanitizer_buildbot/sanitizers/zorg/buildbot/builders/sanitizers/buildbot_selector.py'",
+      "workerid": 4
+    },
+    {
+      "builderid": 228,
+      "buildid": 380046,
+      "buildrequestid": 5116200,
+      "complete": true,
+      "complete_at": 1660699520,
+      "masterid": 2,
+      "number": 25,
+      "properties": {},
+      "results": 2,
+      "started_at": 1660693768,
+      "state_string": "failed 'python ../sanitizer_buildbot/sanitizers/zorg/buildbot/builders/sanitizers/buildbot_selector.py'",
+      "workerid": 4
+    },
+    {
+      "builderid": 228,
+      "buildid": 380125,
+      "buildrequestid": 5117299,
+      "complete": true,
+      "complete_at": 1660711852,
+      "masterid": 2,
+      "number": 26,
+      "properties": {},
+      "results": 2,
+      "started_at": 1660706582,
+      "state_string": "failed 'python ../sanitizer_buildbot/sanitizers/zorg/buildbot/builders/sanitizers/buildbot_selector.py'",
+      "workerid": 4
+    },
+    {
+      "builderid": 228,
+      "buildid": 380168,
+      "buildrequestid": 5117780,
+      "complete": true,
+      "complete_at": 1660719003,
+      "masterid": 2,
+      "number": 27,
+      "properties": {},
+      "results": 2,
+      "started_at": 1660711855,
+      "state_string": "failed 'python ../sanitizer_buildbot/sanitizers/zorg/buildbot/builders/sanitizers/buildbot_selector.py'",
+      "workerid": 4
+    },
+    {
+      "builderid": 228,
+      "buildid": 380182,
+      "buildrequestid": 5117906,
+      "complete": true,
+      "complete_at": 1660727311,
+      "masterid": 2,
+      "number": 28,
+      "properties": {},
+      "results": 2,
+      "started_at": 1660719006,
+      "state_string": "failed 'python ../sanitizer_buildbot/sanitizers/zorg/buildbot/builders/sanitizers/buildbot_selector.py'",
+      "workerid": 4
+    },
+    {
+      "builderid": 228,
+      "buildid": 380263,
+      "buildrequestid": 5118034,
+      "complete": false,
+      "complete_at": null,
+      "masterid": 2,
+      "number": 29,
+      "properties": {},
+      "results": null,
+      "started_at": 1660727314,
       "state_string": "building",
       "workerid": 4
     }
   ],
   "meta": {
-    "total": 24
+    "total": 29
   }
 }

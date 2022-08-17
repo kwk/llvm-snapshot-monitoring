@@ -10331,7 +10331,9 @@ INSERT INTO buildbot_build_logs (
 (50, 'null', ARRAY[2]::integer[], 'clang-solaris11-sparcv9', ARRAY['clang']::text[], 379463, 5109784, true, 2, 10312, 2, 79, '', '{}', to_timestamp(1660658139), to_timestamp(1660652581), 'staging'), 
 (50, 'null', ARRAY[2]::integer[], 'clang-solaris11-sparcv9', ARRAY['clang']::text[], 379537, 5109971, true, 2, 10313, 2, 79, '', '{}', to_timestamp(1660667605), to_timestamp(1660658139), 'staging'), 
 (50, 'null', ARRAY[2]::integer[], 'clang-solaris11-sparcv9', ARRAY['clang']::text[], 379715, 5112124, true, 2, 10314, 2, 79, '', '{}', to_timestamp(1660672295), to_timestamp(1660667604), 'staging'), 
-(50, 'null', ARRAY[2]::integer[], 'clang-solaris11-sparcv9', ARRAY['clang']::text[], 379743, 5112264, true, 2, 10315, 5, 79, '', '{}', to_timestamp(1660678857), to_timestamp(1660672295), 'staging')
+(50, 'null', ARRAY[2]::integer[], 'clang-solaris11-sparcv9', ARRAY['clang']::text[], 379743, 5112264, true, 2, 10315, 5, 79, '', '{}', to_timestamp(1660678857), to_timestamp(1660672295), 'staging'), 
+(50, 'null', ARRAY[2]::integer[], 'clang-solaris11-sparcv9', ARRAY['clang']::text[], 380214, 5117910, false, 2, 10317, null, 79, '', '{}', to_timestamp(null), to_timestamp(1660724654), 'staging'), 
+(50, 'null', ARRAY[2]::integer[], 'clang-solaris11-sparcv9', ARRAY['clang']::text[], 380173, 5116158, true, 2, 10316, 2, 79, '', '{}', to_timestamp(1660724655), to_timestamp(1660715696), 'staging')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

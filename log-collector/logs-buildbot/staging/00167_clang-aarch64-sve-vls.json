@@ -4776,20 +4776,34 @@
     },
     {
       "builderid": 167,
-      "buildid": 379374,
-      "buildrequestid": 5100980,
+      "buildid": 380146,
+      "buildrequestid": 5116160,
       "complete": false,
       "complete_at": null,
       "masterid": 2,
-      "number": 342,
+      "number": 343,
       "properties": {},
       "results": null,
-      "started_at": 1660647654,
+      "started_at": 1660710748,
       "state_string": "building",
+      "workerid": 120
+    },
+    {
+      "builderid": 167,
+      "buildid": 379374,
+      "buildrequestid": 5100980,
+      "complete": true,
+      "complete_at": 1660710748,
+      "masterid": 2,
+      "number": 342,
+      "properties": {},
+      "results": 2,
+      "started_at": 1660647654,
+      "state_string": "failed 2880 unsupported tests 65330 expected passes 249 expected failures 7 unexpected failures (failure) test (failure)",
       "workerid": 120
     }
   ],
   "meta": {
-    "total": 342
+    "total": 343
   }
 }
