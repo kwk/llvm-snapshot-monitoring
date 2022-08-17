@@ -3,13 +3,15 @@
 set -e
 
 get_all_builders() {
+    local file_path=all_builders_${BUILDBOT_INSTANCE}.json
     local refresh_cache=${1:-false}
     if [ "$refresh_cache" == "true" ]; then
-        rm -f all_builders.json
+        rm -f $file_path
     fi
-    if [ ! -f all_builders.json ]; then
-        curl -Ls ${API_URL_BASE}/builders > all_builders.json
+    if [ ! -f $file_path ]; then
+        curl -Ls ${API_URL_BASE}/builders > $file_path
     fi
+    echo $file_path
 }
 export -f get_all_builders
 
@@ -17,10 +19,8 @@ export -f get_all_builders
 # builders.
 builder_values() {
     local builder_idx=$1
-    
-    get_all_builders
 
-    cat all_builders.json | jq -r --arg builder_idx $builder_idx $'
+    cat $(get_all_builders) | jq -r --arg builder_idx $builder_idx $'
         .builders[($builder_idx | tonumber)] | [(
             .builderid,
             ("\'" + (.description | tostring) + "\'"),
@@ -39,8 +39,7 @@ export -f builder_values
 # as its id but we're translating it anyways just to be on the safe side.
 builder_idx_to_id() {
     local builder_idx=$1
-    get_all_builders
-    cat all_builders.json | jq -r --arg builder_idx $builder_idx $'
+    cat $(get_all_builders) | jq -r --arg builder_idx $builder_idx $'
         .builders[($builder_idx | tonumber)].builderid
     '
 }
@@ -48,8 +47,7 @@ export -f builder_idx_to_id
 
 builder_idx_to_name() {
     local builder_idx=$1
-    get_all_builders
-    cat all_builders.json | jq -r --arg builder_idx $builder_idx $'
+    cat $(get_all_builders) | jq -r --arg builder_idx $builder_idx $'
         .builders[($builder_idx | tonumber)].name
     '
 }
@@ -156,7 +154,9 @@ main() {
     export BUILDBOT_INSTANCE=${BUILDBOT_INSTANCE:-staging}
     export API_URL_BASE=https://lab.llvm.org/${BUILDBOT_INSTANCE}/api/v2
 
+    # Ensure the builders file exists before all the parallel workers start.
     get_all_builders true
+
     export count_builders=$(cat all_builders.json | jq '.meta.total')
 
     seq 0 1 $((count_builders - 1)) | parallel -j$(nproc) --eta dowork {}
