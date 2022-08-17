@@ -3061,7 +3061,15 @@ INSERT INTO buildbot_build_logs (
 (120, 'null', ARRAY[1]::integer[], 'clang-arm64-windows-msvc-2stage', ARRAY['clang']::text[], 2142389, 5663810, true, 1, 3042, 2, 87, '', '{}', to_timestamp(1660706486), to_timestamp(1660706449), 'buildbot'), 
 (120, 'null', ARRAY[1]::integer[], 'clang-arm64-windows-msvc-2stage', ARRAY['clang']::text[], 2142455, 5663919, true, 1, 3043, 2, 76, '', '{}', to_timestamp(1660707344), to_timestamp(1660707282), 'buildbot'), 
 (120, 'null', ARRAY[1]::integer[], 'clang-arm64-windows-msvc-2stage', ARRAY['clang']::text[], 2142598, 5664258, true, 1, 3044, 2, 87, '', '{}', to_timestamp(1660711074), to_timestamp(1660711047), 'buildbot'), 
-(120, 'null', ARRAY[1]::integer[], 'clang-arm64-windows-msvc-2stage', ARRAY['clang']::text[], 2142690, 5664379, true, 1, 3045, 2, 87, '', '{}', to_timestamp(1660716167), to_timestamp(1660716143), 'buildbot')
+(120, 'null', ARRAY[1]::integer[], 'clang-arm64-windows-msvc-2stage', ARRAY['clang']::text[], 2142690, 5664379, true, 1, 3045, 2, 87, '', '{}', to_timestamp(1660716167), to_timestamp(1660716143), 'buildbot'), 
+(120, 'null', ARRAY[1]::integer[], 'clang-arm64-windows-msvc-2stage', ARRAY['clang']::text[], 2142728, 5664423, true, 1, 3046, 2, 76, '', '{}', to_timestamp(1660717855), to_timestamp(1660717823), 'buildbot'), 
+(120, 'null', ARRAY[1]::integer[], 'clang-arm64-windows-msvc-2stage', ARRAY['clang']::text[], 2142777, 5664485, true, 1, 3047, 2, 76, '', '{}', to_timestamp(1660720767), to_timestamp(1660720731), 'buildbot'), 
+(120, 'null', ARRAY[1]::integer[], 'clang-arm64-windows-msvc-2stage', ARRAY['clang']::text[], 2142847, 5664618, true, 1, 3048, 2, 76, '', '{}', to_timestamp(1660721681), to_timestamp(1660721658), 'buildbot'), 
+(120, 'null', ARRAY[1]::integer[], 'clang-arm64-windows-msvc-2stage', ARRAY['clang']::text[], 2142906, 5664674, true, 1, 3049, 2, 87, '', '{}', to_timestamp(1660723767), to_timestamp(1660723736), 'buildbot'), 
+(120, 'null', ARRAY[1]::integer[], 'clang-arm64-windows-msvc-2stage', ARRAY['clang']::text[], 2142958, 5664800, true, 1, 3050, 2, 87, '', '{}', to_timestamp(1660724146), to_timestamp(1660724121), 'buildbot'), 
+(120, 'null', ARRAY[1]::integer[], 'clang-arm64-windows-msvc-2stage', ARRAY['clang']::text[], 2143029, 5664929, true, 1, 3051, 2, 87, '', '{}', to_timestamp(1660724966), to_timestamp(1660724936), 'buildbot'), 
+(120, 'null', ARRAY[1]::integer[], 'clang-arm64-windows-msvc-2stage', ARRAY['clang']::text[], 2143094, 5665098, true, 1, 3052, 2, 87, '', '{}', to_timestamp(1660726193), to_timestamp(1660726136), 'buildbot'), 
+(120, 'null', ARRAY[1]::integer[], 'clang-arm64-windows-msvc-2stage', ARRAY['clang']::text[], 2143194, 5665385, true, 1, 3053, 2, 76, '', '{}', to_timestamp(1660726789), to_timestamp(1660726740), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

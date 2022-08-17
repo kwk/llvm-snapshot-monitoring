@@ -3473,7 +3473,8 @@ INSERT INTO buildbot_build_logs (
 (8, 'null', ARRAY[1]::integer[], 'clang-s390x-linux-multistage', ARRAY['clang']::text[], 2138494, 5654699, true, 1, 3454, 0, 40, '', '{}', to_timestamp(1660666259), to_timestamp(1660644287), 'buildbot'), 
 (8, 'null', ARRAY[1]::integer[], 'clang-s390x-linux-multistage', ARRAY['clang']::text[], 2140231, 5658875, true, 1, 3455, 0, 40, '', '{}', to_timestamp(1660680964), to_timestamp(1660666260), 'buildbot'), 
 (8, 'null', ARRAY[1]::integer[], 'clang-s390x-linux-multistage', ARRAY['clang']::text[], 2140792, 5659034, true, 1, 3456, 0, 40, '', '{}', to_timestamp(1660703129), to_timestamp(1660681038), 'buildbot'), 
-(8, 'null', ARRAY[1]::integer[], 'clang-s390x-linux-multistage', ARRAY['clang']::text[], 2142279, 5662788, false, 1, 3457, null, 40, '', '{}', to_timestamp(null), to_timestamp(1660703129), 'buildbot')
+(8, 'null', ARRAY[1]::integer[], 'clang-s390x-linux-multistage', ARRAY['clang']::text[], 2142279, 5662788, true, 1, 3457, 0, 40, '', '{}', to_timestamp(1660724720), to_timestamp(1660703129), 'buildbot'), 
+(8, 'null', ARRAY[1]::integer[], 'clang-s390x-linux-multistage', ARRAY['clang']::text[], 2143014, 5664543, false, 1, 3458, null, 40, '', '{}', to_timestamp(null), to_timestamp(1660724721), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

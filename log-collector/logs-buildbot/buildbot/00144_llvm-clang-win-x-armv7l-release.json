@@ -4241,9 +4241,23 @@
       "started_at": 1660631841,
       "state_string": "failed build (failure)",
       "workerid": 169
+    },
+    {
+      "builderid": 144,
+      "buildid": 2143242,
+      "buildrequestid": 5665563,
+      "complete": true,
+      "complete_at": 1660727118,
+      "masterid": 1,
+      "number": 304,
+      "properties": {},
+      "results": 2,
+      "started_at": 1660727009,
+      "state_string": "build (failure)",
+      "workerid": 169
     }
   ],
   "meta": {
-    "total": 303
+    "total": 304
   }
 }

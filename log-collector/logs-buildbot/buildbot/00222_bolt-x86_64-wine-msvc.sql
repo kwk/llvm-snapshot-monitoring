@@ -3139,7 +3139,9 @@ INSERT INTO buildbot_build_logs (
 (222, 'null', ARRAY[1]::integer[], 'bolt-x86_64-wine-msvc', ARRAY['bolt']::text[], 2142156, 5663371, true, 1, 3120, 0, 164, '', '{}', to_timestamp(1660698198), to_timestamp(1660698165), 'buildbot'), 
 (222, 'null', ARRAY[1]::integer[], 'bolt-x86_64-wine-msvc', ARRAY['bolt']::text[], 2142371, 5663747, true, 1, 3121, 0, 164, '', '{}', to_timestamp(1660705671), to_timestamp(1660705637), 'buildbot'), 
 (222, 'null', ARRAY[1]::integer[], 'bolt-x86_64-wine-msvc', ARRAY['bolt']::text[], 2142519, 5663972, true, 1, 3122, 0, 164, '', '{}', to_timestamp(1660708162), to_timestamp(1660707738), 'buildbot'), 
-(222, 'null', ARRAY[1]::integer[], 'bolt-x86_64-wine-msvc', ARRAY['bolt']::text[], 2142652, 5664222, true, 1, 3123, 0, 164, '', '{}', to_timestamp(1660711432), to_timestamp(1660711368), 'buildbot')
+(222, 'null', ARRAY[1]::integer[], 'bolt-x86_64-wine-msvc', ARRAY['bolt']::text[], 2142652, 5664222, true, 1, 3123, 0, 164, '', '{}', to_timestamp(1660711432), to_timestamp(1660711368), 'buildbot'), 
+(222, 'null', ARRAY[1]::integer[], 'bolt-x86_64-wine-msvc', ARRAY['bolt']::text[], 2143156, 5665127, true, 1, 3124, 0, 164, '', '{}', to_timestamp(1660726468), to_timestamp(1660726401), 'buildbot'), 
+(222, 'null', ARRAY[1]::integer[], 'bolt-x86_64-wine-msvc', ARRAY['bolt']::text[], 2143257, 5665458, true, 1, 3125, 0, 164, '', '{}', to_timestamp(1660727271), to_timestamp(1660727177), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

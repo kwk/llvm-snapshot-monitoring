@@ -342,7 +342,8 @@ INSERT INTO buildbot_build_logs (
 (143, 'null', ARRAY[1]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 2133116, 5644558, true, 1, 323, 0, 170, '', '{}', to_timestamp(1660555547), to_timestamp(1660549155), 'buildbot'), 
 (143, 'null', ARRAY[1]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 2133296, 5644584, true, 1, 324, 0, 170, '', '{}', to_timestamp(1660561483), to_timestamp(1660555547), 'buildbot'), 
 (143, 'null', ARRAY[1]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 2133717, 5645409, true, 1, 325, 0, 170, '', '{}', to_timestamp(1660569577), to_timestamp(1660563300), 'buildbot'), 
-(143, 'null', ARRAY[1]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 2137951, 5654823, true, 1, 326, 2, 170, '', '{}', to_timestamp(1660631963), to_timestamp(1660631841), 'buildbot')
+(143, 'null', ARRAY[1]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 2137951, 5654823, true, 1, 326, 2, 170, '', '{}', to_timestamp(1660631963), to_timestamp(1660631841), 'buildbot'), 
+(143, 'null', ARRAY[1]::integer[], 'llvm-clang-win-x-aarch64-release', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'aarch64', 'release']::text[], 2143241, 5665561, true, 1, 327, 2, 170, '', '{}', to_timestamp(1660727118), to_timestamp(1660727009), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

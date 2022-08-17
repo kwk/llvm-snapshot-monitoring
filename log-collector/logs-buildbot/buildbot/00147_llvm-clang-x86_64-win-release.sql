@@ -294,7 +294,8 @@ INSERT INTO buildbot_build_logs (
 (147, 'null', ARRAY[1]::integer[], 'llvm-clang-x86_64-win-release', ARRAY['clang', 'release']::text[], 2122106, 5624633, true, 1, 275, 0, 27, '', '{}', to_timestamp(1660288404), to_timestamp(1660287629), 'buildbot'), 
 (147, 'null', ARRAY[1]::integer[], 'llvm-clang-x86_64-win-release', ARRAY['clang', 'release']::text[], 2133112, 5644557, true, 1, 276, 0, 27, '', '{}', to_timestamp(1660549917), to_timestamp(1660549154), 'buildbot'), 
 (147, 'null', ARRAY[1]::integer[], 'llvm-clang-x86_64-win-release', ARRAY['clang', 'release']::text[], 2133134, 5644583, true, 1, 277, 0, 27, '', '{}', to_timestamp(1660550698), to_timestamp(1660549917), 'buildbot'), 
-(147, 'null', ARRAY[1]::integer[], 'llvm-clang-x86_64-win-release', ARRAY['clang', 'release']::text[], 2137948, 5654825, true, 1, 278, 2, 27, '', '{}', to_timestamp(1660631920), to_timestamp(1660631838), 'buildbot')
+(147, 'null', ARRAY[1]::integer[], 'llvm-clang-x86_64-win-release', ARRAY['clang', 'release']::text[], 2137948, 5654825, true, 1, 278, 2, 27, '', '{}', to_timestamp(1660631920), to_timestamp(1660631838), 'buildbot'), 
+(147, 'null', ARRAY[1]::integer[], 'llvm-clang-x86_64-win-release', ARRAY['clang', 'release']::text[], 2143298, 5665565, true, 1, 279, 2, 27, '', '{}', to_timestamp(1660728841), to_timestamp(1660728773), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

@@ -7938,7 +7938,10 @@ INSERT INTO buildbot_build_logs (
 (60, 'null', ARRAY[1]::integer[], 'llvm-clang-win-x-armv7l', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'armv7']::text[], 2142000, 5662783, true, 1, 7919, 0, 61, '', '{}', to_timestamp(1660700179), to_timestamp(1660694861), 'buildbot'), 
 (60, 'null', ARRAY[1]::integer[], 'llvm-clang-win-x-armv7l', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'armv7']::text[], 2142198, 5663414, true, 1, 7920, 0, 61, '', '{}', to_timestamp(1660705459), to_timestamp(1660700179), 'buildbot'), 
 (60, 'null', ARRAY[1]::integer[], 'llvm-clang-win-x-armv7l', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'armv7']::text[], 2142362, 5663684, true, 1, 7921, 0, 61, '', '{}', to_timestamp(1660710952), to_timestamp(1660705459), 'buildbot'), 
-(60, 'null', ARRAY[1]::integer[], 'llvm-clang-win-x-armv7l', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'armv7']::text[], 2142596, 5664236, false, 1, 7922, null, 61, '', '{}', to_timestamp(null), to_timestamp(1660711038), 'buildbot')
+(60, 'null', ARRAY[1]::integer[], 'llvm-clang-win-x-armv7l', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'armv7']::text[], 2142596, 5664236, true, 1, 7922, 0, 61, '', '{}', to_timestamp(1660716300), to_timestamp(1660711038), 'buildbot'), 
+(60, 'null', ARRAY[1]::integer[], 'llvm-clang-win-x-armv7l', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'armv7']::text[], 2142714, 5664363, true, 1, 7923, 0, 61, '', '{}', to_timestamp(1660721620), to_timestamp(1660716301), 'buildbot'), 
+(60, 'null', ARRAY[1]::integer[], 'llvm-clang-win-x-armv7l', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'armv7']::text[], 2142842, 5664453, true, 1, 7924, 0, 61, '', '{}', to_timestamp(1660726919), to_timestamp(1660721620), 'buildbot'), 
+(60, 'null', ARRAY[1]::integer[], 'llvm-clang-win-x-armv7l', ARRAY['clang', 'llvm', 'compiler-rt', 'cross', 'armv7']::text[], 2143231, 5664541, false, 1, 7925, null, 61, '', '{}', to_timestamp(null), to_timestamp(1660726953), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

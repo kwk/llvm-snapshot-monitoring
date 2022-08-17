@@ -306,7 +306,8 @@ INSERT INTO buildbot_build_logs (
 (141, 'null', ARRAY[1]::integer[], 'llvm-clang-x86_64-expensive-checks-debian-release', ARRAY['llvm', 'expensive-checks', 'release']::text[], 2122055, 5624634, true, 1, 287, 2, 53, '', '{}', to_timestamp(1660287812), to_timestamp(1660287019), 'buildbot'), 
 (141, 'null', ARRAY[1]::integer[], 'llvm-clang-x86_64-expensive-checks-debian-release', ARRAY['llvm', 'expensive-checks', 'release']::text[], 2133115, 5644549, true, 1, 288, 2, 53, '', '{}', to_timestamp(1660550066), to_timestamp(1660549154), 'buildbot'), 
 (141, 'null', ARRAY[1]::integer[], 'llvm-clang-x86_64-expensive-checks-debian-release', ARRAY['llvm', 'expensive-checks', 'release']::text[], 2133139, 5644578, true, 1, 289, 2, 53, '', '{}', to_timestamp(1660550239), to_timestamp(1660550066), 'buildbot'), 
-(141, 'null', ARRAY[1]::integer[], 'llvm-clang-x86_64-expensive-checks-debian-release', ARRAY['llvm', 'expensive-checks', 'release']::text[], 2137953, 5654826, true, 1, 290, 2, 53, '', '{}', to_timestamp(1660632696), to_timestamp(1660631841), 'buildbot')
+(141, 'null', ARRAY[1]::integer[], 'llvm-clang-x86_64-expensive-checks-debian-release', ARRAY['llvm', 'expensive-checks', 'release']::text[], 2137953, 5654826, true, 1, 290, 2, 53, '', '{}', to_timestamp(1660632696), to_timestamp(1660631841), 'buildbot'), 
+(141, 'null', ARRAY[1]::integer[], 'llvm-clang-x86_64-expensive-checks-debian-release', ARRAY['llvm', 'expensive-checks', 'release']::text[], 2143274, 5665564, true, 1, 291, 0, 53, '', '{}', to_timestamp(1660728405), to_timestamp(1660727476), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

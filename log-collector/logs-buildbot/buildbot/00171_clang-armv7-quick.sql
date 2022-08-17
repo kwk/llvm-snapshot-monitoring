@@ -19043,7 +19043,14 @@ INSERT INTO buildbot_build_logs (
 (171, 'null', ARRAY[1]::integer[], 'clang-armv7-quick', ARRAY['clang']::text[], 2142298, 5663628, true, 1, 19024, 0, 126, '', '{}', to_timestamp(1660706197), to_timestamp(1660705377), 'buildbot'), 
 (171, 'null', ARRAY[1]::integer[], 'clang-armv7-quick', ARRAY['clang']::text[], 2142390, 5663787, true, 1, 19025, 0, 126, '', '{}', to_timestamp(1660707016), to_timestamp(1660706451), 'buildbot'), 
 (171, 'null', ARRAY[1]::integer[], 'clang-armv7-quick', ARRAY['clang']::text[], 2142472, 5663957, true, 1, 19026, 0, 126, '', '{}', to_timestamp(1660707975), to_timestamp(1660707349), 'buildbot'), 
-(171, 'null', ARRAY[1]::integer[], 'clang-armv7-quick', ARRAY['clang']::text[], 2142567, 5664289, true, 1, 19027, 0, 126, '', '{}', to_timestamp(1660711788), to_timestamp(1660710952), 'buildbot')
+(171, 'null', ARRAY[1]::integer[], 'clang-armv7-quick', ARRAY['clang']::text[], 2142567, 5664289, true, 1, 19027, 0, 126, '', '{}', to_timestamp(1660711788), to_timestamp(1660710952), 'buildbot'), 
+(171, 'null', ARRAY[1]::integer[], 'clang-armv7-quick', ARRAY['clang']::text[], 2142781, 5664554, true, 1, 19028, 0, 126, '', '{}', to_timestamp(1660721262), to_timestamp(1660720732), 'buildbot'), 
+(171, 'null', ARRAY[1]::integer[], 'clang-armv7-quick', ARRAY['clang']::text[], 2142848, 5664608, true, 1, 19029, 0, 126, '', '{}', to_timestamp(1660722339), to_timestamp(1660721659), 'buildbot'), 
+(171, 'null', ARRAY[1]::integer[], 'clang-armv7-quick', ARRAY['clang']::text[], 2142908, 5664722, true, 1, 19030, 0, 126, '', '{}', to_timestamp(1660724570), to_timestamp(1660723737), 'buildbot'), 
+(171, 'null', ARRAY[1]::integer[], 'clang-armv7-quick', ARRAY['clang']::text[], 2143004, 5664846, true, 1, 19031, 0, 126, '', '{}', to_timestamp(1660725272), to_timestamp(1660724570), 'buildbot'), 
+(171, 'null', ARRAY[1]::integer[], 'clang-armv7-quick', ARRAY['clang']::text[], 2143058, 5664926, true, 1, 19032, 0, 126, '', '{}', to_timestamp(1660725979), to_timestamp(1660725272), 'buildbot'), 
+(171, 'null', ARRAY[1]::integer[], 'clang-armv7-quick', ARRAY['clang']::text[], 2143115, 5665184, true, 1, 19033, 2, 126, '', '{}', to_timestamp(1660727040), to_timestamp(1660726195), 'buildbot'), 
+(171, 'null', ARRAY[1]::integer[], 'clang-armv7-quick', ARRAY['clang']::text[], 2143247, 5665472, true, 1, 19034, 2, 126, '', '{}', to_timestamp(1660727977), to_timestamp(1660727040), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

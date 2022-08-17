@@ -1866,7 +1866,15 @@ INSERT INTO buildbot_build_logs (
 (229, 'null', ARRAY[1]::integer[], 'libc-arm32-debian-dbg', ARRAY['libc']::text[], 2142252, 5663614, true, 1, 1847, 2, 177, '', '{}', to_timestamp(1660704854), to_timestamp(1660701699), 'buildbot'), 
 (229, 'null', ARRAY[1]::integer[], 'libc-arm32-debian-dbg', ARRAY['libc']::text[], 2142353, 5663735, true, 1, 1848, 2, 177, '', '{}', to_timestamp(1660708355), to_timestamp(1660705429), 'buildbot'), 
 (229, 'null', ARRAY[1]::integer[], 'libc-arm32-debian-dbg', ARRAY['libc']::text[], 2142532, 5664005, true, 1, 1849, 2, 177, '', '{}', to_timestamp(1660711321), to_timestamp(1660708355), 'buildbot'), 
-(229, 'null', ARRAY[1]::integer[], 'libc-arm32-debian-dbg', ARRAY['libc']::text[], 2142646, 5664270, true, 1, 1850, 2, 177, '', '{}', to_timestamp(1660714586), to_timestamp(1660711321), 'buildbot')
+(229, 'null', ARRAY[1]::integer[], 'libc-arm32-debian-dbg', ARRAY['libc']::text[], 2142646, 5664270, true, 1, 1850, 2, 177, '', '{}', to_timestamp(1660714586), to_timestamp(1660711321), 'buildbot'), 
+(229, 'null', ARRAY[1]::integer[], 'libc-arm32-debian-dbg', ARRAY['libc']::text[], 2142793, 5664581, true, 1, 1851, 0, 177, '', '{}', to_timestamp(1660721056), to_timestamp(1660720738), 'buildbot'), 
+(229, 'null', ARRAY[1]::integer[], 'libc-arm32-debian-dbg', ARRAY['libc']::text[], 2142853, 5664631, true, 1, 1852, 0, 177, '', '{}', to_timestamp(1660721966), to_timestamp(1660721661), 'buildbot'), 
+(229, 'null', ARRAY[1]::integer[], 'libc-arm32-debian-dbg', ARRAY['libc']::text[], 2142877, 5664661, true, 1, 1853, 0, 177, '', '{}', to_timestamp(1660723409), to_timestamp(1660723081), 'buildbot'), 
+(229, 'null', ARRAY[1]::integer[], 'libc-arm32-debian-dbg', ARRAY['libc']::text[], 2142925, 5664742, true, 1, 1854, 0, 177, '', '{}', to_timestamp(1660724082), to_timestamp(1660723757), 'buildbot'), 
+(229, 'null', ARRAY[1]::integer[], 'libc-arm32-debian-dbg', ARRAY['libc']::text[], 2142963, 5664855, true, 1, 1855, 0, 177, '', '{}', to_timestamp(1660724428), to_timestamp(1660724123), 'buildbot'), 
+(229, 'null', ARRAY[1]::integer[], 'libc-arm32-debian-dbg', ARRAY['libc']::text[], 2143039, 5665000, true, 1, 1856, 0, 177, '', '{}', to_timestamp(1660725258), to_timestamp(1660724940), 'buildbot'), 
+(229, 'null', ARRAY[1]::integer[], 'libc-arm32-debian-dbg', ARRAY['libc']::text[], 2143125, 5665218, true, 1, 1857, 0, 177, '', '{}', to_timestamp(1660726556), to_timestamp(1660726220), 'buildbot'), 
+(229, 'null', ARRAY[1]::integer[], 'libc-arm32-debian-dbg', ARRAY['libc']::text[], 2143201, 5665526, true, 1, 1858, 0, 177, '', '{}', to_timestamp(1660727090), to_timestamp(1660726771), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

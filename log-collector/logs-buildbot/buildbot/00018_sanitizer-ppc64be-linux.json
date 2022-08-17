@@ -79608,18 +79608,46 @@
       "builderid": 18,
       "buildid": 2142674,
       "buildrequestid": 5664313,
-      "complete": false,
-      "complete_at": null,
+      "complete": true,
+      "complete_at": 1660718853,
       "masterid": 1,
       "number": 5687,
       "properties": {},
-      "results": null,
+      "results": 0,
       "started_at": 1660713054,
+      "state_string": "build successful",
+      "workerid": 72
+    },
+    {
+      "builderid": 18,
+      "buildid": 2142759,
+      "buildrequestid": 5664451,
+      "complete": true,
+      "complete_at": 1660726708,
+      "masterid": 1,
+      "number": 5688,
+      "properties": {},
+      "results": 0,
+      "started_at": 1660718853,
+      "state_string": "build successful",
+      "workerid": 72
+    },
+    {
+      "builderid": 18,
+      "buildid": 2143176,
+      "buildrequestid": 5664537,
+      "complete": false,
+      "complete_at": null,
+      "masterid": 1,
+      "number": 5689,
+      "properties": {},
+      "results": null,
+      "started_at": 1660726726,
       "state_string": "building",
       "workerid": 72
     }
   ],
   "meta": {
-    "total": 5687
+    "total": 5689
   }
 }

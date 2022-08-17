@@ -3759,7 +3759,12 @@ INSERT INTO buildbot_build_logs (
 (220, 'null', ARRAY[1]::integer[], 'mlir-rocm-mi200', ARRAY['mlir']::text[], 2142355, 5663762, true, 1, 3740, 0, 171, '', '{}', to_timestamp(1660705559), to_timestamp(1660705431), 'buildbot'), 
 (220, 'null', ARRAY[1]::integer[], 'mlir-rocm-mi200', ARRAY['mlir']::text[], 2142493, 5664020, true, 1, 3741, 0, 171, '', '{}', to_timestamp(1660707506), to_timestamp(1660707387), 'buildbot'), 
 (220, 'null', ARRAY[1]::integer[], 'mlir-rocm-mi200', ARRAY['mlir']::text[], 2142600, 5664191, true, 1, 3742, 0, 171, '', '{}', to_timestamp(1660711166), to_timestamp(1660711056), 'buildbot'), 
-(220, 'null', ARRAY[1]::integer[], 'mlir-rocm-mi200', ARRAY['mlir']::text[], 2142638, 5664340, true, 1, 3743, 0, 171, '', '{}', to_timestamp(1660711289), to_timestamp(1660711166), 'buildbot')
+(220, 'null', ARRAY[1]::integer[], 'mlir-rocm-mi200', ARRAY['mlir']::text[], 2142638, 5664340, true, 1, 3743, 0, 171, '', '{}', to_timestamp(1660711289), to_timestamp(1660711166), 'buildbot'), 
+(220, 'null', ARRAY[1]::integer[], 'mlir-rocm-mi200', ARRAY['mlir']::text[], 2143083, 5665064, true, 1, 3744, 0, 171, '', '{}', to_timestamp(1660725854), to_timestamp(1660725740), 'buildbot'), 
+(220, 'null', ARRAY[1]::integer[], 'mlir-rocm-mi200', ARRAY['mlir']::text[], 2143131, 5665166, true, 1, 3745, 0, 171, '', '{}', to_timestamp(1660726347), to_timestamp(1660726229), 'buildbot'), 
+(220, 'null', ARRAY[1]::integer[], 'mlir-rocm-mi200', ARRAY['mlir']::text[], 2143220, 5665532, true, 1, 3747, 0, 171, '', '{}', to_timestamp(1660727029), to_timestamp(1660726906), 'buildbot'), 
+(220, 'null', ARRAY[1]::integer[], 'mlir-rocm-mi200', ARRAY['mlir']::text[], 2143189, 5665322, true, 1, 3746, 0, 171, '', '{}', to_timestamp(1660726880), to_timestamp(1660726738), 'buildbot'), 
+(220, 'null', ARRAY[1]::integer[], 'mlir-rocm-mi200', ARRAY['mlir']::text[], 2143246, 5665560, true, 1, 3748, 0, 171, '', '{}', to_timestamp(1660727134), to_timestamp(1660727029), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

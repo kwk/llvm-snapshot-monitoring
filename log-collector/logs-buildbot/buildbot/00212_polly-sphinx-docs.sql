@@ -8929,7 +8929,10 @@ INSERT INTO buildbot_build_logs (
 (212, 'null', ARRAY[1]::integer[], 'polly-sphinx-docs', ARRAY['llvm', 'doc']::text[], 2142103, 5663405, true, 1, 8910, 0, 5, '', '{}', to_timestamp(1660697914), to_timestamp(1660697855), 'buildbot'), 
 (212, 'null', ARRAY[1]::integer[], 'polly-sphinx-docs', ARRAY['llvm', 'doc']::text[], 2142290, 5663631, true, 1, 8911, 0, 5, '', '{}', to_timestamp(1660705407), to_timestamp(1660705340), 'buildbot'), 
 (212, 'null', ARRAY[1]::integer[], 'polly-sphinx-docs', ARRAY['llvm', 'doc']::text[], 2142451, 5663982, true, 1, 8912, 0, 5, '', '{}', to_timestamp(1660707341), to_timestamp(1660707259), 'buildbot'), 
-(212, 'null', ARRAY[1]::integer[], 'polly-sphinx-docs', ARRAY['llvm', 'doc']::text[], 2142639, 5664209, true, 1, 8913, 0, 5, '', '{}', to_timestamp(1660711218), to_timestamp(1660711168), 'buildbot')
+(212, 'null', ARRAY[1]::integer[], 'polly-sphinx-docs', ARRAY['llvm', 'doc']::text[], 2142639, 5664209, true, 1, 8913, 0, 5, '', '{}', to_timestamp(1660711218), to_timestamp(1660711168), 'buildbot'), 
+(212, 'null', ARRAY[1]::integer[], 'polly-sphinx-docs', ARRAY['llvm', 'doc']::text[], 2143090, 5665112, true, 1, 8914, 0, 5, '', '{}', to_timestamp(1660726192), to_timestamp(1660726103), 'buildbot'), 
+(212, 'null', ARRAY[1]::integer[], 'polly-sphinx-docs', ARRAY['llvm', 'doc']::text[], 2143158, 5665226, true, 1, 8915, 0, 5, '', '{}', to_timestamp(1660726495), to_timestamp(1660726464), 'buildbot'), 
+(212, 'null', ARRAY[1]::integer[], 'polly-sphinx-docs', ARRAY['llvm', 'doc']::text[], 2143210, 5665509, true, 1, 8916, 0, 5, '', '{}', to_timestamp(1660726883), to_timestamp(1660726798), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

@@ -2519,8 +2519,10 @@ INSERT INTO buildbot_build_logs (
 (197, 'null', ARRAY[1]::integer[], 'clang-aarch64-sve-vla', ARRAY['clang']::text[], 2140763, 5659973, true, 1, 2500, 2, 150, '', '{}', to_timestamp(1660690292), to_timestamp(1660678711), 'buildbot'), 
 (197, 'null', ARRAY[1]::integer[], 'clang-aarch64-sve-vla', ARRAY['clang']::text[], 2141561, 5662331, true, 1, 2501, 2, 150, '', '{}', to_timestamp(1660697682), to_timestamp(1660690357), 'buildbot'), 
 (197, 'null', ARRAY[1]::integer[], 'clang-aarch64-sve-vla', ARRAY['clang']::text[], 2142083, 5662807, true, 1, 2502, 2, 150, '', '{}', to_timestamp(1660707780), to_timestamp(1660697682), 'buildbot'), 
-(197, 'null', ARRAY[1]::integer[], 'clang-aarch64-sve-vla', ARRAY['clang']::text[], 2142683, 5664299, false, 1, 2504, null, 150, '', '{}', to_timestamp(null), to_timestamp(1660715256), 'buildbot'), 
-(197, 'null', ARRAY[1]::integer[], 'clang-aarch64-sve-vla', ARRAY['clang']::text[], 2142521, 5663936, true, 1, 2503, 2, 150, '', '{}', to_timestamp(1660715256), to_timestamp(1660707780), 'buildbot')
+(197, 'null', ARRAY[1]::integer[], 'clang-aarch64-sve-vla', ARRAY['clang']::text[], 2142521, 5663936, true, 1, 2503, 2, 150, '', '{}', to_timestamp(1660715256), to_timestamp(1660707780), 'buildbot'), 
+(197, 'null', ARRAY[1]::integer[], 'clang-aarch64-sve-vla', ARRAY['clang']::text[], 2142683, 5664299, true, 1, 2504, 2, 150, '', '{}', to_timestamp(1660721919), to_timestamp(1660715256), 'buildbot'), 
+(197, 'null', ARRAY[1]::integer[], 'clang-aarch64-sve-vla', ARRAY['clang']::text[], 2142862, 5664513, true, 1, 2505, 2, 150, '', '{}', to_timestamp(1660729035), to_timestamp(1660721919), 'buildbot'), 
+(197, 'null', ARRAY[1]::integer[], 'clang-aarch64-sve-vla', ARRAY['clang']::text[], 2143299, 5665053, false, 1, 2506, null, 150, '', '{}', to_timestamp(null), to_timestamp(1660729035), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

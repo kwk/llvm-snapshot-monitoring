@@ -5373,7 +5373,16 @@ INSERT INTO buildbot_build_logs (
 (223, 'null', ARRAY[1]::integer[], 'libc-aarch64-ubuntu-fullbuild-dbg', ARRAY['libc']::text[], 2142352, 5663728, true, 1, 5354, 0, 106, '', '{}', to_timestamp(1660705666), to_timestamp(1660705428), 'buildbot'), 
 (223, 'null', ARRAY[1]::integer[], 'libc-aarch64-ubuntu-fullbuild-dbg', ARRAY['libc']::text[], 2142395, 5663874, true, 1, 5355, 0, 106, '', '{}', to_timestamp(1660706717), to_timestamp(1660706458), 'buildbot'), 
 (223, 'null', ARRAY[1]::integer[], 'libc-aarch64-ubuntu-fullbuild-dbg', ARRAY['libc']::text[], 2142486, 5663999, true, 1, 5356, 0, 106, '', '{}', to_timestamp(1660707620), to_timestamp(1660707358), 'buildbot'), 
-(223, 'null', ARRAY[1]::integer[], 'libc-aarch64-ubuntu-fullbuild-dbg', ARRAY['libc']::text[], 2142605, 5664268, true, 1, 5357, 0, 106, '', '{}', to_timestamp(1660711292), to_timestamp(1660711059), 'buildbot')
+(223, 'null', ARRAY[1]::integer[], 'libc-aarch64-ubuntu-fullbuild-dbg', ARRAY['libc']::text[], 2142605, 5664268, true, 1, 5357, 0, 106, '', '{}', to_timestamp(1660711292), to_timestamp(1660711059), 'buildbot'), 
+(223, 'null', ARRAY[1]::integer[], 'libc-aarch64-ubuntu-fullbuild-dbg', ARRAY['libc']::text[], 2142792, 5664564, true, 1, 5358, 0, 106, '', '{}', to_timestamp(1660720996), to_timestamp(1660720738), 'buildbot'), 
+(223, 'null', ARRAY[1]::integer[], 'libc-aarch64-ubuntu-fullbuild-dbg', ARRAY['libc']::text[], 2142852, 5664627, true, 1, 5359, 0, 106, '', '{}', to_timestamp(1660721897), to_timestamp(1660721660), 'buildbot'), 
+(223, 'null', ARRAY[1]::integer[], 'libc-aarch64-ubuntu-fullbuild-dbg', ARRAY['libc']::text[], 2142876, 5664659, true, 1, 5360, 0, 106, '', '{}', to_timestamp(1660723335), to_timestamp(1660723081), 'buildbot'), 
+(223, 'null', ARRAY[1]::integer[], 'libc-aarch64-ubuntu-fullbuild-dbg', ARRAY['libc']::text[], 2142924, 5664730, true, 1, 5361, 0, 106, '', '{}', to_timestamp(1660723995), to_timestamp(1660723757), 'buildbot'), 
+(223, 'null', ARRAY[1]::integer[], 'libc-aarch64-ubuntu-fullbuild-dbg', ARRAY['libc']::text[], 2142962, 5664844, true, 1, 5362, 0, 106, '', '{}', to_timestamp(1660724356), to_timestamp(1660724123), 'buildbot'), 
+(223, 'null', ARRAY[1]::integer[], 'libc-aarch64-ubuntu-fullbuild-dbg', ARRAY['libc']::text[], 2143038, 5664986, true, 1, 5363, 0, 106, '', '{}', to_timestamp(1660725196), to_timestamp(1660724939), 'buildbot'), 
+(223, 'null', ARRAY[1]::integer[], 'libc-aarch64-ubuntu-fullbuild-dbg', ARRAY['libc']::text[], 2143124, 5665215, true, 1, 5364, 0, 106, '', '{}', to_timestamp(1660726464), to_timestamp(1660726220), 'buildbot'), 
+(223, 'null', ARRAY[1]::integer[], 'libc-aarch64-ubuntu-fullbuild-dbg', ARRAY['libc']::text[], 2143162, 5665369, true, 1, 5365, 0, 106, '', '{}', to_timestamp(1660726828), to_timestamp(1660726499), 'buildbot'), 
+(223, 'null', ARRAY[1]::integer[], 'libc-aarch64-ubuntu-fullbuild-dbg', ARRAY['libc']::text[], 2143216, 5665519, true, 1, 5366, 0, 106, '', '{}', to_timestamp(1660727136), to_timestamp(1660726903), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

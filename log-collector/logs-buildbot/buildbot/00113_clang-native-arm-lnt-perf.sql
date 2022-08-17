@@ -5554,7 +5554,8 @@ INSERT INTO buildbot_build_logs (
 (113, 'null', ARRAY[1]::integer[], 'clang-native-arm-lnt-perf', ARRAY['clang']::text[], 2140645, 5659019, true, 1, 5535, 0, 98, '', '{}', to_timestamp(1660688302), to_timestamp(1660677219), 'buildbot'), 
 (113, 'null', ARRAY[1]::integer[], 'clang-native-arm-lnt-perf', ARRAY['clang']::text[], 2141410, 5661750, true, 1, 5536, 0, 98, '', '{}', to_timestamp(1660699516), to_timestamp(1660688302), 'buildbot'), 
 (113, 'null', ARRAY[1]::integer[], 'clang-native-arm-lnt-perf', ARRAY['clang']::text[], 2142186, 5663338, true, 1, 5537, 0, 98, '', '{}', to_timestamp(1660712955), to_timestamp(1660699516), 'buildbot'), 
-(113, 'null', ARRAY[1]::integer[], 'clang-native-arm-lnt-perf', ARRAY['clang']::text[], 2142672, 5664286, false, 1, 5538, null, 98, '', '{}', to_timestamp(null), to_timestamp(1660712956), 'buildbot')
+(113, 'null', ARRAY[1]::integer[], 'clang-native-arm-lnt-perf', ARRAY['clang']::text[], 2142672, 5664286, true, 1, 5538, 0, 98, '', '{}', to_timestamp(1660723979), to_timestamp(1660712956), 'buildbot'), 
+(113, 'null', ARRAY[1]::integer[], 'clang-native-arm-lnt-perf', ARRAY['clang']::text[], 2142949, 5664534, false, 1, 5539, null, 98, '', '{}', to_timestamp(null), to_timestamp(1660723980), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

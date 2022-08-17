@@ -4804,7 +4804,8 @@ INSERT INTO buildbot_build_logs (
 (124, 'null', ARRAY[1]::integer[], 'clang-with-lto-ubuntu', ARRAY['clang', 'lld', 'LTO']::text[], 2139467, 5656787, true, 1, 4785, 0, 96, '', '{}', to_timestamp(1660672883), to_timestamp(1660657337), 'buildbot'), 
 (124, 'null', ARRAY[1]::integer[], 'clang-with-lto-ubuntu', ARRAY['clang', 'lld', 'LTO']::text[], 2140481, 5659060, true, 1, 4786, 0, 96, '', '{}', to_timestamp(1660688366), to_timestamp(1660672894), 'buildbot'), 
 (124, 'null', ARRAY[1]::integer[], 'clang-with-lto-ubuntu', ARRAY['clang', 'lld', 'LTO']::text[], 2141413, 5661789, true, 1, 4787, 0, 96, '', '{}', to_timestamp(1660703090), to_timestamp(1660688366), 'buildbot'), 
-(124, 'null', ARRAY[1]::integer[], 'clang-with-lto-ubuntu', ARRAY['clang', 'lld', 'LTO']::text[], 2142278, 5663535, false, 1, 4788, null, 96, '', '{}', to_timestamp(null), to_timestamp(1660703090), 'buildbot')
+(124, 'null', ARRAY[1]::integer[], 'clang-with-lto-ubuntu', ARRAY['clang', 'lld', 'LTO']::text[], 2142278, 5663535, true, 1, 4788, 0, 96, '', '{}', to_timestamp(1660718018), to_timestamp(1660703090), 'buildbot'), 
+(124, 'null', ARRAY[1]::integer[], 'clang-with-lto-ubuntu', ARRAY['clang', 'lld', 'LTO']::text[], 2142751, 5664448, false, 1, 4789, null, 96, '', '{}', to_timestamp(null), to_timestamp(1660718018), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

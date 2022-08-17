@@ -8506,7 +8506,10 @@ INSERT INTO buildbot_build_logs (
 (117, 'null', ARRAY[1]::integer[], 'lld-x86_64-win', ARRAY['lld']::text[], 2142140, 5663382, true, 1, 8487, 0, 88, '', '{}', to_timestamp(1660698542), to_timestamp(1660697906), 'buildbot'), 
 (117, 'null', ARRAY[1]::integer[], 'lld-x86_64-win', ARRAY['lld']::text[], 2142332, 5663752, true, 1, 8488, 0, 88, '', '{}', to_timestamp(1660706191), to_timestamp(1660705413), 'buildbot'), 
 (117, 'null', ARRAY[1]::integer[], 'lld-x86_64-win', ARRAY['lld']::text[], 2142556, 5664045, true, 1, 8489, 0, 88, '', '{}', to_timestamp(1660710593), to_timestamp(1660709875), 'buildbot'), 
-(117, 'null', ARRAY[1]::integer[], 'lld-x86_64-win', ARRAY['lld']::text[], 2142677, 5664249, true, 1, 8490, 0, 88, '', '{}', to_timestamp(1660714861), to_timestamp(1660714154), 'buildbot')
+(117, 'null', ARRAY[1]::integer[], 'lld-x86_64-win', ARRAY['lld']::text[], 2142677, 5664249, true, 1, 8490, 0, 88, '', '{}', to_timestamp(1660714861), to_timestamp(1660714154), 'buildbot'), 
+(117, 'null', ARRAY[1]::integer[], 'lld-x86_64-win', ARRAY['lld']::text[], 2142757, 5664454, true, 1, 8491, 0, 88, '', '{}', to_timestamp(1660719195), to_timestamp(1660718504), 'buildbot'), 
+(117, 'null', ARRAY[1]::integer[], 'lld-x86_64-win', ARRAY['lld']::text[], 2143098, 5665155, true, 1, 8492, 0, 88, '', '{}', to_timestamp(1660726892), to_timestamp(1660726174), 'buildbot'), 
+(117, 'null', ARRAY[1]::integer[], 'lld-x86_64-win', ARRAY['lld']::text[], 2143229, 5665478, true, 1, 8493, 0, 88, '', '{}', to_timestamp(1660727486), to_timestamp(1660726921), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

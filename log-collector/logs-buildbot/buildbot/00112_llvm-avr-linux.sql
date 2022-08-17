@@ -17457,7 +17457,10 @@ INSERT INTO buildbot_build_logs (
 (112, 'null', ARRAY[1]::integer[], 'llvm-avr-linux', ARRAY['clang']::text[], 2142340, 5663675, true, 1, 17438, 0, 8, '', '{}', to_timestamp(1660706782), to_timestamp(1660705422), 'buildbot'), 
 (112, 'null', ARRAY[1]::integer[], 'llvm-avr-linux', ARRAY['clang']::text[], 2142438, 5663794, true, 1, 17439, 0, 8, '', '{}', to_timestamp(1660708156), to_timestamp(1660706782), 'buildbot'), 
 (112, 'null', ARRAY[1]::integer[], 'llvm-avr-linux', ARRAY['clang']::text[], 2142528, 5663971, true, 1, 17440, 0, 8, '', '{}', to_timestamp(1660709488), to_timestamp(1660708157), 'buildbot'), 
-(112, 'null', ARRAY[1]::integer[], 'llvm-avr-linux', ARRAY['clang']::text[], 2142635, 5664351, true, 1, 17441, 0, 8, '', '{}', to_timestamp(1660712432), to_timestamp(1660711102), 'buildbot')
+(112, 'null', ARRAY[1]::integer[], 'llvm-avr-linux', ARRAY['clang']::text[], 2142635, 5664351, true, 1, 17441, 0, 8, '', '{}', to_timestamp(1660712432), to_timestamp(1660711102), 'buildbot'), 
+(112, 'null', ARRAY[1]::integer[], 'llvm-avr-linux', ARRAY['clang']::text[], 2142830, 5664571, true, 1, 17442, 0, 8, '', '{}', to_timestamp(1660725735), to_timestamp(1660720779), 'buildbot'), 
+(112, 'null', ARRAY[1]::integer[], 'llvm-avr-linux', ARRAY['clang']::text[], 2143080, 5665008, true, 1, 17443, 0, 8, '', '{}', to_timestamp(1660727304), to_timestamp(1660725738), 'buildbot'), 
+(112, 'null', ARRAY[1]::integer[], 'llvm-avr-linux', ARRAY['clang']::text[], 2143266, 5665434, true, 1, 17444, 0, 8, '', '{}', to_timestamp(1660728654), to_timestamp(1660727304), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

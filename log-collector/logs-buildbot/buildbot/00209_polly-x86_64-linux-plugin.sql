@@ -8080,7 +8080,12 @@ INSERT INTO buildbot_build_logs (
 (209, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-plugin', ARRAY['polly']::text[], 2142372, 5663695, true, 1, 8061, 0, 5, '', '{}', to_timestamp(1660705755), to_timestamp(1660705678), 'buildbot'), 
 (209, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-plugin', ARRAY['polly']::text[], 2142436, 5663882, true, 1, 8062, 0, 5, '', '{}', to_timestamp(1660706847), to_timestamp(1660706777), 'buildbot'), 
 (209, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-plugin', ARRAY['polly']::text[], 2142513, 5663945, true, 1, 8063, 0, 5, '', '{}', to_timestamp(1660707656), to_timestamp(1660707576), 'buildbot'), 
-(209, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-plugin', ARRAY['polly']::text[], 2142648, 5664284, true, 1, 8064, 0, 5, '', '{}', to_timestamp(1660711436), to_timestamp(1660711338), 'buildbot')
+(209, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-plugin', ARRAY['polly']::text[], 2142648, 5664284, true, 1, 8064, 0, 5, '', '{}', to_timestamp(1660711436), to_timestamp(1660711338), 'buildbot'), 
+(209, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-plugin', ARRAY['polly']::text[], 2142839, 5664535, true, 1, 8065, 0, 5, '', '{}', to_timestamp(1660721548), to_timestamp(1660721334), 'buildbot'), 
+(209, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-plugin', ARRAY['polly']::text[], 2142951, 5664707, true, 1, 8066, 0, 5, '', '{}', to_timestamp(1660724118), to_timestamp(1660724032), 'buildbot'), 
+(209, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-plugin', ARRAY['polly']::text[], 2142994, 5664908, true, 1, 8067, 0, 5, '', '{}', to_timestamp(1660724441), to_timestamp(1660724356), 'buildbot'), 
+(209, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-plugin', ARRAY['polly']::text[], 2143055, 5665002, true, 1, 8068, 0, 5, '', '{}', to_timestamp(1660725274), to_timestamp(1660725203), 'buildbot'), 
+(209, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-plugin', ARRAY['polly']::text[], 2143252, 5665473, true, 1, 8069, 0, 5, '', '{}', to_timestamp(1660727180), to_timestamp(1660727099), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

@@ -1522,7 +1522,14 @@ INSERT INTO buildbot_build_logs (
 (230, 'null', ARRAY[1]::integer[], 'clang-ppc64le-linux-test-suite', ARRAY['clang', 'ppc', 'ppc64le']::text[], 2142339, 5663729, true, 1, 1503, 0, 179, '', '{}', to_timestamp(1660706244), to_timestamp(1660705421), 'buildbot'), 
 (230, 'null', ARRAY[1]::integer[], 'clang-ppc64le-linux-test-suite', ARRAY['clang', 'ppc', 'ppc64le']::text[], 2142421, 5663845, true, 1, 1504, 0, 179, '', '{}', to_timestamp(1660707326), to_timestamp(1660706500), 'buildbot'), 
 (230, 'null', ARRAY[1]::integer[], 'clang-ppc64le-linux-test-suite', ARRAY['clang', 'ppc', 'ppc64le']::text[], 2142476, 5664027, true, 1, 1505, 0, 179, '', '{}', to_timestamp(1660708095), to_timestamp(1660707352), 'buildbot'), 
-(230, 'null', ARRAY[1]::integer[], 'clang-ppc64le-linux-test-suite', ARRAY['clang', 'ppc', 'ppc64le']::text[], 2142633, 5664360, true, 1, 1506, 0, 179, '', '{}', to_timestamp(1660711922), to_timestamp(1660711097), 'buildbot')
+(230, 'null', ARRAY[1]::integer[], 'clang-ppc64le-linux-test-suite', ARRAY['clang', 'ppc', 'ppc64le']::text[], 2142633, 5664360, true, 1, 1506, 0, 179, '', '{}', to_timestamp(1660711922), to_timestamp(1660711097), 'buildbot'), 
+(230, 'null', ARRAY[1]::integer[], 'clang-ppc64le-linux-test-suite', ARRAY['clang', 'ppc', 'ppc64le']::text[], 2142819, 5664595, true, 1, 1507, 0, 179, '', '{}', to_timestamp(1660722316), to_timestamp(1660720775), 'buildbot'), 
+(230, 'null', ARRAY[1]::integer[], 'clang-ppc64le-linux-test-suite', ARRAY['clang', 'ppc', 'ppc64le']::text[], 2142869, 5664649, true, 1, 1508, 0, 179, '', '{}', to_timestamp(1660722943), to_timestamp(1660722316), 'buildbot'), 
+(230, 'null', ARRAY[1]::integer[], 'clang-ppc64le-linux-test-suite', ARRAY['clang', 'ppc', 'ppc64le']::text[], 2142941, 5664791, true, 1, 1509, 0, 179, '', '{}', to_timestamp(1660724384), to_timestamp(1660723774), 'buildbot'), 
+(230, 'null', ARRAY[1]::integer[], 'clang-ppc64le-linux-test-suite', ARRAY['clang', 'ppc', 'ppc64le']::text[], 2142997, 5664904, true, 1, 1510, 0, 179, '', '{}', to_timestamp(1660725233), to_timestamp(1660724384), 'buildbot'), 
+(230, 'null', ARRAY[1]::integer[], 'clang-ppc64le-linux-test-suite', ARRAY['clang', 'ppc', 'ppc64le']::text[], 2143056, 5665036, true, 1, 1511, 0, 179, '', '{}', to_timestamp(1660725854), to_timestamp(1660725233), 'buildbot'), 
+(230, 'null', ARRAY[1]::integer[], 'clang-ppc64le-linux-test-suite', ARRAY['clang', 'ppc', 'ppc64le']::text[], 2143121, 5665161, true, 1, 1512, 0, 179, '', '{}', to_timestamp(1660727063), to_timestamp(1660726198), 'buildbot'), 
+(230, 'null', ARRAY[1]::integer[], 'clang-ppc64le-linux-test-suite', ARRAY['clang', 'ppc', 'ppc64le']::text[], 2143249, 5665494, true, 1, 1513, 0, 179, '', '{}', to_timestamp(1660727663), to_timestamp(1660727063), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

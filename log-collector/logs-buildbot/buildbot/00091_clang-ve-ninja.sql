@@ -13928,7 +13928,13 @@ INSERT INTO buildbot_build_logs (
 (91, 'null', ARRAY[1]::integer[], 'clang-ve-ninja', ARRAY['clang']::text[], 2140329, 5659226, true, 1, 13908, 0, 159, '', '{}', to_timestamp(1660669347), to_timestamp(1660668977), 'buildbot'), 
 (91, 'null', ARRAY[1]::integer[], 'clang-ve-ninja', ARRAY['clang']::text[], 2140402, 5659330, true, 1, 13910, 5, 159, '', '{}', to_timestamp(1660673440), to_timestamp(1660672405), 'buildbot'), 
 (91, 'null', ARRAY[1]::integer[], 'clang-ve-ninja', ARRAY['clang']::text[], 2142678, 5662785, true, 1, 13911, 0, 159, '', '{}', to_timestamp(1660714771), to_timestamp(1660714216), 'buildbot'), 
-(91, 'null', ARRAY[1]::integer[], 'clang-ve-ninja', ARRAY['clang']::text[], 2142681, 5664250, true, 1, 13912, 0, 159, '', '{}', to_timestamp(1660715211), to_timestamp(1660714771), 'buildbot')
+(91, 'null', ARRAY[1]::integer[], 'clang-ve-ninja', ARRAY['clang']::text[], 2142681, 5664250, true, 1, 13912, 0, 159, '', '{}', to_timestamp(1660715211), to_timestamp(1660714771), 'buildbot'), 
+(91, 'null', ARRAY[1]::integer[], 'clang-ve-ninja', ARRAY['clang']::text[], 2142789, 5664475, true, 1, 13913, 0, 159, '', '{}', to_timestamp(1660721129), to_timestamp(1660720736), 'buildbot'), 
+(91, 'null', ARRAY[1]::integer[], 'clang-ve-ninja', ARRAY['clang']::text[], 2142895, 5664675, true, 1, 13914, 0, 159, '', '{}', to_timestamp(1660724100), to_timestamp(1660723707), 'buildbot'), 
+(91, 'null', ARRAY[1]::integer[], 'clang-ve-ninja', ARRAY['clang']::text[], 2142975, 5664806, true, 1, 13915, 0, 159, '', '{}', to_timestamp(1660724543), to_timestamp(1660724139), 'buildbot'), 
+(91, 'null', ARRAY[1]::integer[], 'clang-ve-ninja', ARRAY['clang']::text[], 2143021, 5664947, true, 1, 13916, 0, 159, '', '{}', to_timestamp(1660725320), to_timestamp(1660724907), 'buildbot'), 
+(91, 'null', ARRAY[1]::integer[], 'clang-ve-ninja', ARRAY['clang']::text[], 2143095, 5665065, true, 1, 13917, 0, 159, '', '{}', to_timestamp(1660726560), to_timestamp(1660726149), 'buildbot'), 
+(91, 'null', ARRAY[1]::integer[], 'clang-ve-ninja', ARRAY['clang']::text[], 2143197, 5665411, true, 1, 13918, 0, 159, '', '{}', to_timestamp(1660727160), to_timestamp(1660726763), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

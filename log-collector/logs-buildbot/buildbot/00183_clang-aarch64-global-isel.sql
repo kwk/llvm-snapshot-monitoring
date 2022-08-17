@@ -6766,7 +6766,11 @@ INSERT INTO buildbot_build_logs (
 (183, 'null', ARRAY[1]::integer[], 'clang-aarch64-global-isel', ARRAY['clang']::text[], 2142236, 5663574, true, 1, 6747, 0, 125, '', '{}', to_timestamp(1660704293), to_timestamp(1660701687), 'buildbot'), 
 (183, 'null', ARRAY[1]::integer[], 'clang-aarch64-global-isel', ARRAY['clang']::text[], 2142294, 5663644, true, 1, 6748, 0, 125, '', '{}', to_timestamp(1660708546), to_timestamp(1660705371), 'buildbot'), 
 (183, 'null', ARRAY[1]::integer[], 'clang-aarch64-global-isel', ARRAY['clang']::text[], 2142535, 5663965, true, 1, 6749, 0, 125, '', '{}', to_timestamp(1660710085), to_timestamp(1660708546), 'buildbot'), 
-(183, 'null', ARRAY[1]::integer[], 'clang-aarch64-global-isel', ARRAY['clang']::text[], 2142609, 5664292, true, 1, 6750, 0, 125, '', '{}', to_timestamp(1660713961), to_timestamp(1660711063), 'buildbot')
+(183, 'null', ARRAY[1]::integer[], 'clang-aarch64-global-isel', ARRAY['clang']::text[], 2142609, 5664292, true, 1, 6750, 0, 125, '', '{}', to_timestamp(1660713961), to_timestamp(1660711063), 'buildbot'), 
+(183, 'null', ARRAY[1]::integer[], 'clang-aarch64-global-isel', ARRAY['clang']::text[], 2142774, 5664565, true, 1, 6751, 0, 125, '', '{}', to_timestamp(1660723100), to_timestamp(1660720730), 'buildbot'), 
+(183, 'null', ARRAY[1]::integer[], 'clang-aarch64-global-isel', ARRAY['clang']::text[], 2142880, 5664619, true, 1, 6752, 2, 125, '', '{}', to_timestamp(1660725519), to_timestamp(1660723101), 'buildbot'), 
+(183, 'null', ARRAY[1]::integer[], 'clang-aarch64-global-isel', ARRAY['clang']::text[], 2143069, 5664946, true, 1, 6753, 0, 125, '', '{}', to_timestamp(1660728294), to_timestamp(1660725519), 'buildbot'), 
+(183, 'null', ARRAY[1]::integer[], 'clang-aarch64-global-isel', ARRAY['clang']::text[], 2143293, 5665488, true, 1, 6754, 0, 125, '', '{}', to_timestamp(1660729958), to_timestamp(1660728294), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

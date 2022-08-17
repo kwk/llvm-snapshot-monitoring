@@ -5050,7 +5050,10 @@ INSERT INTO buildbot_build_logs (
 (38, 'null', ARRAY[1]::integer[], 'clang-hexagon-elf', ARRAY['clang']::text[], 2142276, 5663503, true, 1, 5031, 0, 69, '', '{}', to_timestamp(1660704989), to_timestamp(1660702934), 'buildbot'), 
 (38, 'null', ARRAY[1]::integer[], 'clang-hexagon-elf', ARRAY['clang']::text[], 2142446, 5663812, true, 1, 5032, 0, 18, '', '{}', to_timestamp(1660708935), to_timestamp(1660707043), 'buildbot'), 
 (38, 'null', ARRAY[1]::integer[], 'clang-hexagon-elf', ARRAY['clang']::text[], 2142543, 5663961, true, 1, 5033, 0, 18, '', '{}', to_timestamp(1660710758), to_timestamp(1660708935), 'buildbot'), 
-(38, 'null', ARRAY[1]::integer[], 'clang-hexagon-elf', ARRAY['clang']::text[], 2142680, 5664330, false, 1, 5034, null, 69, '', '{}', to_timestamp(null), to_timestamp(1660714757), 'buildbot')
+(38, 'null', ARRAY[1]::integer[], 'clang-hexagon-elf', ARRAY['clang']::text[], 2142680, 5664330, true, 1, 5034, 0, 69, '', '{}', to_timestamp(1660716838), to_timestamp(1660714757), 'buildbot'), 
+(38, 'null', ARRAY[1]::integer[], 'clang-hexagon-elf', ARRAY['clang']::text[], 2142864, 5664482, true, 1, 5035, 0, 69, '', '{}', to_timestamp(1660724057), to_timestamp(1660721983), 'buildbot'), 
+(38, 'null', ARRAY[1]::integer[], 'clang-hexagon-elf', ARRAY['clang']::text[], 2143015, 5664809, true, 1, 5036, 0, 18, '', '{}', to_timestamp(1660726664), to_timestamp(1660724775), 'buildbot'), 
+(38, 'null', ARRAY[1]::integer[], 'clang-hexagon-elf', ARRAY['clang']::text[], 2143183, 5665438, true, 1, 5037, 2, 18, '', '{}', to_timestamp(1660728593), to_timestamp(1660726731), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

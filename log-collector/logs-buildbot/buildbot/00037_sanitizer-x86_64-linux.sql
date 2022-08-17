@@ -15880,7 +15880,13 @@ INSERT INTO buildbot_build_logs (
 (37, 'null', ARRAY[1]::integer[], 'sanitizer-x86_64-linux', ARRAY['sanitizer']::text[], 2142231, 5663523, true, 1, 15861, 0, 66, '', '{}', to_timestamp(1660707238), to_timestamp(1660701684), 'buildbot'), 
 (37, 'null', ARRAY[1]::integer[], 'sanitizer-x86_64-linux', ARRAY['sanitizer']::text[], 2142320, 5663710, true, 1, 15862, 0, 31, '', '{}', to_timestamp(1660711762), to_timestamp(1660705406), 'buildbot'), 
 (37, 'null', ARRAY[1]::integer[], 'sanitizer-x86_64-linux', ARRAY['sanitizer']::text[], 2142448, 5663848, true, 1, 15863, 0, 66, '', '{}', to_timestamp(1660713675), to_timestamp(1660707238), 'buildbot'), 
-(37, 'null', ARRAY[1]::integer[], 'sanitizer-x86_64-linux', ARRAY['sanitizer']::text[], 2142663, 5664315, false, 1, 15864, null, 31, '', '{}', to_timestamp(null), to_timestamp(1660711762), 'buildbot')
+(37, 'null', ARRAY[1]::integer[], 'sanitizer-x86_64-linux', ARRAY['sanitizer']::text[], 2142663, 5664315, true, 1, 15864, 0, 31, '', '{}', to_timestamp(1660718417), to_timestamp(1660711762), 'buildbot'), 
+(37, 'null', ARRAY[1]::integer[], 'sanitizer-x86_64-linux', ARRAY['sanitizer']::text[], 2142705, 5664397, true, 1, 15865, 0, 66, '', '{}', to_timestamp(1660721562), to_timestamp(1660716148), 'buildbot'), 
+(37, 'null', ARRAY[1]::integer[], 'sanitizer-x86_64-linux', ARRAY['sanitizer']::text[], 2142756, 5664457, true, 1, 15866, 0, 31, '', '{}', to_timestamp(1660724459), to_timestamp(1660718418), 'buildbot'), 
+(37, 'null', ARRAY[1]::integer[], 'sanitizer-x86_64-linux', ARRAY['sanitizer']::text[], 2142840, 5664547, true, 1, 15867, 5, 66, '', '{}', to_timestamp(1660723878), to_timestamp(1660721562), 'buildbot'), 
+(37, 'null', ARRAY[1]::integer[], 'sanitizer-x86_64-linux', ARRAY['sanitizer']::text[], 2142998, 5664874, true, 1, 15869, 0, 31, '', '{}', to_timestamp(1660730064), to_timestamp(1660724459), 'buildbot'), 
+(37, 'null', ARRAY[1]::integer[], 'sanitizer-x86_64-linux', ARRAY['sanitizer']::text[], 2142991, 5664547, false, 1, 15868, null, 66, '', '{}', to_timestamp(null), to_timestamp(1660724333), 'buildbot'), 
+(37, 'null', ARRAY[1]::integer[], 'sanitizer-x86_64-linux', ARRAY['sanitizer']::text[], 2143307, 5665479, false, 1, 15870, null, 31, '', '{}', to_timestamp(null), to_timestamp(1660730064), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

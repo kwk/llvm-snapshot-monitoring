@@ -1742,7 +1742,9 @@ INSERT INTO buildbot_build_logs (
 (54, 'null', ARRAY[1]::integer[], 'reverse-iteration', ARRAY['rev_iter']::text[], 2142199, 5663327, true, 1, 1723, 2, 18, '', '{}', to_timestamp(1660703040), to_timestamp(1660700476), 'buildbot'), 
 (54, 'null', ARRAY[1]::integer[], 'reverse-iteration', ARRAY['rev_iter']::text[], 2142283, 5663516, true, 1, 1724, 2, 18, '', '{}', to_timestamp(1660707043), to_timestamp(1660704443), 'buildbot'), 
 (54, 'null', ARRAY[1]::integer[], 'reverse-iteration', ARRAY['rev_iter']::text[], 2142559, 5663913, true, 1, 1725, 2, 69, '', '{}', to_timestamp(1660713495), to_timestamp(1660710623), 'buildbot'), 
-(54, 'null', ARRAY[1]::integer[], 'reverse-iteration', ARRAY['rev_iter']::text[], 2142669, 5664272, true, 1, 1726, 2, 18, '', '{}', to_timestamp(1660715027), to_timestamp(1660712423), 'buildbot')
+(54, 'null', ARRAY[1]::integer[], 'reverse-iteration', ARRAY['rev_iter']::text[], 2142669, 5664272, true, 1, 1726, 2, 18, '', '{}', to_timestamp(1660715027), to_timestamp(1660712423), 'buildbot'), 
+(54, 'null', ARRAY[1]::integer[], 'reverse-iteration', ARRAY['rev_iter']::text[], 2142866, 5664509, true, 1, 1727, 2, 18, '', '{}', to_timestamp(1660724775), to_timestamp(1660722194), 'buildbot'), 
+(54, 'null', ARRAY[1]::integer[], 'reverse-iteration', ARRAY['rev_iter']::text[], 2143295, 5665408, false, 1, 1728, null, 18, '', '{}', to_timestamp(null), to_timestamp(1660728593), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

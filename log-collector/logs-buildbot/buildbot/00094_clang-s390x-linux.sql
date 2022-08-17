@@ -10496,7 +10496,8 @@ INSERT INTO buildbot_build_logs (
 (94, 'null', ARRAY[1]::integer[], 'clang-s390x-linux', ARRAY['clang']::text[], 2141961, 5662801, true, 1, 10477, 0, 40, '', '{}', to_timestamp(1660704633), to_timestamp(1660693860), 'buildbot'), 
 (94, 'null', ARRAY[1]::integer[], 'clang-s390x-linux', ARRAY['clang']::text[], 2142284, 5663560, true, 1, 10478, 0, 40, '', '{}', to_timestamp(1660707504), to_timestamp(1660704633), 'buildbot'), 
 (94, 'null', ARRAY[1]::integer[], 'clang-s390x-linux', ARRAY['clang']::text[], 2142510, 5663932, true, 1, 10479, 0, 40, '', '{}', to_timestamp(1660710341), to_timestamp(1660707504), 'buildbot'), 
-(94, 'null', ARRAY[1]::integer[], 'clang-s390x-linux', ARRAY['clang']::text[], 2142634, 5664349, true, 1, 10480, 0, 40, '', '{}', to_timestamp(1660713747), to_timestamp(1660711098), 'buildbot')
+(94, 'null', ARRAY[1]::integer[], 'clang-s390x-linux', ARRAY['clang']::text[], 2142634, 5664349, true, 1, 10480, 0, 40, '', '{}', to_timestamp(1660713747), to_timestamp(1660711098), 'buildbot'), 
+(94, 'null', ARRAY[1]::integer[], 'clang-s390x-linux', ARRAY['clang']::text[], 2142820, 5664561, false, 1, 10481, null, 40, '', '{}', to_timestamp(null), to_timestamp(1660720775), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

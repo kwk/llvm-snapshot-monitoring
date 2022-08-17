@@ -77522,18 +77522,32 @@
       "builderid": 113,
       "buildid": 2142672,
       "buildrequestid": 5664286,
-      "complete": false,
-      "complete_at": null,
+      "complete": true,
+      "complete_at": 1660723979,
       "masterid": 1,
       "number": 5538,
       "properties": {},
-      "results": null,
+      "results": 0,
       "started_at": 1660712956,
+      "state_string": "build successful",
+      "workerid": 98
+    },
+    {
+      "builderid": 113,
+      "buildid": 2142949,
+      "buildrequestid": 5664534,
+      "complete": false,
+      "complete_at": null,
+      "masterid": 1,
+      "number": 5539,
+      "properties": {},
+      "results": null,
+      "started_at": 1660723980,
       "state_string": "building",
       "workerid": 98
     }
   ],
   "meta": {
-    "total": 5538
+    "total": 5539
   }
 }

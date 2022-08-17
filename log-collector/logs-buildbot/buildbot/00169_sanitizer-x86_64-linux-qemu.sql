@@ -10469,7 +10469,12 @@ INSERT INTO buildbot_build_logs (
 (169, 'null', ARRAY[1]::integer[], 'sanitizer-x86_64-linux-qemu', ARRAY['sanitizer']::text[], 2142524, 5664041, true, 1, 10450, 0, 20, '', '{}', to_timestamp(1660710471), to_timestamp(1660707987), 'buildbot'), 
 (169, 'null', ARRAY[1]::integer[], 'sanitizer-x86_64-linux-qemu', ARRAY['sanitizer']::text[], 2142626, 5664325, true, 1, 10451, 0, 20, '', '{}', to_timestamp(1660714154), to_timestamp(1660711074), 'buildbot'), 
 (169, 'null', ARRAY[1]::integer[], 'sanitizer-x86_64-linux-qemu', ARRAY['sanitizer']::text[], 2142713, 5664412, true, 1, 10452, 0, 70, '', '{}', to_timestamp(1660717899), to_timestamp(1660716153), 'buildbot'), 
-(169, 'null', ARRAY[1]::integer[], 'sanitizer-x86_64-linux-qemu', ARRAY['sanitizer']::text[], 2142748, 5664472, false, 1, 10453, null, 20, '', '{}', to_timestamp(null), to_timestamp(1660717836), 'buildbot')
+(169, 'null', ARRAY[1]::integer[], 'sanitizer-x86_64-linux-qemu', ARRAY['sanitizer']::text[], 2142748, 5664472, true, 1, 10453, 0, 20, '', '{}', to_timestamp(1660720697), to_timestamp(1660717836), 'buildbot'), 
+(169, 'null', ARRAY[1]::integer[], 'sanitizer-x86_64-linux-qemu', ARRAY['sanitizer']::text[], 2142815, 5664584, true, 1, 10454, 0, 70, '', '{}', to_timestamp(1660723617), to_timestamp(1660720772), 'buildbot'), 
+(169, 'null', ARRAY[1]::integer[], 'sanitizer-x86_64-linux-qemu', ARRAY['sanitizer']::text[], 2142940, 5664786, true, 1, 10455, 0, 70, '', '{}', to_timestamp(1660726134), to_timestamp(1660723771), 'buildbot'), 
+(169, 'null', ARRAY[1]::integer[], 'sanitizer-x86_64-linux-qemu', ARRAY['sanitizer']::text[], 2142974, 5664914, true, 1, 10456, 0, 20, '', '{}', to_timestamp(1660726838), to_timestamp(1660724135), 'buildbot'), 
+(169, 'null', ARRAY[1]::integer[], 'sanitizer-x86_64-linux-qemu', ARRAY['sanitizer']::text[], 2143137, 5665202, true, 1, 10457, 0, 70, '', '{}', to_timestamp(1660729459), to_timestamp(1660726238), 'buildbot'), 
+(169, 'null', ARRAY[1]::integer[], 'sanitizer-x86_64-linux-qemu', ARRAY['sanitizer']::text[], 2143223, 5665528, true, 1, 10458, 0, 20, '', '{}', to_timestamp(1660729875), to_timestamp(1660726911), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

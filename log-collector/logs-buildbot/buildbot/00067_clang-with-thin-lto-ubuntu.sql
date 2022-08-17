@@ -7941,7 +7941,9 @@ INSERT INTO buildbot_build_logs (
 (67, 'null', ARRAY[1]::integer[], 'clang-with-thin-lto-ubuntu', ARRAY['clang', 'lld', 'LTO']::text[], 2140920, 5660358, true, 1, 7922, 0, 29, '', '{}', to_timestamp(1660691809), to_timestamp(1660682664), 'buildbot'), 
 (67, 'null', ARRAY[1]::integer[], 'clang-with-thin-lto-ubuntu', ARRAY['clang', 'lld', 'LTO']::text[], 2141745, 5662530, true, 1, 7923, 0, 29, '', '{}', to_timestamp(1660701022), to_timestamp(1660691809), 'buildbot'), 
 (67, 'null', ARRAY[1]::integer[], 'clang-with-thin-lto-ubuntu', ARRAY['clang', 'lld', 'LTO']::text[], 2142200, 5663401, true, 1, 7924, 0, 29, '', '{}', to_timestamp(1660710354), to_timestamp(1660701022), 'buildbot'), 
-(67, 'null', ARRAY[1]::integer[], 'clang-with-thin-lto-ubuntu', ARRAY['clang', 'lld', 'LTO']::text[], 2142557, 5663899, false, 1, 7925, null, 29, '', '{}', to_timestamp(null), to_timestamp(1660710354), 'buildbot')
+(67, 'null', ARRAY[1]::integer[], 'clang-with-thin-lto-ubuntu', ARRAY['clang', 'lld', 'LTO']::text[], 2142557, 5663899, true, 1, 7925, 0, 29, '', '{}', to_timestamp(1660719501), to_timestamp(1660710354), 'buildbot'), 
+(67, 'null', ARRAY[1]::integer[], 'clang-with-thin-lto-ubuntu', ARRAY['clang', 'lld', 'LTO']::text[], 2142765, 5664441, true, 1, 7926, 0, 29, '', '{}', to_timestamp(1660728647), to_timestamp(1660719501), 'buildbot'), 
+(67, 'null', ARRAY[1]::integer[], 'clang-with-thin-lto-ubuntu', ARRAY['clang', 'lld', 'LTO']::text[], 2143297, 5664478, false, 1, 7927, null, 29, '', '{}', to_timestamp(null), to_timestamp(1660728647), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

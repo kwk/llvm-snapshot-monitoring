@@ -11959,7 +11959,10 @@ INSERT INTO buildbot_build_logs (
 (3, 'null', ARRAY[1]::integer[], 'ml-opt-dev-x86-64', ARRAY['ml_opt']::text[], 2142313, 5663641, true, 1, 11940, 0, 30, '', '{}', to_timestamp(1660707196), to_timestamp(1660705399), 'buildbot'), 
 (3, 'null', ARRAY[1]::integer[], 'ml-opt-dev-x86-64', ARRAY['ml_opt']::text[], 2142464, 5663909, true, 1, 11941, 0, 161, '', '{}', to_timestamp(1660708043), to_timestamp(1660707339), 'buildbot'), 
 (3, 'null', ARRAY[1]::integer[], 'ml-opt-dev-x86-64', ARRAY['ml_opt']::text[], 2142578, 5664056, true, 1, 11942, 0, 161, '', '{}', to_timestamp(1660711635), to_timestamp(1660711008), 'buildbot'), 
-(3, 'null', ARRAY[1]::integer[], 'ml-opt-dev-x86-64', ARRAY['ml_opt']::text[], 2142579, 5664225, true, 1, 11943, 0, 30, '', '{}', to_timestamp(1660711681), to_timestamp(1660711008), 'buildbot')
+(3, 'null', ARRAY[1]::integer[], 'ml-opt-dev-x86-64', ARRAY['ml_opt']::text[], 2142579, 5664225, true, 1, 11943, 0, 30, '', '{}', to_timestamp(1660711681), to_timestamp(1660711008), 'buildbot'), 
+(3, 'null', ARRAY[1]::integer[], 'ml-opt-dev-x86-64', ARRAY['ml_opt']::text[], 2143106, 5665109, true, 1, 11944, 0, 30, '', '{}', to_timestamp(1660726802), to_timestamp(1660726183), 'buildbot'), 
+(3, 'null', ARRAY[1]::integer[], 'ml-opt-dev-x86-64', ARRAY['ml_opt']::text[], 2143170, 5665227, true, 1, 11945, 0, 161, '', '{}', to_timestamp(1660727297), to_timestamp(1660726588), 'buildbot'), 
+(3, 'null', ARRAY[1]::integer[], 'ml-opt-dev-x86-64', ARRAY['ml_opt']::text[], 2143219, 5665382, true, 1, 11946, 0, 30, '', '{}', to_timestamp(1660727535), to_timestamp(1660726905), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

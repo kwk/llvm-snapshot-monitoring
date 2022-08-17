@@ -2817,7 +2817,9 @@ INSERT INTO buildbot_build_logs (
 (56, 'null', ARRAY[1]::integer[], 'polly-arm-linux', ARRAY['polly']::text[], 2142183, 5663329, true, 1, 2798, 0, 69, '', '{}', to_timestamp(1660700661), to_timestamp(1660699195), 'buildbot'), 
 (56, 'null', ARRAY[1]::integer[], 'polly-arm-linux', ARRAY['polly']::text[], 2142277, 5663518, true, 1, 2799, 0, 18, '', '{}', to_timestamp(1660704443), to_timestamp(1660703040), 'buildbot'), 
 (56, 'null', ARRAY[1]::integer[], 'polly-arm-linux', ARRAY['polly']::text[], 2142547, 5663917, true, 1, 2800, 0, 69, '', '{}', to_timestamp(1660710623), to_timestamp(1660709176), 'buildbot'), 
-(56, 'null', ARRAY[1]::integer[], 'polly-arm-linux', ARRAY['polly']::text[], 2142584, 5664273, true, 1, 2801, 0, 18, '', '{}', to_timestamp(1660712423), to_timestamp(1660711014), 'buildbot')
+(56, 'null', ARRAY[1]::integer[], 'polly-arm-linux', ARRAY['polly']::text[], 2142584, 5664273, true, 1, 2801, 0, 18, '', '{}', to_timestamp(1660712423), to_timestamp(1660711014), 'buildbot'), 
+(56, 'null', ARRAY[1]::integer[], 'polly-arm-linux', ARRAY['polly']::text[], 2142806, 5664511, true, 1, 2802, 0, 18, '', '{}', to_timestamp(1660722194), to_timestamp(1660720761), 'buildbot'), 
+(56, 'null', ARRAY[1]::integer[], 'polly-arm-linux', ARRAY['polly']::text[], 2143288, 5665410, true, 1, 2803, 0, 69, '', '{}', to_timestamp(1660729458), to_timestamp(1660727987), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

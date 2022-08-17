@@ -7838,7 +7838,14 @@ INSERT INTO buildbot_build_logs (
 (191, 'null', ARRAY[1]::integer[], 'flang-aarch64-rel-assert', ARRAY['flang']::text[], 2142349, 5663768, true, 1, 7819, 0, 139, '', '{}', to_timestamp(1660706422), to_timestamp(1660705426), 'buildbot'), 
 (191, 'null', ARRAY[1]::integer[], 'flang-aarch64-rel-assert', ARRAY['flang']::text[], 2142411, 5663891, true, 1, 7820, 0, 139, '', '{}', to_timestamp(1660707148), to_timestamp(1660706488), 'buildbot'), 
 (191, 'null', ARRAY[1]::integer[], 'flang-aarch64-rel-assert', ARRAY['flang']::text[], 2142482, 5664043, true, 1, 7821, 0, 139, '', '{}', to_timestamp(1660708053), to_timestamp(1660707357), 'buildbot'), 
-(191, 'null', ARRAY[1]::integer[], 'flang-aarch64-rel-assert', ARRAY['flang']::text[], 2142617, 5664310, true, 1, 7822, 0, 139, '', '{}', to_timestamp(1660712221), to_timestamp(1660711068), 'buildbot')
+(191, 'null', ARRAY[1]::integer[], 'flang-aarch64-rel-assert', ARRAY['flang']::text[], 2142617, 5664310, true, 1, 7822, 0, 139, '', '{}', to_timestamp(1660712221), to_timestamp(1660711068), 'buildbot'), 
+(191, 'null', ARRAY[1]::integer[], 'flang-aarch64-rel-assert', ARRAY['flang']::text[], 2142827, 5664593, true, 1, 7823, 0, 139, '', '{}', to_timestamp(1660721361), to_timestamp(1660720778), 'buildbot'), 
+(191, 'null', ARRAY[1]::integer[], 'flang-aarch64-rel-assert', ARRAY['flang']::text[], 2142920, 5664781, true, 1, 7824, 0, 139, '', '{}', to_timestamp(1660724655), to_timestamp(1660723741), 'buildbot'), 
+(191, 'null', ARRAY[1]::integer[], 'flang-aarch64-rel-assert', ARRAY['flang']::text[], 2143010, 5664907, true, 1, 7825, 0, 139, '', '{}', to_timestamp(1660725712), to_timestamp(1660724656), 'buildbot'), 
+(191, 'null', ARRAY[1]::integer[], 'flang-aarch64-rel-assert', ARRAY['flang']::text[], 2143076, 5665024, true, 1, 7826, 0, 139, '', '{}', to_timestamp(1660726368), to_timestamp(1660725712), 'buildbot'), 
+(191, 'null', ARRAY[1]::integer[], 'flang-aarch64-rel-assert', ARRAY['flang']::text[], 2143150, 5665062, true, 1, 7827, 0, 139, '', '{}', to_timestamp(1660727516), to_timestamp(1660726368), 'buildbot'), 
+(191, 'null', ARRAY[1]::integer[], 'flang-aarch64-rel-assert', ARRAY['flang']::text[], 2143277, 5665555, true, 1, 7828, 0, 139, '', '{}', to_timestamp(1660728262), to_timestamp(1660727516), 'buildbot'), 
+(191, 'null', ARRAY[1]::integer[], 'flang-aarch64-rel-assert', ARRAY['flang']::text[], 2143316, 5665589, false, 1, 7829, null, 139, '', '{}', to_timestamp(null), to_timestamp(1660730267), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

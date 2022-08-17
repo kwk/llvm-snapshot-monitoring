@@ -6726,7 +6726,9 @@ INSERT INTO buildbot_build_logs (
 (42, 'null', ARRAY[1]::integer[], 'llvm-clang-x86_64-expensive-checks-win', ARRAY['llvm', 'expensive-checks']::text[], 2142165, 5663353, true, 1, 6707, 0, 88, '', '{}', to_timestamp(1660702195), to_timestamp(1660698543), 'buildbot'), 
 (42, 'null', ARRAY[1]::integer[], 'llvm-clang-x86_64-expensive-checks-win', ARRAY['llvm', 'expensive-checks']::text[], 2142380, 5663731, true, 1, 6708, 0, 88, '', '{}', to_timestamp(1660709875), to_timestamp(1660706191), 'buildbot'), 
 (42, 'null', ARRAY[1]::integer[], 'llvm-clang-x86_64-expensive-checks-win', ARRAY['llvm', 'expensive-checks']::text[], 2142558, 5664032, true, 1, 6709, 0, 88, '', '{}', to_timestamp(1660714153), to_timestamp(1660710593), 'buildbot'), 
-(42, 'null', ARRAY[1]::integer[], 'llvm-clang-x86_64-expensive-checks-win', ARRAY['llvm', 'expensive-checks']::text[], 2142682, 5664244, false, 1, 6710, null, 88, '', '{}', to_timestamp(null), to_timestamp(1660714861), 'buildbot')
+(42, 'null', ARRAY[1]::integer[], 'llvm-clang-x86_64-expensive-checks-win', ARRAY['llvm', 'expensive-checks']::text[], 2142682, 5664244, true, 1, 6710, 0, 88, '', '{}', to_timestamp(1660718504), to_timestamp(1660714861), 'buildbot'), 
+(42, 'null', ARRAY[1]::integer[], 'llvm-clang-x86_64-expensive-checks-win', ARRAY['llvm', 'expensive-checks']::text[], 2142763, 5664428, true, 1, 6711, 0, 88, '', '{}', to_timestamp(1660722838), to_timestamp(1660719195), 'buildbot'), 
+(42, 'null', ARRAY[1]::integer[], 'llvm-clang-x86_64-expensive-checks-win', ARRAY['llvm', 'expensive-checks']::text[], 2143276, 5665433, false, 1, 6712, null, 88, '', '{}', to_timestamp(null), to_timestamp(1660727486), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

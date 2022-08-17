@@ -6713,7 +6713,11 @@ INSERT INTO buildbot_build_logs (
 (206, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-shlib', ARRAY['polly']::text[], 2142375, 5663679, true, 1, 6694, 0, 84, '', '{}', to_timestamp(1660705910), to_timestamp(1660705762), 'buildbot'), 
 (206, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-shlib', ARRAY['polly']::text[], 2142440, 5663857, true, 1, 6695, 0, 84, '', '{}', to_timestamp(1660707041), to_timestamp(1660706880), 'buildbot'), 
 (206, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-shlib', ARRAY['polly']::text[], 2142518, 5663937, true, 1, 6696, 0, 84, '', '{}', to_timestamp(1660707825), to_timestamp(1660707687), 'buildbot'), 
-(206, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-shlib', ARRAY['polly']::text[], 2142653, 5664281, true, 1, 6697, 0, 84, '', '{}', to_timestamp(1660711552), to_timestamp(1660711398), 'buildbot')
+(206, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-shlib', ARRAY['polly']::text[], 2142653, 5664281, true, 1, 6697, 0, 84, '', '{}', to_timestamp(1660711552), to_timestamp(1660711398), 'buildbot'), 
+(206, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-shlib', ARRAY['polly']::text[], 2142841, 5664523, true, 1, 6698, 0, 84, '', '{}', to_timestamp(1660722016), to_timestamp(1660721616), 'buildbot'), 
+(206, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-shlib', ARRAY['polly']::text[], 2143000, 5664890, true, 1, 6699, 0, 84, '', '{}', to_timestamp(1660724655), to_timestamp(1660724494), 'buildbot'), 
+(206, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-shlib', ARRAY['polly']::text[], 2143060, 5664971, true, 1, 6700, 0, 84, '', '{}', to_timestamp(1660725459), to_timestamp(1660725288), 'buildbot'), 
+(206, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-shlib', ARRAY['polly']::text[], 2143250, 5665447, true, 1, 6701, 0, 84, '', '{}', to_timestamp(1660727265), to_timestamp(1660727092), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

@@ -5703,7 +5703,9 @@ INSERT INTO buildbot_build_logs (
 (18, 'null', ARRAY[1]::integer[], 'sanitizer-ppc64be-linux', ARRAY['sanitizer', 'ppc']::text[], 2141313, 5661675, true, 1, 5684, 0, 72, '', '{}', to_timestamp(1660696916), to_timestamp(1660687187), 'buildbot'), 
 (18, 'null', ARRAY[1]::integer[], 'sanitizer-ppc64be-linux', ARRAY['sanitizer', 'ppc']::text[], 2142073, 5662798, true, 1, 5685, 0, 72, '', '{}', to_timestamp(1660704876), to_timestamp(1660696916), 'buildbot'), 
 (18, 'null', ARRAY[1]::integer[], 'sanitizer-ppc64be-linux', ARRAY['sanitizer', 'ppc']::text[], 2142287, 5663513, true, 1, 5686, 0, 72, '', '{}', to_timestamp(1660713054), to_timestamp(1660704876), 'buildbot'), 
-(18, 'null', ARRAY[1]::integer[], 'sanitizer-ppc64be-linux', ARRAY['sanitizer', 'ppc']::text[], 2142674, 5664313, false, 1, 5687, null, 72, '', '{}', to_timestamp(null), to_timestamp(1660713054), 'buildbot')
+(18, 'null', ARRAY[1]::integer[], 'sanitizer-ppc64be-linux', ARRAY['sanitizer', 'ppc']::text[], 2142674, 5664313, true, 1, 5687, 0, 72, '', '{}', to_timestamp(1660718853), to_timestamp(1660713054), 'buildbot'), 
+(18, 'null', ARRAY[1]::integer[], 'sanitizer-ppc64be-linux', ARRAY['sanitizer', 'ppc']::text[], 2142759, 5664451, true, 1, 5688, 0, 72, '', '{}', to_timestamp(1660726708), to_timestamp(1660718853), 'buildbot'), 
+(18, 'null', ARRAY[1]::integer[], 'sanitizer-ppc64be-linux', ARRAY['sanitizer', 'ppc']::text[], 2143176, 5664537, false, 1, 5689, null, 72, '', '{}', to_timestamp(null), to_timestamp(1660726726), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

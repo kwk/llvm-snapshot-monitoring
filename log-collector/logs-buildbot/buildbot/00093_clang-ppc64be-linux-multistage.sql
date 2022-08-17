@@ -10595,7 +10595,9 @@ INSERT INTO buildbot_build_logs (
 (93, 'null', ARRAY[1]::integer[], 'clang-ppc64be-linux-multistage', ARRAY['clang', 'ppc']::text[], 2142201, 5663355, true, 1, 10576, 0, 16, '', '{}', to_timestamp(1660704734), to_timestamp(1660701076), 'buildbot'), 
 (93, 'null', ARRAY[1]::integer[], 'clang-ppc64be-linux-multistage', ARRAY['clang', 'ppc']::text[], 2142285, 5663551, true, 1, 10577, 0, 16, '', '{}', to_timestamp(1660708876), to_timestamp(1660704734), 'buildbot'), 
 (93, 'null', ARRAY[1]::integer[], 'clang-ppc64be-linux-multistage', ARRAY['clang', 'ppc']::text[], 2142542, 5663928, true, 1, 10578, 0, 16, '', '{}', to_timestamp(1660712618), to_timestamp(1660708876), 'buildbot'), 
-(93, 'null', ARRAY[1]::integer[], 'clang-ppc64be-linux-multistage', ARRAY['clang', 'ppc']::text[], 2142671, 5664348, true, 1, 10579, 0, 16, '', '{}', to_timestamp(1660715834), to_timestamp(1660712618), 'buildbot')
+(93, 'null', ARRAY[1]::integer[], 'clang-ppc64be-linux-multistage', ARRAY['clang', 'ppc']::text[], 2142671, 5664348, true, 1, 10579, 0, 16, '', '{}', to_timestamp(1660715834), to_timestamp(1660712618), 'buildbot'), 
+(93, 'null', ARRAY[1]::integer[], 'clang-ppc64be-linux-multistage', ARRAY['clang', 'ppc']::text[], 2142816, 5664559, true, 1, 10580, 0, 16, '', '{}', to_timestamp(1660728255), to_timestamp(1660720775), 'buildbot'), 
+(93, 'null', ARRAY[1]::integer[], 'clang-ppc64be-linux-multistage', ARRAY['clang', 'ppc']::text[], 2143292, 5665418, false, 1, 10581, null, 16, '', '{}', to_timestamp(null), to_timestamp(1660728256), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

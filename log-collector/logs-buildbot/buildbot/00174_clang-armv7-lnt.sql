@@ -12336,7 +12336,12 @@ INSERT INTO buildbot_build_logs (
 (174, 'null', ARRAY[1]::integer[], 'clang-armv7-lnt', ARRAY['clang']::text[], 2142297, 5663638, true, 1, 12317, 0, 137, '', '{}', to_timestamp(1660706977), to_timestamp(1660705376), 'buildbot'), 
 (174, 'null', ARRAY[1]::integer[], 'clang-armv7-lnt', ARRAY['clang']::text[], 2142443, 5663788, true, 1, 12318, 0, 137, '', '{}', to_timestamp(1660708038), to_timestamp(1660706977), 'buildbot'), 
 (174, 'null', ARRAY[1]::integer[], 'clang-armv7-lnt', ARRAY['clang']::text[], 2142526, 5663960, true, 1, 12319, 0, 137, '', '{}', to_timestamp(1660709098), to_timestamp(1660708038), 'buildbot'), 
-(174, 'null', ARRAY[1]::integer[], 'clang-armv7-lnt', ARRAY['clang']::text[], 2142566, 5664290, true, 1, 12320, 0, 137, '', '{}', to_timestamp(1660712716), to_timestamp(1660710947), 'buildbot')
+(174, 'null', ARRAY[1]::integer[], 'clang-armv7-lnt', ARRAY['clang']::text[], 2142566, 5664290, true, 1, 12320, 0, 137, '', '{}', to_timestamp(1660712716), to_timestamp(1660710947), 'buildbot'), 
+(174, 'null', ARRAY[1]::integer[], 'clang-armv7-lnt', ARRAY['clang']::text[], 2142780, 5664560, true, 1, 12321, 0, 137, '', '{}', to_timestamp(1660722293), to_timestamp(1660720732), 'buildbot'), 
+(174, 'null', ARRAY[1]::integer[], 'clang-armv7-lnt', ARRAY['clang']::text[], 2142868, 5664610, true, 1, 12322, 0, 137, '', '{}', to_timestamp(1660723218), to_timestamp(1660722293), 'buildbot'), 
+(174, 'null', ARRAY[1]::integer[], 'clang-armv7-lnt', ARRAY['clang']::text[], 2142907, 5664723, true, 1, 12323, 0, 137, '', '{}', to_timestamp(1660725235), to_timestamp(1660723737), 'buildbot'), 
+(174, 'null', ARRAY[1]::integer[], 'clang-armv7-lnt', ARRAY['clang']::text[], 2143057, 5664928, true, 1, 12324, 0, 137, '', '{}', to_timestamp(1660726584), to_timestamp(1660725235), 'buildbot'), 
+(174, 'null', ARRAY[1]::integer[], 'clang-armv7-lnt', ARRAY['clang']::text[], 2143195, 5665481, true, 1, 12325, 0, 137, '', '{}', to_timestamp(1660728459), to_timestamp(1660726741), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

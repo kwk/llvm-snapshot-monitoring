@@ -10979,8 +10979,10 @@ INSERT INTO buildbot_build_logs (
 (118, 'null', ARRAY[1]::integer[], 'clang-cmake-x86_64-avx2-linux-perf', ARRAY['clang']::text[], 2140366, 5658973, true, 1, 10960, 2, 59, '', '{}', to_timestamp(1660680016), to_timestamp(1660671217), 'buildbot'), 
 (118, 'null', ARRAY[1]::integer[], 'clang-cmake-x86_64-avx2-linux-perf', ARRAY['clang']::text[], 2140786, 5659129, true, 1, 10961, 2, 59, '', '{}', to_timestamp(1660689921), to_timestamp(1660680798), 'buildbot'), 
 (118, 'null', ARRAY[1]::integer[], 'clang-cmake-x86_64-avx2-linux-perf', ARRAY['clang']::text[], 2141612, 5662319, true, 1, 10962, 2, 59, '', '{}', to_timestamp(1660699613), to_timestamp(1660690712), 'buildbot'), 
-(118, 'null', ARRAY[1]::integer[], 'clang-cmake-x86_64-avx2-linux-perf', ARRAY['clang']::text[], 2142548, 5663989, false, 1, 10964, null, 59, '', '{}', to_timestamp(null), to_timestamp(1660709358), 'buildbot'), 
-(118, 'null', ARRAY[1]::integer[], 'clang-cmake-x86_64-avx2-linux-perf', ARRAY['clang']::text[], 2142195, 5663460, true, 1, 10963, 2, 59, '', '{}', to_timestamp(1660709021), to_timestamp(1660700002), 'buildbot')
+(118, 'null', ARRAY[1]::integer[], 'clang-cmake-x86_64-avx2-linux-perf', ARRAY['clang']::text[], 2142195, 5663460, true, 1, 10963, 2, 59, '', '{}', to_timestamp(1660709021), to_timestamp(1660700002), 'buildbot'), 
+(118, 'null', ARRAY[1]::integer[], 'clang-cmake-x86_64-avx2-linux-perf', ARRAY['clang']::text[], 2142548, 5663989, true, 1, 10964, 2, 59, '', '{}', to_timestamp(1660718122), to_timestamp(1660709358), 'buildbot'), 
+(118, 'null', ARRAY[1]::integer[], 'clang-cmake-x86_64-avx2-linux-perf', ARRAY['clang']::text[], 2143286, 5664524, false, 1, 10966, null, 59, '', '{}', to_timestamp(null), to_timestamp(1660727962), 'buildbot'), 
+(118, 'null', ARRAY[1]::integer[], 'clang-cmake-x86_64-avx2-linux-perf', ARRAY['clang']::text[], 2142755, 5664341, true, 1, 10965, 2, 59, '', '{}', to_timestamp(1660727156), to_timestamp(1660718401), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

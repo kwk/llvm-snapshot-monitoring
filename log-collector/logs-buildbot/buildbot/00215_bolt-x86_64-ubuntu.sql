@@ -10324,7 +10324,10 @@ INSERT INTO buildbot_build_logs (
 (215, 'null', ARRAY[1]::integer[], 'bolt-x86_64-ubuntu', ARRAY['bolt']::text[], 2142324, 5663734, true, 1, 10305, 0, 164, '', '{}', to_timestamp(1660705605), to_timestamp(1660705410), 'buildbot'), 
 (215, 'null', ARRAY[1]::integer[], 'bolt-x86_64-ubuntu', ARRAY['bolt']::text[], 2142454, 5663948, true, 1, 10306, 0, 164, '', '{}', to_timestamp(1660707617), to_timestamp(1660707275), 'buildbot'), 
 (215, 'null', ARRAY[1]::integer[], 'bolt-x86_64-ubuntu', ARRAY['bolt']::text[], 2142565, 5664068, true, 1, 10307, 0, 164, '', '{}', to_timestamp(1660711156), to_timestamp(1660710938), 'buildbot'), 
-(215, 'null', ARRAY[1]::integer[], 'bolt-x86_64-ubuntu', ARRAY['bolt']::text[], 2142640, 5664219, true, 1, 10308, 0, 164, '', '{}', to_timestamp(1660711336), to_timestamp(1660711187), 'buildbot')
+(215, 'null', ARRAY[1]::integer[], 'bolt-x86_64-ubuntu', ARRAY['bolt']::text[], 2142640, 5664219, true, 1, 10308, 0, 164, '', '{}', to_timestamp(1660711336), to_timestamp(1660711187), 'buildbot'), 
+(215, 'null', ARRAY[1]::integer[], 'bolt-x86_64-ubuntu', ARRAY['bolt']::text[], 2143093, 5665084, true, 1, 10309, 0, 164, '', '{}', to_timestamp(1660726371), to_timestamp(1660726129), 'buildbot'), 
+(215, 'null', ARRAY[1]::integer[], 'bolt-x86_64-ubuntu', ARRAY['bolt']::text[], 2143160, 5665247, true, 1, 10310, 0, 164, '', '{}', to_timestamp(1660726760), to_timestamp(1660726487), 'buildbot'), 
+(215, 'null', ARRAY[1]::integer[], 'bolt-x86_64-ubuntu', ARRAY['bolt']::text[], 2143236, 5665429, true, 1, 10311, 0, 164, '', '{}', to_timestamp(1660727137), to_timestamp(1660726960), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

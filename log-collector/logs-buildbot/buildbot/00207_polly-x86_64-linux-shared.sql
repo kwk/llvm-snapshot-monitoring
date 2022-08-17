@@ -9489,7 +9489,13 @@ INSERT INTO buildbot_build_logs (
 (207, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-shared', ARRAY['polly']::text[], 2142318, 5663685, true, 1, 9470, 0, 84, '', '{}', to_timestamp(1660705616), to_timestamp(1660705402), 'buildbot'), 
 (207, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-shared', ARRAY['polly']::text[], 2142406, 5663863, true, 1, 9471, 0, 84, '', '{}', to_timestamp(1660706734), to_timestamp(1660706479), 'buildbot'), 
 (207, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-shared', ARRAY['polly']::text[], 2142497, 5663940, true, 1, 9472, 0, 84, '', '{}', to_timestamp(1660707556), to_timestamp(1660707392), 'buildbot'), 
-(207, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-shared', ARRAY['polly']::text[], 2142608, 5664282, true, 1, 9473, 0, 84, '', '{}', to_timestamp(1660711239), to_timestamp(1660711062), 'buildbot')
+(207, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-shared', ARRAY['polly']::text[], 2142608, 5664282, true, 1, 9473, 0, 84, '', '{}', to_timestamp(1660711239), to_timestamp(1660711062), 'buildbot'), 
+(207, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-shared', ARRAY['polly']::text[], 2142808, 5664527, true, 1, 9474, 0, 84, '', '{}', to_timestamp(1660721234), to_timestamp(1660720763), 'buildbot'), 
+(207, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-shared', ARRAY['polly']::text[], 2142934, 5664698, true, 1, 9475, 0, 84, '', '{}', to_timestamp(1660723997), to_timestamp(1660723765), 'buildbot'), 
+(207, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-shared', ARRAY['polly']::text[], 2142981, 5664893, true, 1, 9476, 0, 84, '', '{}', to_timestamp(1660724368), to_timestamp(1660724158), 'buildbot'), 
+(207, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-shared', ARRAY['polly']::text[], 2143045, 5664988, true, 1, 9477, 0, 84, '', '{}', to_timestamp(1660725153), to_timestamp(1660724959), 'buildbot'), 
+(207, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-shared', ARRAY['polly']::text[], 2143133, 5665104, true, 1, 9478, 0, 84, '', '{}', to_timestamp(1660726396), to_timestamp(1660726233), 'buildbot'), 
+(207, 'null', ARRAY[1]::integer[], 'polly-x86_64-linux-shared', ARRAY['polly']::text[], 2143190, 5665456, true, 1, 9479, 0, 84, '', '{}', to_timestamp(1660726939), to_timestamp(1660726738), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

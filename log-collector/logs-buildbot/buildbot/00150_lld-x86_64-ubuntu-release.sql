@@ -210,7 +210,8 @@ INSERT INTO buildbot_build_logs (
 (150, 'null', ARRAY[1]::integer[], 'lld-x86_64-ubuntu-release', ARRAY['lld', 'release']::text[], 2122170, 5624638, true, 1, 191, 2, 58, '', '{}', to_timestamp(1660289135), to_timestamp(1660288519), 'buildbot'), 
 (150, 'null', ARRAY[1]::integer[], 'lld-x86_64-ubuntu-release', ARRAY['lld', 'release']::text[], 2133113, 5644551, true, 1, 192, 2, 58, '', '{}', to_timestamp(1660549740), to_timestamp(1660549154), 'buildbot'), 
 (150, 'null', ARRAY[1]::integer[], 'lld-x86_64-ubuntu-release', ARRAY['lld', 'release']::text[], 2133132, 5644580, true, 1, 193, 2, 58, '', '{}', to_timestamp(1660550336), to_timestamp(1660549740), 'buildbot'), 
-(150, 'null', ARRAY[1]::integer[], 'lld-x86_64-ubuntu-release', ARRAY['lld', 'release']::text[], 2137950, 5654831, true, 1, 194, 2, 58, '', '{}', to_timestamp(1660632435), to_timestamp(1660631840), 'buildbot')
+(150, 'null', ARRAY[1]::integer[], 'lld-x86_64-ubuntu-release', ARRAY['lld', 'release']::text[], 2137950, 5654831, true, 1, 194, 2, 58, '', '{}', to_timestamp(1660632435), to_timestamp(1660631840), 'buildbot'), 
+(150, 'null', ARRAY[1]::integer[], 'lld-x86_64-ubuntu-release', ARRAY['lld', 'release']::text[], 2143305, 5665567, false, 1, 195, null, 58, '', '{}', to_timestamp(null), to_timestamp(1660729732), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

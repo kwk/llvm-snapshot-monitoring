@@ -1531,7 +1531,11 @@ INSERT INTO buildbot_build_logs (
 (231, 'null', ARRAY[1]::integer[], 'clang-ppc64be-linux-test-suite', ARRAY['clang', 'ppc']::text[], 2142337, 5663736, true, 1, 1512, 0, 180, '', '{}', to_timestamp(1660706488), to_timestamp(1660705421), 'buildbot'), 
 (231, 'null', ARRAY[1]::integer[], 'clang-ppc64be-linux-test-suite', ARRAY['clang', 'ppc']::text[], 2142420, 5663851, true, 1, 1513, 0, 180, '', '{}', to_timestamp(1660707378), to_timestamp(1660706500), 'buildbot'), 
 (231, 'null', ARRAY[1]::integer[], 'clang-ppc64be-linux-test-suite', ARRAY['clang', 'ppc']::text[], 2142501, 5664030, true, 1, 1514, 0, 180, '', '{}', to_timestamp(1660708181), to_timestamp(1660707400), 'buildbot'), 
-(231, 'null', ARRAY[1]::integer[], 'clang-ppc64be-linux-test-suite', ARRAY['clang', 'ppc']::text[], 2142631, 5664361, true, 1, 1515, 0, 180, '', '{}', to_timestamp(1660712025), to_timestamp(1660711085), 'buildbot')
+(231, 'null', ARRAY[1]::integer[], 'clang-ppc64be-linux-test-suite', ARRAY['clang', 'ppc']::text[], 2142631, 5664361, true, 1, 1515, 0, 180, '', '{}', to_timestamp(1660712025), to_timestamp(1660711085), 'buildbot'), 
+(231, 'null', ARRAY[1]::integer[], 'clang-ppc64be-linux-test-suite', ARRAY['clang', 'ppc']::text[], 2142817, 5664596, true, 1, 1516, 0, 180, '', '{}', to_timestamp(1660724534), to_timestamp(1660720775), 'buildbot'), 
+(231, 'null', ARRAY[1]::integer[], 'clang-ppc64be-linux-test-suite', ARRAY['clang', 'ppc']::text[], 2143001, 5664910, true, 1, 1517, 0, 180, '', '{}', to_timestamp(1660725674), to_timestamp(1660724535), 'buildbot'), 
+(231, 'null', ARRAY[1]::integer[], 'clang-ppc64be-linux-test-suite', ARRAY['clang', 'ppc']::text[], 2143074, 5665038, true, 1, 1518, 0, 180, '', '{}', to_timestamp(1660726580), to_timestamp(1660725675), 'buildbot'), 
+(231, 'null', ARRAY[1]::integer[], 'clang-ppc64be-linux-test-suite', ARRAY['clang', 'ppc']::text[], 2143185, 5665497, true, 1, 1519, 0, 180, '', '{}', to_timestamp(1660727692), to_timestamp(1660726732), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

@@ -13423,7 +13423,9 @@ INSERT INTO buildbot_build_logs (
 (110, 'null', ARRAY[1]::integer[], 'clang-cmake-x86_64-avx2-linux', ARRAY['clang']::text[], 2141518, 5661924, true, 1, 13404, 2, 59, '', '{}', to_timestamp(1660690400), to_timestamp(1660689922), 'buildbot'), 
 (110, 'null', ARRAY[1]::integer[], 'clang-cmake-x86_64-avx2-linux', ARRAY['clang']::text[], 2141579, 5662315, true, 1, 13405, 2, 59, '', '{}', to_timestamp(1660690711), to_timestamp(1660690402), 'buildbot'), 
 (110, 'null', ARRAY[1]::integer[], 'clang-cmake-x86_64-avx2-linux', ARRAY['clang']::text[], 2142188, 5663456, true, 1, 13406, 2, 59, '', '{}', to_timestamp(1660700002), to_timestamp(1660699613), 'buildbot'), 
-(110, 'null', ARRAY[1]::integer[], 'clang-cmake-x86_64-avx2-linux', ARRAY['clang']::text[], 2142545, 5663987, true, 1, 13407, 2, 59, '', '{}', to_timestamp(1660709358), to_timestamp(1660709021), 'buildbot')
+(110, 'null', ARRAY[1]::integer[], 'clang-cmake-x86_64-avx2-linux', ARRAY['clang']::text[], 2142545, 5663987, true, 1, 13407, 2, 59, '', '{}', to_timestamp(1660709358), to_timestamp(1660709021), 'buildbot'), 
+(110, 'null', ARRAY[1]::integer[], 'clang-cmake-x86_64-avx2-linux', ARRAY['clang']::text[], 2142752, 5664339, true, 1, 13408, 2, 59, '', '{}', to_timestamp(1660718401), to_timestamp(1660718122), 'buildbot'), 
+(110, 'null', ARRAY[1]::integer[], 'clang-cmake-x86_64-avx2-linux', ARRAY['clang']::text[], 2143256, 5664515, true, 1, 13409, 2, 59, '', '{}', to_timestamp(1660727961), to_timestamp(1660727156), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

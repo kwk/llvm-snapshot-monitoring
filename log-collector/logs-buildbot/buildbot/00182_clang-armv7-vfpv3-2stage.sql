@@ -3607,7 +3607,9 @@ INSERT INTO buildbot_build_logs (
 (182, 'null', ARRAY[1]::integer[], 'clang-armv7-vfpv3-2stage', ARRAY['clang']::text[], 2141432, 5661795, true, 1, 3588, 0, 127, '', '{}', to_timestamp(1660698638), to_timestamp(1660689096), 'buildbot'), 
 (182, 'null', ARRAY[1]::integer[], 'clang-armv7-vfpv3-2stage', ARRAY['clang']::text[], 2142168, 5663376, true, 1, 3589, 0, 127, '', '{}', to_timestamp(1660706489), to_timestamp(1660698638), 'buildbot'), 
 (182, 'null', ARRAY[1]::integer[], 'clang-armv7-vfpv3-2stage', ARRAY['clang']::text[], 2142416, 5663790, true, 1, 3590, 0, 127, '', '{}', to_timestamp(1660713410), to_timestamp(1660706497), 'buildbot'), 
-(182, 'null', ARRAY[1]::integer[], 'clang-armv7-vfpv3-2stage', ARRAY['clang']::text[], 2142675, 5664291, true, 1, 3591, 0, 127, '', '{}', to_timestamp(1660716449), to_timestamp(1660713410), 'buildbot')
+(182, 'null', ARRAY[1]::integer[], 'clang-armv7-vfpv3-2stage', ARRAY['clang']::text[], 2142675, 5664291, true, 1, 3591, 0, 127, '', '{}', to_timestamp(1660716449), to_timestamp(1660713410), 'buildbot'), 
+(182, 'null', ARRAY[1]::integer[], 'clang-armv7-vfpv3-2stage', ARRAY['clang']::text[], 2142782, 5664563, true, 1, 3592, 0, 127, '', '{}', to_timestamp(1660729278), to_timestamp(1660720732), 'buildbot'), 
+(182, 'null', ARRAY[1]::integer[], 'clang-armv7-vfpv3-2stage', ARRAY['clang']::text[], 2143302, 5665487, false, 1, 3593, null, 127, '', '{}', to_timestamp(null), to_timestamp(1660729279), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

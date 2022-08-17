@@ -352,7 +352,8 @@ INSERT INTO buildbot_build_logs (
 (146, 'null', ARRAY[1]::integer[], 'openmp-clang-x86_64-linux-debian-release', ARRAY['openmp', 'release']::text[], 2122058, 5624632, true, 1, 333, 0, 53, '', '{}', to_timestamp(1660287842), to_timestamp(1660287076), 'buildbot'), 
 (146, 'null', ARRAY[1]::integer[], 'openmp-clang-x86_64-linux-debian-release', ARRAY['openmp', 'release']::text[], 2133138, 5644588, true, 1, 335, 0, 53, '', '{}', to_timestamp(1660550140), to_timestamp(1660549994), 'buildbot'), 
 (146, 'null', ARRAY[1]::integer[], 'openmp-clang-x86_64-linux-debian-release', ARRAY['openmp', 'release']::text[], 2133111, 5644554, true, 1, 334, 0, 53, '', '{}', to_timestamp(1660549994), to_timestamp(1660549154), 'buildbot'), 
-(146, 'null', ARRAY[1]::integer[], 'openmp-clang-x86_64-linux-debian-release', ARRAY['openmp', 'release']::text[], 2137949, 5654828, true, 1, 336, 0, 53, '', '{}', to_timestamp(1660632678), to_timestamp(1660631839), 'buildbot')
+(146, 'null', ARRAY[1]::integer[], 'openmp-clang-x86_64-linux-debian-release', ARRAY['openmp', 'release']::text[], 2137949, 5654828, true, 1, 336, 0, 53, '', '{}', to_timestamp(1660632678), to_timestamp(1660631839), 'buildbot'), 
+(146, 'null', ARRAY[1]::integer[], 'openmp-clang-x86_64-linux-debian-release', ARRAY['openmp', 'release']::text[], 2143281, 5665562, true, 1, 337, 0, 53, '', '{}', to_timestamp(1660728460), to_timestamp(1660727559), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET

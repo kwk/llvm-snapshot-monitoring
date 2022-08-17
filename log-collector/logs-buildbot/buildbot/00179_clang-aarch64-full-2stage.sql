@@ -4285,7 +4285,9 @@ INSERT INTO buildbot_build_logs (
 (179, 'null', ARRAY[1]::integer[], 'clang-aarch64-full-2stage', ARRAY['clang']::text[], 2141415, 5661749, true, 1, 4266, 2, 134, '', '{}', to_timestamp(1660695269), to_timestamp(1660688456), 'buildbot'), 
 (179, 'null', ARRAY[1]::integer[], 'clang-aarch64-full-2stage', ARRAY['clang']::text[], 2142006, 5662793, true, 1, 4267, 2, 134, '', '{}', to_timestamp(1660702166), to_timestamp(1660695269), 'buildbot'), 
 (179, 'null', ARRAY[1]::integer[], 'clang-aarch64-full-2stage', ARRAY['clang']::text[], 2142272, 5663510, true, 1, 4268, 2, 134, '', '{}', to_timestamp(1660708770), to_timestamp(1660702166), 'buildbot'), 
-(179, 'null', ARRAY[1]::integer[], 'clang-aarch64-full-2stage', ARRAY['clang']::text[], 2142541, 5663894, false, 1, 4269, null, 134, '', '{}', to_timestamp(null), to_timestamp(1660708770), 'buildbot')
+(179, 'null', ARRAY[1]::integer[], 'clang-aarch64-full-2stage', ARRAY['clang']::text[], 2142541, 5663894, true, 1, 4269, 2, 134, '', '{}', to_timestamp(1660718623), to_timestamp(1660708770), 'buildbot'), 
+(179, 'null', ARRAY[1]::integer[], 'clang-aarch64-full-2stage', ARRAY['clang']::text[], 2142758, 5664213, true, 1, 4270, 2, 134, '', '{}', to_timestamp(1660729588), to_timestamp(1660718623), 'buildbot'), 
+(179, 'null', ARRAY[1]::integer[], 'clang-aarch64-full-2stage', ARRAY['clang']::text[], 2143304, 5665042, false, 1, 4271, null, 134, '', '{}', to_timestamp(null), to_timestamp(1660729588), 'buildbot')
 
         ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
         DO UPDATE SET
