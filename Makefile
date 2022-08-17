@@ -92,7 +92,7 @@ load_buildbot_logs:
 	$(DOCKER_BIN) exec -it postgres-container rm -rf /logs-buildbot
 	$(DOCKER_BIN) cp log-collector/logs-buildbot postgres-container:/
 	$(DOCKER_BIN) exec -it postgres-container psql -v ON_STOP_ERROR=1 --username "postgres" --dbname "logs" -c "SELECT COUNT(*) FROM buildbot_build_logs;"
-	$(DOCKER_BIN) exec -it postgres-container find /staging -name "*.sql" -exec psql -v ON_STOP_ERROR=1 --username "postgres" --dbname "logs" -f {} \;
+	$(DOCKER_BIN) exec -it postgres-container find /logs-buildbot -name "*.sql" -exec psql -v ON_STOP_ERROR=1 --username "postgres" --dbname "logs" -f {} \;
 	$(DOCKER_BIN) exec -it postgres-container psql -v ON_STOP_ERROR=1 --username "postgres" --dbname "logs" -c "SELECT COUNT(*) FROM buildbot_build_logs;"
 
 
