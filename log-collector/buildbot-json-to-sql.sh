@@ -155,9 +155,9 @@ main() {
     export API_URL_BASE=https://lab.llvm.org/${BUILDBOT_INSTANCE}/api/v2
 
     # Ensure the builders file exists before all the parallel workers start.
-    get_all_builders true
+    all_builders_file=$(get_all_builders true)
 
-    export count_builders=$(cat all_builders.json | jq '.meta.total')
+    export count_builders=$(cat $all_builders_file | jq '.meta.total')
 
     seq 0 1 $((count_builders - 1)) | parallel -j$(nproc) --eta dowork {}
 }
