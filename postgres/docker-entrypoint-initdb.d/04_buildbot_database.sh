@@ -8,6 +8,26 @@ EOSQL
 psql -v ON_ERROR_STOP=1 --username "logwriter" --dbname "logs" <<-EOSQL
 DROP TABLE IF EXISTS "buildbot_build_logs";
 
+DROP TYPE IF EXISTS buildbot_instance_type;
+CREATE TYPE buildbot_instance_type AS ENUM ('staging', 'buildbot');
+
+-- Example responses:
+--
+-- https://lab.llvm.org/staging/api/v2/builders
+-- {
+--   "builders": [
+--     {
+--       "builderid": 1,
+--       "description": null,
+--       "masterids": [
+--         2
+--       ],
+--       "name": "sanitizer-x86_64-linux-android",
+--       "tags": [
+--         "sanitizer"
+--       ]
+--     },
+--
 -- https://lab.llvm.org/staging/api/v2/builders/1/builds
 -- {
 --   "builds": [
@@ -26,20 +46,6 @@ DROP TABLE IF EXISTS "buildbot_build_logs";
 --       "workerid": 3
 --     },
 -- 
--- https://lab.llvm.org/staging/api/v2/builders
--- {
---   "builders": [
---     {
---       "builderid": 1,
---       "description": null,
---       "masterids": [
---         2
---       ],
---       "name": "sanitizer-x86_64-linux-android",
---       "tags": [
---         "sanitizer"
---       ]
---     },
 
 CREATE TABLE "public"."buildbot_build_logs" (
     "builder_builderid" bigint NOT NULL,
@@ -60,8 +66,10 @@ CREATE TABLE "public"."buildbot_build_logs" (
     "build_state_string" text,
     "build_workerid" bigint NOT NULL,
     "last_modified" timestamp WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    
+    "buildbot_instance" buildbot_instance_type NOT NULL,
 
-    CONSTRAINT "buildbot_build_logs_pkey" PRIMARY KEY ("builder_builderid", "build_buildid")
+    CONSTRAINT "buildbot_build_logs_pkey" PRIMARY KEY ("builder_builderid", "build_buildid", "buildbot_instance")
 );
 
 CREATE OR REPLACE FUNCTION update_last_modified()

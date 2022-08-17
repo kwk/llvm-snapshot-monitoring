@@ -1,0 +1,35 @@
+{
+  "builds": [
+    {
+      "builderid": 137,
+      "buildid": 177865,
+      "buildrequestid": 485659,
+      "complete": true,
+      "complete_at": 1607978113,
+      "masterid": 1,
+      "number": 1,
+      "properties": {},
+      "results": 2,
+      "started_at": 1607978111,
+      "state_string": "failed update (failure)",
+      "workerid": 86
+    },
+    {
+      "builderid": 137,
+      "buildid": 182644,
+      "buildrequestid": 502478,
+      "complete": true,
+      "complete_at": 1608082898,
+      "masterid": 1,
+      "number": 2,
+      "properties": {},
+      "results": 2,
+      "started_at": 1608082896,
+      "state_string": "failed update (failure)",
+      "workerid": 86
+    }
+  ],
+  "meta": {
+    "total": 2
+  }
+}

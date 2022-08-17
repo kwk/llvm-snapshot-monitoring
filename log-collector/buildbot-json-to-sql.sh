@@ -82,7 +82,7 @@ for builder_idx in $(seq 0 1 $((count_builders - 1)) ); do
     fi
 
     echo "SQL"
-    cat $json_file | jq -r --arg builder_values "$builder_values" $'
+    cat $json_file | jq -r --arg builder_values "$builder_values" --arg buildbot_instance "$BUILDBOT_INSTANCE" $'
     ("INSERT INTO buildbot_build_logs (
         builder_builderid,
         builder_description,
@@ -99,7 +99,8 @@ for builder_idx in $(seq 0 1 $((count_builders - 1)) ); do
         build_state_string,
         build_properties,
         build_complete_at,
-        build_started_at
+        build_started_at,
+        buildbot_instance
     ) VALUES ")
     ,
     (
@@ -121,7 +122,8 @@ for builder_idx in $(seq 0 1 $((count_builders - 1)) ); do
                         ] | map(.|tostring) | join(", ")),
                         "\'\'",
                         "\'"+(.properties | tostring)+"\'",
-                        ([.complete_at, .started_at] | map("to_timestamp("+(.|tostring)+")") | join(", "))
+                        ([.complete_at, .started_at] | map("to_timestamp("+(.|tostring)+")") | join(", ")),
+                        "\'"+($buildbot_instance | tostring)+"\'"
                     ]
                 ) | join(", ")
             ) 
@@ -142,7 +144,8 @@ for builder_idx in $(seq 0 1 $((count_builders - 1)) ); do
             build_workerid=excluded.build_workerid,
             build_state_string=excluded.build_state_string,
             build_properties=excluded.build_properties,
-            build_complete_at=excluded.build_complete_at
+            build_complete_at=excluded.build_complete_at,
+            buildbot_instance=excluded.buildbot_instance
         ;
     ")
     ' \

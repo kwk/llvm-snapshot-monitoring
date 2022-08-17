@@ -1,0 +1,1 @@
+{"error": "not found while getting from endpoint for \n        /builders/n:builderid\n        /builders/i:buildername\n        /masters/n:masterid/builders/n:builderid\n     with arguments ResultSpec(**{'filters': [], 'fields': None, 'properties': [], 'order': None, 'limit': None, 'offset': None}) and {'buildername': 'builds'}"}
