@@ -10,13 +10,12 @@ To run this project locally and have grafana provisioned with dashboards and
 postgres prefilled with example data all you need to do is to run:
 
 ```
-make pull
+make build
+make secrets
 make start
 ```
 
-This will pull the latest images that I've pushed in the docker registry.
-
-The go to http://localhost:3000 to see the Grafana.
+Then go to http://localhost:3000 to see the Grafana.
 
 ![Build Status Dashboard](/media/images/build-status-dashboard.png)
 
