@@ -25,12 +25,12 @@ type Build struct {
 	Buildid        int             `json:"buildid"`
 	Buildrequestid int             `json:"buildrequestid"`
 	Complete       bool            `json:"complete"`
-	CompleteAt     int             `json:"complete_at"`
+	CompleteAt     int64           `json:"complete_at"`
 	Masterid       int             `json:"masterid"`
 	Number         int             `json:"number"`
 	Properties     BuildProperties `json:"properties"`
 	Results        int             `json:"results"`
-	StartedAt      int             `json:"started_at"`
+	StartedAt      int64           `json:"started_at"`
 	StateString    string          `json:"state_string"`
 	Workerid       int             `json:"workerid"`
 }

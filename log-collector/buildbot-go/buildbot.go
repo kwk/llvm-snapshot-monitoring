@@ -9,7 +9,9 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 
+	"github.com/lib/pq"
 	_ "github.com/lib/pq"
 	"github.com/rs/zerolog"
 )
@@ -93,34 +95,42 @@ func intSliceToStringSlice(in []int) []string {
 	return out
 }
 
-func intSlicesToPgIntArray(in []int) string {
-	return fmt.Printf("ARRAY[%s]::integer[]", strings.Join(intSliceToStringSlice(in), ",")
+func intSlicesToPgIntArrayStr(in []int) string {
+	return fmt.Sprintf("ARRAY[%s]::integer[]", strings.Join(intSliceToStringSlice(in), ","))
+}
+
+func stringSlicesToPgIntArrayStr(in []string) string {
+	return fmt.Sprintf("ARRAY[%s]::text[]", strings.Join(in, ","))
+}
+
+func intToPgTimestampStr(in int) string {
+	return fmt.Sprintf("to_timestamp(%d)", in)
 }
 
 func (b *Buildbot) InsertOrUpdateBuildLog(builder Builder, build Build) error {
-	fmt.Printf("%#s\n", strings.Join([]int{1, 2, 3, 4}, ", "))
-	return nil
+	// fmt.Printf("%#s\n", strings.Join([]int{1, 2, 3, 4}, ", "))
+	// return nil
 	_, err := b.Db.Exec(`
 	INSERT INTO buildbot_build_logs (
-	    builder_builderid,
-	    builder_description,
-	    builder_masterids,
-	    builder_name,
-	    builder_tags,
-	    build_buildid,
-	    build_buildrequestid,
-	    build_complete,
-	    build_masterid,
-	    build_number,
-	    build_results,
-	    build_workerid,
-	    build_state_string,
-	    build_properties,
-	    build_complete_at,
-	    build_started_at,
-	    buildbot_instance
+	    builder_builderid,    -- 1
+	    builder_description,  -- 2
+	    builder_masterids,    -- 3
+	    builder_name,         -- 4
+	    builder_tags,         -- 5
+	    build_buildid,        -- 6
+	    build_buildrequestid, -- 7
+	    build_complete,       -- 8
+	    build_masterid,       -- 9
+	    build_number,         -- 10
+	    build_results,        -- 11
+	    build_workerid,       -- 12
+	    build_state_string,   -- 13
+	    build_properties,     -- 14
+	    build_complete_at,    -- 15
+	    build_started_at,     -- 16
+	    buildbot_instance     -- 17
 	) VALUES
-	($1,$1,$3,$4,$5,$6,$7,$8,$9,$10,$11,$11,$12,$13,$14,$15,$16,$17)
+	($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)
 	ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
 	    DO UPDATE SET
 	        builder_description=excluded.builder_description,
@@ -135,13 +145,29 @@ func (b *Buildbot) InsertOrUpdateBuildLog(builder Builder, build Build) error {
 	        build_state_string=excluded.build_state_string,
 	        build_properties=excluded.build_properties,
 	        build_complete_at=excluded.build_complete_at,
-	        buildbot_instance=excluded.buildbot_instance,
+	        buildbot_instance=excluded.buildbot_instance
 	    ;
-	`, builder.Builderid, builder.Description, intSlicesToPgIntArray(builder.Masterids), builder.Name, builder.Tags,
-		build.Builderid, build.Buildrequestid, build.Complete, build.Masterid,
-		build.Number, build.Results, build.Workerid, build.StateString,
-		build.Properties, build.CompleteAt, build.StartedAt, b.Instance)
-	b.Logger.Err(err).Int("buildId", build.Buildid).Str("builderName", builder.Name).Msg("inserting or updating build log")
+	`,
+		builder.Builderid,           // 1
+		builder.Description,         // 2
+		pq.Array(builder.Masterids), // 3
+		builder.Name,                // 4
+		pq.Array(builder.Tags),      // 5
+		build.Builderid,             // 6
+		build.Buildrequestid,        // 7
+		build.Complete,              // 8
+		build.Masterid,              // 9
+		build.Number,                // 10
+		build.Results,               // 11
+		build.Workerid,              // 12
+		build.StateString,           // 13
+		"{}",                        // 14 aka build.Properties
+		pq.FormatTimestamp(time.Unix(build.CompleteAt, 0)), //(s(build.CompleteAt), // 15
+		pq.FormatTimestamp(time.Unix(build.StartedAt, 0)),  //(build.StartedAt),  // 16
+		b.Instance, // 17
+	)
+
+	b.Logger.Err(err).Stack().Int("buildId", build.Buildid).Str("builderName", builder.Name).Msg("inserting or updating build log")
 	if err != nil {
 		return err
 	}
