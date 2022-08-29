@@ -2,16 +2,21 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
 	"time"
+
+	"buildbot-go/buildbot"
 
 	_ "github.com/lib/pq"
 	"github.com/rs/zerolog"
 )
 
 func main() {
+	var err error
+
 	// Flags
 	// -----
 
@@ -29,18 +34,20 @@ func main() {
 
 	flag.Parse()
 
+	bp := buildbot.BuildProperties{}
+	j, err := json.MarshalIndent(bp, "  ", "  ")
+	if err != nil {
+		panic(nil)
+	}
+	fmt.Println(string(j))
+
 	// Out main object
 	// ---------------
-
-	b := Buildbot{
-		ApiBase:  *buildbotApiBase,
-		Instance: *buildbotInstance,
-	}
 
 	// Setup Logging
 	// -------------
 
-	b.Logger = zerolog.New(os.Stderr).With().Timestamp().Logger()
+	logger := zerolog.New(os.Stderr).With().Timestamp().Logger()
 
 	// Default level for this example is info, unless debug flag is present
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
@@ -49,68 +56,70 @@ func main() {
 	}
 
 	if !*logJson {
-		b.Logger = b.Logger.Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339})
+		logger = logger.Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339})
 	}
 
 	// Connect to Database
 	// -------------------
 
-	var err error
 	dsn := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
 		*dbHost, *dbPort, *dbUser, *dbPass, *dbName)
-	b.Db, err = sql.Open("postgres", dsn)
+	db, err := sql.Open("postgres", dsn)
 	if err != nil {
 		// This will not be a connection error, but a DSN parse error or
 		// another initialization error.
-		b.Logger.Fatal().AnErr("error", err).Msg("unable to use data source name")
+		logger.Fatal().AnErr("error", err).Msg("unable to use data source name")
 		//Msg("unable to use data source name").AnErr("error", err)
 		// log.Print("hello world")
 	}
-	defer b.Close()
+	defer db.Close()
 
 	// By calling db.Ping() we force our code to actually open up a connection
 	// to the database which will validate whether or not our connection string
 	// was 100% correct.
-	err = b.Db.Ping()
+	err = db.Ping()
 	if err != nil {
-		b.Logger.Fatal().AnErr("error", err).Msg("failed to ping postgres")
+		logger.Fatal().AnErr("error", err).Msg("failed to ping postgres")
 	}
 
 	// Begin processing
 	// ----------------
 
-	b.prepareStatements()
+	b, err := buildbot.New(*buildbotInstance, *buildbotApiBase, db, logger)
+	if err != nil {
+		panic(err)
+	}
 
 	builderName := "standalone-build-x86_64"
 	builder, _ := b.GetBuilderByName(builderName)
 	lastBuildNumber, _ := b.GetBuildersLastBuildNumber(builder.Builderid)
-	batchSize := 2
+	batchSize := 1
 	buildResp, _ := b.GetBuildsForBuilder(builder.Builderid, lastBuildNumber, batchSize)
 	fmt.Println(PrettyPrint(buildResp))
 	for _, build := range buildResp.Builds {
 		err = b.InsertOrUpdateBuildLog(*builder, build)
-		b.Logger.Err(err).Msg("inserting or updating build log")
+		logger.Err(err).Msg("inserting or updating build log")
 	}
 
 	// lastNumber, err := b.GetBuildersLastBuildNumber(209)
 	// if err != nil {
-	// 	b.Logger.Log().AnErr("error", err)
+	// 	logger.Log().AnErr("error", err)
 	// }
 	// fmt.Println("Last number: ", lastNumber)
 	// res, err := b.GetBuildsForBuilder(209, lastNumber, 2)
 	// if err != nil {
-	// 	b.Logger.Log().AnErr("error", err)
+	// 	logger.Log().AnErr("error", err)
 	// }
 	// fmt.Println(PrettyPrint(res))
 
 	// allBuilders, err := b.GetAllBuilders()
 	// if err != nil {
-	// 	b.Logger.Log().AnErr("error", err)
+	// 	logger.Log().AnErr("error", err)
 	// }
 	// _, err = b.GetAllBuilders()
 	// if err != nil {
-	// 	b.Logger.Log().AnErr("error", err)
+	// 	logger.Log().AnErr("error", err)
 	// }
 	// _ = allBuilders
 	// fmt.Println(PrettyPrint(allBuilders))
