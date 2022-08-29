@@ -24,11 +24,11 @@ type Builder struct {
 // conjunction with postgresValueList() to get the values in the matching order.
 func (b Builder) postgresFieldList() string {
 	return `
-	"builder_builderid",    -- 1
-	"builder_description",  -- 2
-	"builder_masterids",    -- 3
-	"builder_name",         -- 4
-	"builder_tags"          -- 5
+	builder_builderid,    -- 1
+	builder_description,  -- 2
+	builder_masterids,    -- 3
+	builder_name,         -- 4
+	builder_tags          -- 5
 	`
 }
 
@@ -48,15 +48,15 @@ func (b Builder) postgresValueList() []interface{} {
 // builder on duplicate entries.
 func (b Builder) postgresOnUpdateSetList() string {
 	return `
-		"builder_description" = excluded.builder_description,
-		"builder_masterids"   = excluded.builder_masterids,
-		"builder_name"        = excluded.builder_name,
-		"builder_tags"        = excluded.builder_tags
+		builder_description = excluded.builder_description,
+		builder_masterids   = excluded.builder_masterids,
+		builder_name        = excluded.builder_name,
+		builder_tags        = excluded.builder_tags
 	`
 }
 
-// getAllBuilders returns all builders for the current buildbot instance.
-func (b *Buildbot) getAllBuilders() (*BuildersResponse, error) {
+// GetAllBuilders returns all builders for the current buildbot instance.
+func (b *Buildbot) GetAllBuilders() (*BuildersResponse, error) {
 	// b.allBuildersLock.RLock()
 	// defer b.allBuildersLock.RUnlock()
 	b.allBuildersLock.Lock()
@@ -65,8 +65,13 @@ func (b *Buildbot) getAllBuilders() (*BuildersResponse, error) {
 	if b.allBuilders == nil {
 		url := b.ApiBase + "/builders"
 		err := b.getRestApi(url, &b.allBuilders)
+		num_total_builders := -1
+		if err == nil {
+			num_total_builders = b.allBuilders.Meta.Total
+		}
 		b.Logger.Err(err).
 			Str("url", url).
+			Int("num_total_builders", num_total_builders).
 			Msg("getting all builders")
 
 		// build a LUT by Id and name for faster lookups
@@ -93,7 +98,7 @@ func (b *Buildbot) getAllBuilders() (*BuildersResponse, error) {
 // queries the REST API of  Consecutive calls will rely on a cached
 // result and are therefore faster.
 func (b *Buildbot) GetBuilderById(builderId int) (*Builder, error) {
-	_, err := b.getAllBuilders()
+	_, err := b.GetAllBuilders()
 	b.Logger.Err(err).
 		Int("builderId", builderId).
 		Msg("getting builder by Id")
@@ -113,7 +118,7 @@ func (b *Buildbot) GetBuilderById(builderId int) (*Builder, error) {
 // queries the REST API of  Consecutive calls will rely on a cached
 // result and are therefore faster.
 func (b *Buildbot) GetBuilderByName(builderName string) (*Builder, error) {
-	_, err := b.getAllBuilders()
+	_, err := b.GetAllBuilders()
 	b.Logger.Err(err).
 		Str("builderName", builderName).
 		Msg("getting builder by name")
@@ -133,7 +138,7 @@ func (b *Buildbot) GetBuilderByName(builderName string) (*Builder, error) {
 // queries the REST API of  Consecutive calls will rely on a cached
 // result and are therefore faster.
 func (b *Buildbot) GetBuildersByTag(tag string) ([]Builder, error) {
-	_, err := b.getAllBuilders()
+	_, err := b.GetAllBuilders()
 	b.Logger.Err(err).
 		Str("tag", tag).
 		Msg("getting builders by tag")

@@ -142,6 +142,7 @@ func (b *Buildbot) InsertOrUpdateBuildLog(builder Builder, build Build) error {
 // pointer to a target type to properly unmarshall into the target.
 func (b *Buildbot) getRestApi(url string, target interface{}) error {
 	resp, err := http.Get(url)
+	b.Logger.Debug().AnErr("error", err).Str("url", url).Msg("querying REST")
 	if err != nil {
 		return err
 	}

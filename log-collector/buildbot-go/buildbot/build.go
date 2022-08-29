@@ -37,17 +37,17 @@ type Build struct {
 // conjunction with postgresValueList() to get the values in the matching order.
 func (b Build) postgresFieldList() string {
 	return `
-	"build_buildid",        -- 1
-	"build_buildrequestid", -- 2
-	"build_complete",       -- 3
-	"build_masterid",       -- 4
-	"build_number",         -- 5
-	"build_results",        -- 6
-	"build_workerid",       -- 7
-	"build_state_string",   -- 8
-	"build_properties",     -- 9
-	"build_complete_at",    -- 10
-	"build_started_at"      -- 11
+	build_buildid,        -- 1
+	build_buildrequestid, -- 2
+	build_complete,       -- 3
+	build_masterid,       -- 4
+	build_number,         -- 5
+	build_results,        -- 6
+	build_workerid,       -- 7
+	build_state_string,   -- 8
+	build_properties,     -- 9
+	build_complete_at,    -- 10
+	build_started_at      -- 11
 	`
 }
 
@@ -73,14 +73,14 @@ func (b Build) postgresValueList() []interface{} {
 // build on duplicate entries.
 func (b Build) postgresOnUpdateSetList() string {
 	return `
-	"build_complete"     = excluded.build_complete,
-	"build_masterid"     = excluded.build_masterid,
-	"build_number"       = excluded.build_number,
-	"build_results"      = excluded.build_results,
-	"build_workerid"     = excluded.build_workerid,
-	"build_state_string" = excluded.build_state_string,
-	"build_properties"   = excluded.build_properties,
-	"build_complete_at"  = excluded.build_complete_at
+	build_complete     = excluded.build_complete,
+	build_masterid     = excluded.build_masterid,
+	build_number       = excluded.build_number,
+	build_results      = excluded.build_results,
+	build_workerid     = excluded.build_workerid,
+	build_state_string = excluded.build_state_string,
+	build_properties   = excluded.build_properties,
+	build_complete_at  = excluded.build_complete_at
 	`
 }
 
@@ -93,12 +93,20 @@ func (b *Buildbot) GetBuildsForBuilder(builderId int, greaterThanNumber int, bat
 	url := fmt.Sprintf(b.ApiBase+"/builders/%d/builds?number__gt=%d&limit=%d&order=number", builderId, greaterThanNumber, batchSize)
 	var res BuildsResponse
 	err := b.getRestApi(url, &res)
+	num_total_builds := 0
+	num_builds_in_batch := 0
+	if err == nil {
+		num_total_builds = res.Meta.Total
+		num_builds_in_batch = len(res.Builds)
+	}
 	b.Logger.Err(err).
 		Str("url", url).
 		Stack().
 		Int("builderId", builderId).
 		Int("greaterThanNumber", greaterThanNumber).
 		Int("batchSize", batchSize).
+		Int("num_total_builds", num_total_builds).
+		Int("num_builds_in_batch", num_builds_in_batch).
 		Msg("getting builds for builder")
 	return &res, err
 }

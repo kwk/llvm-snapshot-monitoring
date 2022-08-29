@@ -41,9 +41,6 @@ func main() {
 	}
 	fmt.Println(string(j))
 
-	// Out main object
-	// ---------------
-
 	// Setup Logging
 	// -------------
 
@@ -62,16 +59,14 @@ func main() {
 	// Connect to Database
 	// -------------------
 
-	dsn := fmt.Sprintf("host=%s port=%d user=%s "+
-		"password=%s dbname=%s sslmode=disable",
+	dsn := fmt.Sprintf(
+		"host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		*dbHost, *dbPort, *dbUser, *dbPass, *dbName)
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {
 		// This will not be a connection error, but a DSN parse error or
 		// another initialization error.
-		logger.Fatal().AnErr("error", err).Msg("unable to use data source name")
-		//Msg("unable to use data source name").AnErr("error", err)
-		// log.Print("hello world")
+		logger.Fatal().AnErr("error", err).Msg("unable to initialize postgres")
 	}
 	defer db.Close()
 
@@ -91,17 +86,30 @@ func main() {
 		panic(err)
 	}
 
-	builderName := "standalone-build-x86_64"
-	builder, _ := b.GetBuilderByName(builderName)
-	lastBuildNumber, _ := b.GetBuildersLastBuildNumber(builder.Builderid)
-	batchSize := 1
-	buildResp, _ := b.GetBuildsForBuilder(builder.Builderid, lastBuildNumber, batchSize)
-	fmt.Println(PrettyPrint(buildResp))
-	for _, build := range buildResp.Builds {
-		err = b.InsertOrUpdateBuildLog(*builder, build)
-		logger.Err(err).Msg("inserting or updating build log")
-	}
+	// builderName := "standalone-build-x86_64"
+	// builder, _ := b.GetBuilderByName(builderName)
+	// lastBuildNumber, _ := b.GetBuildersLastBuildNumber(builder.Builderid)
+	// batchSize := 1
+	// buildResp, _ := b.GetBuildsForBuilder(builder.Builderid, lastBuildNumber, batchSize)
+	// fmt.Println(PrettyPrint(buildResp))
+	// for _, build := range buildResp.Builds {
+	// 	err = b.InsertOrUpdateBuildLog(*builder, build)
+	// 	logger.Err(err).Msg("inserting or updating build log")
+	// }
 
+	allBuildersResp, err := b.GetAllBuilders()
+	if err != nil {
+		logger.Fatal().AnErr("error", err).Msg("failed to get all builders")
+	}
+	for _, builder := range allBuildersResp.Builders {
+		lastBuildNumber, _ := b.GetBuildersLastBuildNumber(builder.Builderid)
+		batchSize := 1
+		buildResp, _ := b.GetBuildsForBuilder(builder.Builderid, lastBuildNumber, batchSize)
+		for _, build := range buildResp.Builds {
+			err = b.InsertOrUpdateBuildLog(builder, build)
+			logger.Err(err).Msg("inserting or updating build log")
+		}
+	}
 	// lastNumber, err := b.GetBuildersLastBuildNumber(209)
 	// if err != nil {
 	// 	logger.Log().AnErr("error", err)
@@ -123,4 +131,10 @@ func main() {
 	// }
 	// _ = allBuilders
 	// fmt.Println(PrettyPrint(allBuilders))
+}
+
+// PrettyPrint to print struct in a readable way
+func PrettyPrint(i interface{}) string {
+	s, _ := json.MarshalIndent(i, "", "\t")
+	return string(s)
 }
