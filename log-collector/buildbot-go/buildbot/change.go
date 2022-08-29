@@ -1,5 +1,11 @@
 package buildbot
 
+import (
+	"fmt"
+
+	"github.com/pkg/errors"
+)
+
 type ChangesResponse struct {
 	Changes []Change `json:"changes"`
 	Meta    Meta     `json:"meta"`
@@ -36,4 +42,25 @@ type Change struct {
 	Revlink         string           `json:"revlink"`
 	Sourcestamp     Sourcestamp      `json:"sourcestamp"`
 	WhenTimestamp   int              `json:"when_timestamp"`
+}
+
+// GetChangeForBuild returns all the changes associated with a build.
+func (b *Buildbot) GetChangeForBuild(buildId int) (*ChangesResponse, error) {
+	url := fmt.Sprintf(b.ApiBase+"/builds/%d/changes", buildId)
+	var res ChangesResponse
+	err := b.getRestApi(url, &res)
+	num_total_changes := 0
+	num_changes_in_batch := 0
+	if err == nil {
+		num_total_changes = res.Meta.Total
+		num_changes_in_batch = len(res.Changes)
+	}
+	b.Logger.Err(err).
+		Str("url", url).
+		Stack().
+		Int("buildId", buildId).
+		Int("num_total_changes", num_total_changes).
+		Int("num_changes_in_batch", num_changes_in_batch).
+		Msg("getting changes for build")
+	return &res, errors.WithStack(err)
 }

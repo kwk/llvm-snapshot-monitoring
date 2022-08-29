@@ -32,6 +32,7 @@ type Build struct {
 	StartedAt      int64           `json:"started_at"`
 	StateString    string          `json:"state_string"`
 	Workerid       int             `json:"workerid"`
+	Changes        []Change        `json:"-"`
 }
 
 // postgresFieldList returns the list of field names that can be used in
@@ -48,7 +49,8 @@ func (b Build) postgresFieldList() string {
 	build_state_string,   -- 8
 	build_properties,     -- 9
 	build_complete_at,    -- 10
-	build_started_at      -- 11
+	build_started_at,     -- 11
+	changes               -- 12
 	`
 }
 

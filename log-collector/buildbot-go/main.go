@@ -101,7 +101,18 @@ func main() {
 		lastBuildNumber, _ := b.GetBuildersLastBuildNumber(builder.Builderid)
 		batchSize := 100 // -1 means infinity
 		buildResp, _ := b.GetBuildsForBuilder(builder.Builderid, lastBuildNumber, batchSize)
-		// for _, build := range buildResp.Builds {
+		// augment builds with change information
+		for i := 0; i < len(buildResp.Builds); i++ {
+			changesResp, err := b.GetChangeForBuild(buildResp.Builds[i].Buildid)
+			if err != nil {
+				logger.Fatal().
+					AnErr("error", err).
+					Int("buildId", buildResp.Builds[i].Buildid).
+					Msg("failed to get changes for build")
+			}
+			buildResp.Builds[i].Changes = changesResp.Changes
+		}
+		// insert builds into log DB
 		err = b.InsertOrUpdateBuildLogs(builder, buildResp.Builds...)
 		if err != nil {
 			logger.Fatal().
@@ -112,7 +123,6 @@ func main() {
 				Int("batchSize", batchSize).
 				Msg("failed to insert/update build log")
 		}
-		// }
 	}
 
 	// lastNumber, err := b.GetBuildersLastBuildNumber(209)
