@@ -11,7 +11,9 @@ import (
 	"buildbot-go/buildbot"
 
 	_ "github.com/lib/pq"
+	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
+	"golang.org/x/sync/errgroup"
 )
 
 func main() {
@@ -97,32 +99,42 @@ func main() {
 	if err != nil {
 		logger.Fatal().AnErr("error", err).Msg("failed to get all builders")
 	}
+
+	g := new(errgroup.Group)
+
 	for _, builder := range allBuildersResp.Builders {
-		lastBuildNumber, _ := b.GetBuildersLastBuildNumber(builder.Builderid)
-		batchSize := 1 // -1 means infinity
-		buildResp, _ := b.GetBuildsForBuilder(builder.Builderid, lastBuildNumber, batchSize)
-		// augment builds with change information
-		for i := 0; i < len(buildResp.Builds); i++ {
-			changesResp, err := b.GetChangeForBuild(buildResp.Builds[i].Buildid)
-			if err != nil {
-				logger.Fatal().
-					AnErr("error", err).
-					Int("buildId", buildResp.Builds[i].Buildid).
-					Msg("failed to get changes for build")
+		g.Go(func() error {
+			lastBuildNumber, _ := b.GetBuildersLastBuildNumber(builder.Builderid)
+			batchSize := 1 // -1 means infinity
+			buildResp, _ := b.GetBuildsForBuilder(builder.Builderid, lastBuildNumber, batchSize)
+			// augment builds with change information
+			for i := 0; i < len(buildResp.Builds); i++ {
+				changesResp, err := b.GetChangeForBuild(buildResp.Builds[i].Buildid)
+				if err != nil {
+					logger.Err(err).
+						Int("buildId", buildResp.Builds[i].Buildid).
+						Msg("failed to get changes for build")
+					return errors.WithStack(err)
+				}
+				buildResp.Builds[i].Changes = changesResp.Changes
 			}
-			buildResp.Builds[i].Changes = changesResp.Changes
-		}
-		// insert builds into log DB
-		err = b.InsertOrUpdateBuildLogs(builder, buildResp.Builds...)
-		if err != nil {
-			logger.Fatal().
-				AnErr("error", err).
-				Int("num_total_builds", buildResp.Meta.Total).
-				Int("num_builds_in_batch", len(buildResp.Builds)).
-				Int("builderId", builder.Builderid).
-				Int("batchSize", batchSize).
-				Msg("failed to insert/update build log")
-		}
+			// insert builds into log DB
+			err = b.InsertOrUpdateBuildLogs(builder, buildResp.Builds...)
+			if err != nil {
+				logger.Err(err).
+					Int("num_total_builds", buildResp.Meta.Total).
+					Int("num_builds_in_batch", len(buildResp.Builds)).
+					Int("builderId", builder.Builderid).
+					Int("batchSize", batchSize).
+					Msg("failed to insert/update build log")
+				return errors.WithStack(err)
+			}
+			return nil
+		})
+	}
+
+	if err != g.Wait(); err != nil {
+		logger.Fatal().AnErr("error", err).Stack().Msg("and error occured")
 	}
 
 	// lastNumber, err := b.GetBuildersLastBuildNumber(209)
