@@ -1,14 +1,24 @@
 package buildbot
 
 import (
+	"database/sql/driver"
+	"encoding/json"
 	"fmt"
 
 	"github.com/pkg/errors"
 )
 
+type ChangeList []Change
+
+// ChangeList implements the driver.Valuer interface. This method
+// simply returns the JSON-encoded representation of the struct.
+func (a ChangeList) Value() (driver.Value, error) {
+	return json.Marshal(a)
+}
+
 type ChangesResponse struct {
-	Changes []Change `json:"changes"`
-	Meta    Meta     `json:"meta"`
+	Changes ChangeList `json:"changes"`
+	Meta    Meta       `json:"meta"`
 }
 
 type ChangeProperties struct {

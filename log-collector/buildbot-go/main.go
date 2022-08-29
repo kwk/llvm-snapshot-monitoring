@@ -99,7 +99,7 @@ func main() {
 	}
 	for _, builder := range allBuildersResp.Builders {
 		lastBuildNumber, _ := b.GetBuildersLastBuildNumber(builder.Builderid)
-		batchSize := 100 // -1 means infinity
+		batchSize := 1 // -1 means infinity
 		buildResp, _ := b.GetBuildsForBuilder(builder.Builderid, lastBuildNumber, batchSize)
 		// augment builds with change information
 		for i := 0; i < len(buildResp.Builds); i++ {

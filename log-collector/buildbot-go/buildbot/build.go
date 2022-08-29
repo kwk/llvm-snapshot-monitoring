@@ -32,7 +32,7 @@ type Build struct {
 	StartedAt      int64           `json:"started_at"`
 	StateString    string          `json:"state_string"`
 	Workerid       int             `json:"workerid"`
-	Changes        []Change        `json:"-"`
+	Changes        ChangeList      `json:"-"`
 }
 
 // postgresFieldList returns the list of field names that can be used in
@@ -69,6 +69,7 @@ func (b Build) postgresValueList() []interface{} {
 		"{}",             // 9 aka b.Properties
 		pq.FormatTimestamp(time.Unix(b.CompleteAt, 0)), // 10
 		pq.FormatTimestamp(time.Unix(b.StartedAt, 0)),  // 11
+		b.Changes, // 12
 	}
 }
 
@@ -83,7 +84,8 @@ func (b Build) postgresOnUpdateSetList() string {
 	build_workerid     = excluded.build_workerid,
 	build_state_string = excluded.build_state_string,
 	build_properties   = excluded.build_properties,
-	build_complete_at  = excluded.build_complete_at
+	build_complete_at  = excluded.build_complete_at,
+	changes            = excluded.changes
 	`
 }
 
