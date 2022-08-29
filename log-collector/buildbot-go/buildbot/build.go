@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/lib/pq"
+	"github.com/pkg/errors"
 )
 
 // See https://lab.llvm.org/staging/api/v2/builders/209/builds?number__gt=219&limit=2&order=number
@@ -55,7 +56,7 @@ func (b Build) postgresFieldList() string {
 // fields as defined by postgresFieldList().
 func (b Build) postgresValueList() []interface{} {
 	return []interface{}{
-		b.Builderid,      // 1
+		b.Buildid,        // 1
 		b.Buildrequestid, // 2
 		b.Complete,       // 3
 		b.Masterid,       // 4
@@ -88,9 +89,14 @@ func (b Build) postgresOnUpdateSetList() string {
 // have a number that is greater than the provided number. The amount of builds
 // returned is not greater than the provided batch size. TODO(kwk): Check
 // Meta.Total and if it matches batchSize. If it doesn't stop querying for more.
-// return false if there're no more entries to fetch
+// return false if there're no more entries to fetch.
+// NOTE: a batchSize of 0 or below means "inifity"
 func (b *Buildbot) GetBuildsForBuilder(builderId int, greaterThanNumber int, batchSize int) (*BuildsResponse, error) {
-	url := fmt.Sprintf(b.ApiBase+"/builders/%d/builds?number__gt=%d&limit=%d&order=number", builderId, greaterThanNumber, batchSize)
+	limit := fmt.Sprintf("&limit=%d", batchSize)
+	if batchSize <= 0 {
+		limit = ""
+	}
+	url := fmt.Sprintf(b.ApiBase+"/builders/%d/builds?number__gt=%d&order=number%s", builderId, greaterThanNumber, limit)
 	var res BuildsResponse
 	err := b.getRestApi(url, &res)
 	num_total_builds := 0
@@ -108,5 +114,14 @@ func (b *Buildbot) GetBuildsForBuilder(builderId int, greaterThanNumber int, bat
 		Int("num_total_builds", num_total_builds).
 		Int("num_builds_in_batch", num_builds_in_batch).
 		Msg("getting builds for builder")
-	return &res, err
+	return &res, errors.WithStack(err)
+}
+
+// GetBuildersLastBuildNumber returns the highest build number for a given
+// builder by Id in our database. Only builds that are `Complete` are respected.
+func (b *Buildbot) GetBuildersLastBuildNumber(builderId int) (int, error) {
+	var lastNumber int = 0
+	err := b.preparedStatements[getMaxBuildNumerStmt].QueryRow(builderId, b.Instance).Scan(&lastNumber)
+	b.Logger.Err(err).Int("builderId", builderId).Msg("getting last build number for builder")
+	return lastNumber, errors.WithStack(err)
 }

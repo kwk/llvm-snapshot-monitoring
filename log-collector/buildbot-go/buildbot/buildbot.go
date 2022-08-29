@@ -10,6 +10,7 @@ import (
 	"sync"
 
 	_ "github.com/lib/pq"
+	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 )
 
@@ -50,7 +51,7 @@ func New(Instance string, ApiBase string, Db *sql.DB, Logger zerolog.Logger) (*B
 		Str("ApiBase", ApiBase).
 		Str("instance", Instance).
 		Msg("creating new buildbot object")
-	return b, err
+	return b, errors.WithStack(err)
 }
 
 // Close closes the database connection and all prepared statements.
@@ -59,12 +60,12 @@ func (b *Buildbot) Close() error {
 		err := stmt.Close()
 		b.Logger.Debug().AnErr("error", err).Str("name", name).Msg("closing prepared statement")
 		if err != nil {
-			return err
+			return errors.WithStack(err)
 		}
 	}
 	err := b.Db.Close()
 	b.Logger.Debug().AnErr("error", err).Msg("closing database connection")
-	return err
+	return errors.WithStack(err)
 }
 
 const (
@@ -78,7 +79,7 @@ func (b *Buildbot) prepareStatements() error {
 	b.preparedStatements = make(map[string]*sql.Stmt)
 
 	b.preparedStatements[getMaxBuildNumerStmt], err = b.Db.Prepare(`
-	SELECT max(build_number)
+	SELECT COALESCE(max(build_number), 0)
 	FROM buildbot_build_logs
 	WHERE
 	  build_complete_at IS NOT NULL 
@@ -86,55 +87,71 @@ func (b *Buildbot) prepareStatements() error {
 	  AND buildbot_instance=$2`)
 	b.Logger.Debug().AnErr("error", err).Str("name", getMaxBuildNumerStmt).Msg("creating prepared statement")
 	if err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 
 	return nil
 }
 
-// GetBuildersLastBuildNumber returns the highest build number for a given
-// builder by Id in our database. Only builds that are `Complete` are respected.
-func (b *Buildbot) GetBuildersLastBuildNumber(builderId int) (int, error) {
-	var lastNumber int
-	err := b.preparedStatements[getMaxBuildNumerStmt].QueryRow(builderId, b.Instance).Scan(&lastNumber)
-	if err != nil {
-		return 0, err
+func (b *Buildbot) InsertOrUpdateBuildLogs(builder Builder, builds ...Build) error {
+	if len(builds) == 0 {
+		return nil
 	}
-	return lastNumber, nil
-}
 
-func (b *Buildbot) InsertOrUpdateBuildLog(builder Builder, build Build) error {
+	placeholderListArr := []string{}
+	placeholderNumberContinuous := 0
 	params := []interface{}{}
-	params = append(params, builder.postgresValueList()...)
-	params = append(params, build.postgresValueList()...)
-	params = append(params, b.Instance)
+	paramsLen := 0
 
-	// Create placeholder list (e.g. $1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
-	// NOTE: Postgres counts placeholders beginning at 1 NOT 0.
-	placeholderList := make([]string, len(params))
-	for i := 0; i < len(placeholderList); i++ {
-		placeholderList[i] = fmt.Sprintf("$%d", i+1)
+	for bId, build := range builds {
+		// fmt.Printf("XXX builder_builderid=%d build_buildid=%d buildbot_instance=%s\n", build.Builderid, build.Buildid, b.Instance)
+
+		params = append(params, builder.postgresValueList()...)
+		params = append(params, build.postgresValueList()...)
+		params = append(params, b.Instance)
+		if bId == 0 {
+			paramsLen = len(params)
+		}
+
+		// Create placeholder list (e.g. $1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+		// NOTE: Postgres counts placeholders beginning at 1 NOT 0.
+
+		placeholderList := make([]string, paramsLen)
+		for i := 0; i < len(placeholderList); i++ {
+			placeholderNumberContinuous++
+			placeholderList[i] = fmt.Sprintf("$%d", placeholderNumberContinuous)
+		}
+		placeholderListArr = append(placeholderListArr, "("+strings.Join(placeholderList, ",")+")\n")
 	}
-	placeholderListStr := strings.Join(placeholderList, ",")
 
 	query := `
-	INSERT INTO buildbot_build_logs (
-	` + builder.postgresFieldList() + "," + build.postgresFieldList() + "," + "buildbot_instance" +
-		`) VALUES(
-		` + placeholderListStr + `
-	)
-	ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
-	DO UPDATE SET
-		` + builder.postgresOnUpdateSetList() + `,
-		` + build.postgresOnUpdateSetList() + `,
-		buildbot_instance=excluded.buildbot_instance
-	;
-	`
+		INSERT INTO buildbot_build_logs (
+		` + builder.postgresFieldList() + "," + builds[0].postgresFieldList() + "," + "buildbot_instance" +
+		`) VALUES
+		` + strings.Join(placeholderListArr, ",") + `
+		ON CONFLICT ON CONSTRAINT buildbot_build_logs_pkey
+		DO UPDATE SET
+			` + builder.postgresOnUpdateSetList() + `,
+			` + builds[0].postgresOnUpdateSetList() + `,
+			buildbot_instance=excluded.buildbot_instance
+		;`
 
+	// stmt, err := b.Db.Prepare(query)
+	// if err != nil {
+	// 	b.Logger.Err(err).Stack().
+	// 		Str("builderName", builder.Name).
+	// 		Str("query", query).
+	// 		Msg("failed to prepare statement")
+	// }
+	// _, err = stmt.Exec(params...)
 	_, err := b.Db.Exec(query, params...)
+	// spew.Dump(params)
 
-	b.Logger.Err(err).Stack().Int("buildId", build.Buildid).Str("builderName", builder.Name).Str("query", query).Msg("inserting or updating build log")
-	return err
+	b.Logger.Err(err).Stack().
+		Str("builderName", builder.Name).
+		// Str("query", query).
+		Msg("inserting or updating build logs")
+	return errors.WithStack(err)
 }
 
 // getRestApi performs an HTTP GET request on the given URL and tries to
@@ -144,15 +161,15 @@ func (b *Buildbot) getRestApi(url string, target interface{}) error {
 	resp, err := http.Get(url)
 	b.Logger.Debug().AnErr("error", err).Str("url", url).Msg("querying REST")
 	if err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 	if err := json.Unmarshal(body, &target); err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 	return nil
 }

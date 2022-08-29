@@ -34,17 +34,13 @@ func main() {
 
 	flag.Parse()
 
-	bp := buildbot.BuildProperties{}
-	j, err := json.MarshalIndent(bp, "  ", "  ")
-	if err != nil {
-		panic(nil)
-	}
-	fmt.Println(string(j))
-
 	// Setup Logging
 	// -------------
 
 	logger := zerolog.New(os.Stderr).With().Timestamp().Logger()
+
+	// Add file and line number to loghttps://github.com/rs/zerolog#add-file-and-line-number-to-log
+	logger = logger.With().Caller().Logger()
 
 	// Default level for this example is info, unless debug flag is present
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
@@ -83,7 +79,7 @@ func main() {
 
 	b, err := buildbot.New(*buildbotInstance, *buildbotApiBase, db, logger)
 	if err != nil {
-		panic(err)
+		logger.Fatal().AnErr("error", err).Msg("failed to construct main buildbot object")
 	}
 
 	// builderName := "standalone-build-x86_64"
@@ -103,13 +99,22 @@ func main() {
 	}
 	for _, builder := range allBuildersResp.Builders {
 		lastBuildNumber, _ := b.GetBuildersLastBuildNumber(builder.Builderid)
-		batchSize := 1
+		batchSize := 100 // -1 means infinity
 		buildResp, _ := b.GetBuildsForBuilder(builder.Builderid, lastBuildNumber, batchSize)
-		for _, build := range buildResp.Builds {
-			err = b.InsertOrUpdateBuildLog(builder, build)
-			logger.Err(err).Msg("inserting or updating build log")
+		// for _, build := range buildResp.Builds {
+		err = b.InsertOrUpdateBuildLogs(builder, buildResp.Builds...)
+		if err != nil {
+			logger.Fatal().
+				AnErr("error", err).
+				Int("num_total_builds", buildResp.Meta.Total).
+				Int("num_builds_in_batch", len(buildResp.Builds)).
+				Int("builderId", builder.Builderid).
+				Int("batchSize", batchSize).
+				Msg("failed to insert/update build log")
 		}
+		// }
 	}
+
 	// lastNumber, err := b.GetBuildersLastBuildNumber(209)
 	// if err != nil {
 	// 	logger.Log().AnErr("error", err)

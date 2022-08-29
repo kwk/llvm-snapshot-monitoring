@@ -1,9 +1,8 @@
 package buildbot
 
 import (
-	"fmt"
-
 	"github.com/lib/pq"
+	"github.com/pkg/errors"
 )
 
 // See https://lab.llvm.org/staging/api/v2/builders
@@ -65,7 +64,7 @@ func (b *Buildbot) GetAllBuilders() (*BuildersResponse, error) {
 	if b.allBuilders == nil {
 		url := b.ApiBase + "/builders"
 		err := b.getRestApi(url, &b.allBuilders)
-		num_total_builders := -1
+		num_total_builders := 0
 		if err == nil {
 			num_total_builders = b.allBuilders.Meta.Total
 		}
@@ -73,6 +72,9 @@ func (b *Buildbot) GetAllBuilders() (*BuildersResponse, error) {
 			Str("url", url).
 			Int("num_total_builders", num_total_builders).
 			Msg("getting all builders")
+		if err != nil {
+			return b.allBuilders, errors.WithStack(err)
+		}
 
 		// build a LUT by Id and name for faster lookups
 		b.buildersById = make(builderByIdMap)
@@ -103,11 +105,11 @@ func (b *Buildbot) GetBuilderById(builderId int) (*Builder, error) {
 		Int("builderId", builderId).
 		Msg("getting builder by Id")
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 	builder, ok := b.buildersById[builderId]
 	if !ok {
-		return nil, fmt.Errorf("failed to find builder with Id: %d", builderId)
+		return nil, errors.Errorf("failed to find builder with Id: %d", builderId)
 	}
 	return &builder, nil
 }
@@ -123,11 +125,11 @@ func (b *Buildbot) GetBuilderByName(builderName string) (*Builder, error) {
 		Str("builderName", builderName).
 		Msg("getting builder by name")
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 	builder, ok := b.buildersByName[builderName]
 	if !ok {
-		return nil, fmt.Errorf("failed to find builder with name: %s", builderName)
+		return nil, errors.Errorf("failed to find builder with name: %s", builderName)
 	}
 	return &builder, nil
 }
@@ -143,11 +145,11 @@ func (b *Buildbot) GetBuildersByTag(tag string) ([]Builder, error) {
 		Str("tag", tag).
 		Msg("getting builders by tag")
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 	builders, ok := b.buildersByTag[tag]
 	if !ok {
-		return nil, fmt.Errorf("failed to find builders with tag: %s", tag)
+		return nil, errors.Errorf("failed to find builders with tag: %s", tag)
 	}
 	return builders, nil
 }
