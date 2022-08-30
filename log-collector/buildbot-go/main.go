@@ -182,60 +182,57 @@ func main() {
 
 	// Producers
 	buildersLeftToProcess := int32(len(allBuildersResp.Builders))
-	for idx, builder := range allBuildersResp.Builders {
+	for _, builder := range allBuildersResp.Builders {
 		myBuilder := builder
-
-		if idx < 3 {
-			g.Go(func() error {
-				logger.Debug().Str("builderName", myBuilder.Name).Msgf("starting build producer")
-				defer logger.Debug().Str("builderName", myBuilder.Name).Msgf("exiting build producer")
-				defer func() {
-					// Last one out closes shop
-					logger.Debug().Msgf("decreasing buildersLeftToProcess: %d", buildersLeftToProcess)
-					if atomic.AddInt32(&buildersLeftToProcess, -1) == 0 {
-						logger.Debug().Msg("closing buildChan")
-						close(buildChan)
-					}
-					logger.Debug().Msgf("done decreasing buildersLeftToProcess: %d", buildersLeftToProcess)
-				}()
-				logger.Debug().Int("builderId", myBuilder.Builderid).Msg("processing builder")
-				lastBuildNumber, err := b.GetBuildersLastBuildNumber(myBuilder.Builderid)
-				if err != nil {
-					return errors.WithStack(err)
+		g.Go(func() error {
+			logger.Debug().Str("builderName", myBuilder.Name).Msgf("starting build producer")
+			defer logger.Debug().Str("builderName", myBuilder.Name).Msgf("exiting build producer")
+			defer func() {
+				// Last one out closes shop
+				logger.Debug().Msgf("decreasing buildersLeftToProcess: %d", buildersLeftToProcess)
+				if atomic.AddInt32(&buildersLeftToProcess, -1) == 0 {
+					logger.Debug().Msg("closing buildChan")
+					close(buildChan)
 				}
-				buildResp, err := b.GetBuildsForBuilder(myBuilder.Builderid, lastBuildNumber, batchSize)
-				if err != nil {
-					return errors.WithStack(err)
+				logger.Debug().Msgf("done decreasing buildersLeftToProcess: %d", buildersLeftToProcess)
+			}()
+			logger.Debug().Int("builderId", myBuilder.Builderid).Msg("processing builder")
+			lastBuildNumber, err := b.GetBuildersLastBuildNumber(myBuilder.Builderid)
+			if err != nil {
+				return errors.WithStack(err)
+			}
+			buildResp, err := b.GetBuildsForBuilder(myBuilder.Builderid, lastBuildNumber, batchSize)
+			if err != nil {
+				return errors.WithStack(err)
+			}
+			// augment builds with change information
+			numBuilds := len(buildResp.Builds)
+			for i := 0; i < numBuilds; i++ {
+				select {
+				case <-gctx.Done():
+					logger.Debug().Msg("context is done")
+					return errors.WithStack(gctx.Err())
+				default:
 				}
-				// augment builds with change information
-				numBuilds := len(buildResp.Builds)
-				for i := 0; i < numBuilds; i++ {
-					select {
-					case <-gctx.Done():
-						logger.Debug().Msg("context is done")
-						return errors.WithStack(gctx.Err())
-					default:
-					}
-					logger.Debug().
+				logger.Debug().
+					Int("buildId", buildResp.Builds[i].Buildid).
+					Msgf("getting changes for %d/%d builds", i+1, numBuilds)
+				changesResp, err := b.GetChangesForBuild(buildResp.Builds[i].Buildid)
+				if err != nil {
+					logger.Err(err).
 						Int("buildId", buildResp.Builds[i].Buildid).
-						Msgf("getting changes for %d/%d builds", i+1, numBuilds)
-					changesResp, err := b.GetChangesForBuild(buildResp.Builds[i].Buildid)
-					if err != nil {
-						logger.Err(err).
-							Int("buildId", buildResp.Builds[i].Buildid).
-							Stack().
-							Msg("failed to get changes for build")
-						return errors.WithStack(err)
-					}
-					buildResp.Builds[i].Changes = changesResp.Changes
-
-					logger.Debug().Msg("sending build to channel")
-					buildChan <- buildResp.Builds[i]
-					logger.Debug().Msg("done sending build to channel")
+						Stack().
+						Msg("failed to get changes for build")
+					return errors.WithStack(err)
 				}
-				return nil
-			})
-		}
+				buildResp.Builds[i].Changes = changesResp.Changes
+
+				logger.Debug().Msg("sending build to channel")
+				buildChan <- buildResp.Builds[i]
+				logger.Debug().Msg("done sending build to channel")
+			}
+			return nil
+		})
 	}
 
 	// wait for all errgroup goroutines
