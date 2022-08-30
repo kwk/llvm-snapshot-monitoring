@@ -56,7 +56,7 @@ type Change struct {
 
 // GetChangeForBuild returns all the changes associated with a build.
 func (b *Buildbot) GetChangeForBuild(buildId int) (*ChangesResponse, error) {
-	url := fmt.Sprintf(b.ApiBase+"/builds/%d/changes", buildId)
+	url := fmt.Sprintf(b.ApiBase+"/builds/%d/changes?order=when_timestamp", buildId)
 	var res ChangesResponse
 	err := b.getRestApi(url, &res)
 	num_total_changes := 0

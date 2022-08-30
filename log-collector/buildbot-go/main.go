@@ -103,10 +103,11 @@ func main() {
 	g := new(errgroup.Group)
 
 	for _, builder := range allBuildersResp.Builders {
+		myBuilder := builder
 		g.Go(func() error {
-			lastBuildNumber, _ := b.GetBuildersLastBuildNumber(builder.Builderid)
-			batchSize := 1 // -1 means infinity
-			buildResp, _ := b.GetBuildsForBuilder(builder.Builderid, lastBuildNumber, batchSize)
+			lastBuildNumber, _ := b.GetBuildersLastBuildNumber(myBuilder.Builderid)
+			batchSize := 100 // -1 means infinity
+			buildResp, _ := b.GetBuildsForBuilder(myBuilder.Builderid, lastBuildNumber, batchSize)
 			// augment builds with change information
 			for i := 0; i < len(buildResp.Builds); i++ {
 				changesResp, err := b.GetChangeForBuild(buildResp.Builds[i].Buildid)
@@ -119,12 +120,12 @@ func main() {
 				buildResp.Builds[i].Changes = changesResp.Changes
 			}
 			// insert builds into log DB
-			err = b.InsertOrUpdateBuildLogs(builder, buildResp.Builds...)
+			err = b.InsertOrUpdateBuildLogs(myBuilder, buildResp.Builds...)
 			if err != nil {
 				logger.Err(err).
 					Int("num_total_builds", buildResp.Meta.Total).
 					Int("num_builds_in_batch", len(buildResp.Builds)).
-					Int("builderId", builder.Builderid).
+					Int("builderId", myBuilder.Builderid).
 					Int("batchSize", batchSize).
 					Msg("failed to insert/update build log")
 				return errors.WithStack(err)
@@ -133,7 +134,7 @@ func main() {
 		})
 	}
 
-	if err != g.Wait(); err != nil {
+	if err := g.Wait(); err != nil {
 		logger.Fatal().AnErr("error", err).Stack().Msg("and error occured")
 	}
 

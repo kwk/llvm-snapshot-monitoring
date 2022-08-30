@@ -72,7 +72,24 @@ CREATE TABLE "public"."buildbot_build_logs" (
     "build_time_secs" bigint GENERATED ALWAYS AS (EXTRACT(epoch FROM build_complete_at) - EXTRACT(epoch FROM build_started_at)) STORED,
 
     "changes" jsonb NOT NULL DEFAULT '{}'::jsonb,
-    "num_changes" integer NOT NULL GENERATED ALWAYS AS (jsonb_array_length(changes)) STORED,
+    "num_changes" integer NOT NULL GENERATED ALWAYS AS (
+        jsonb_array_length(changes)
+    ) STORED,
+    "first_change_committed" timestamp  NOT NULL GENERATED ALWAYS AS (
+        to_timestamp(CAST(COALESCE(changes[0]->>'when_timestamp', '0'::text) AS INTEGER))
+    ) STORED,
+    "secs_from_commit_to_build_started" BIGINT GENERATED ALWAYS AS (
+        CASE jsonb_array_length(changes)
+            WHEN 0 THEN -1 
+            ELSE EXTRACT(epoch FROM build_started_at) - CAST(changes[0]->>'when_timestamp' AS BIGINT)
+            END            
+    ) STORED,
+    "secs_from_commit_to_build_complete" BIGINT GENERATED ALWAYS AS (
+        CASE jsonb_array_length(changes)
+            WHEN 0 THEN -1 
+            ELSE EXTRACT(epoch FROM build_complete_at) - CAST(changes[0]->>'when_timestamp' AS BIGINT)
+            END            
+    ) STORED,
 
     CONSTRAINT "buildbot_build_logs_pkey" PRIMARY KEY ("builder_builderid", "build_buildid", "buildbot_instance")
 );
