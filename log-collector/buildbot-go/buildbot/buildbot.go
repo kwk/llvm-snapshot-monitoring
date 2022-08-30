@@ -22,10 +22,10 @@ type buildersByTagMap map[string][]Builder
 // instance. It has messages to get builders, their builds, and associated
 // changes.
 type Buildbot struct {
-	Instance string         // either "buildbot" or "staging"
-	ApiBase  string         // the HTTP Rest endpoint to use
-	Db       *sql.DB        // a database handle ready to use
-	Logger   zerolog.Logger // a logger ready to use
+	instance string         // either "buildbot" or "staging"
+	apiBase  string         // the HTTP Rest endpoint to use
+	db       *sql.DB        // a database handle ready to use
+	logger   zerolog.Logger // a logger ready to use
 
 	preparedStatements map[string]*sql.Stmt // see GetBuildersLastBuildNumber
 	// getMaxBuildNumerStmt *sql.Stmt // see GetBuildersLastBuildNumber
@@ -39,17 +39,17 @@ type Buildbot struct {
 
 // New returns a new Buildbot object which allows you to talk to the Buildbot's
 // REST API as well as to the Logging Database.
-func New(Instance string, ApiBase string, Db *sql.DB, Logger zerolog.Logger) (*Buildbot, error) {
+func New(instance string, apiBase string, db *sql.DB, logger zerolog.Logger) (*Buildbot, error) {
 	b := &Buildbot{
-		Instance: Instance,
-		ApiBase:  ApiBase,
-		Db:       Db,
-		Logger:   Logger,
+		instance: instance,
+		apiBase:  apiBase,
+		db:       db,
+		logger:   logger,
 	}
 	err := b.prepareStatements()
-	b.Logger.Err(err).
-		Str("ApiBase", ApiBase).
-		Str("instance", Instance).
+	b.logger.Err(err).
+		Str("ApiBase", apiBase).
+		Str("instance", instance).
 		Msg("creating new buildbot object")
 	return b, errors.WithStack(err)
 }
@@ -58,13 +58,13 @@ func New(Instance string, ApiBase string, Db *sql.DB, Logger zerolog.Logger) (*B
 func (b *Buildbot) Close() error {
 	for name, stmt := range b.preparedStatements {
 		err := stmt.Close()
-		b.Logger.Debug().AnErr("error", err).Str("name", name).Msg("closing prepared statement")
+		b.logger.Debug().AnErr("error", err).Str("name", name).Msg("closing prepared statement")
 		if err != nil {
 			return errors.WithStack(err)
 		}
 	}
-	err := b.Db.Close()
-	b.Logger.Debug().AnErr("error", err).Msg("closing database connection")
+	err := b.db.Close()
+	b.logger.Debug().AnErr("error", err).Msg("closing database connection")
 	return errors.WithStack(err)
 }
 
@@ -78,14 +78,14 @@ func (b *Buildbot) prepareStatements() error {
 	var err error
 	b.preparedStatements = make(map[string]*sql.Stmt)
 
-	b.preparedStatements[getMaxBuildNumerStmt], err = b.Db.Prepare(`
+	b.preparedStatements[getMaxBuildNumerStmt], err = b.db.Prepare(`
 	SELECT COALESCE(max(build_number), 0)
 	FROM buildbot_build_logs
 	WHERE
 	  build_complete_at IS NOT NULL 
 	  AND builder_builderid=$1 
 	  AND buildbot_instance=$2`)
-	b.Logger.Debug().AnErr("error", err).Str("name", getMaxBuildNumerStmt).Msg("creating prepared statement")
+	b.logger.Debug().AnErr("error", err).Str("name", getMaxBuildNumerStmt).Msg("creating prepared statement")
 	if err != nil {
 		return errors.WithStack(err)
 	}
@@ -108,7 +108,7 @@ func (b *Buildbot) InsertOrUpdateBuildLogs(builder Builder, builds ...Build) err
 
 		params = append(params, builder.postgresValueList()...)
 		params = append(params, build.postgresValueList()...)
-		params = append(params, b.Instance)
+		params = append(params, b.instance)
 		if bId == 0 {
 			paramsLen = len(params)
 		}
@@ -144,10 +144,10 @@ func (b *Buildbot) InsertOrUpdateBuildLogs(builder Builder, builds ...Build) err
 	// 		Msg("failed to prepare statement")
 	// }
 	// _, err = stmt.Exec(params...)
-	_, err := b.Db.Exec(query, params...)
+	_, err := b.db.Exec(query, params...)
 	// spew.Dump(params)
 
-	b.Logger.Err(err).Stack().
+	b.logger.Err(err).Stack().
 		Str("builderName", builder.Name).
 		// Str("query", query).
 		Msg("inserting or updating build logs")
@@ -159,7 +159,7 @@ func (b *Buildbot) InsertOrUpdateBuildLogs(builder Builder, builds ...Build) err
 // pointer to a target type to properly unmarshall into the target.
 func (b *Buildbot) getRestApi(url string, target interface{}) error {
 	resp, err := http.Get(url)
-	b.Logger.Debug().AnErr("error", err).Str("url", url).Msg("querying REST")
+	b.logger.Debug().AnErr("error", err).Str("url", url).Msg("querying REST")
 	if err != nil {
 		return errors.WithStack(err)
 	}

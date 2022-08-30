@@ -100,7 +100,7 @@ func (b *Buildbot) GetBuildsForBuilder(builderId int, greaterThanNumber int, bat
 	if batchSize <= 0 {
 		limit = ""
 	}
-	url := fmt.Sprintf(b.ApiBase+"/builders/%d/builds?number__gt=%d&order=number%s", builderId, greaterThanNumber, limit)
+	url := fmt.Sprintf(b.apiBase+"/builders/%d/builds?number__gt=%d&order=number%s", builderId, greaterThanNumber, limit)
 	var res BuildsResponse
 	err := b.getRestApi(url, &res)
 	num_total_builds := 0
@@ -109,7 +109,7 @@ func (b *Buildbot) GetBuildsForBuilder(builderId int, greaterThanNumber int, bat
 		num_total_builds = res.Meta.Total
 		num_builds_in_batch = len(res.Builds)
 	}
-	b.Logger.Err(err).
+	b.logger.Err(err).
 		Str("url", url).
 		Stack().
 		Int("builderId", builderId).
@@ -125,7 +125,7 @@ func (b *Buildbot) GetBuildsForBuilder(builderId int, greaterThanNumber int, bat
 // builder by Id in our database. Only builds that are `Complete` are respected.
 func (b *Buildbot) GetBuildersLastBuildNumber(builderId int) (int, error) {
 	var lastNumber int = 0
-	err := b.preparedStatements[getMaxBuildNumerStmt].QueryRow(builderId, b.Instance).Scan(&lastNumber)
-	b.Logger.Err(err).Int("builderId", builderId).Msg("getting last build number for builder")
+	err := b.preparedStatements[getMaxBuildNumerStmt].QueryRow(builderId, b.instance).Scan(&lastNumber)
+	b.logger.Err(err).Int("builderId", builderId).Msg("getting last build number for builder")
 	return lastNumber, errors.WithStack(err)
 }
