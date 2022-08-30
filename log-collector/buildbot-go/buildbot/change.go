@@ -54,8 +54,8 @@ type Change struct {
 	WhenTimestamp   int              `json:"when_timestamp"`
 }
 
-// GetChangeForBuild returns all the changes associated with a build.
-func (b *Buildbot) GetChangeForBuild(buildId int) (*ChangesResponse, error) {
+// GetChangesForBuild returns all the changes associated with a build.
+func (b *Buildbot) GetChangesForBuild(buildId int) (*ChangesResponse, error) {
 	url := fmt.Sprintf(b.apiBase+"/builds/%d/changes?order=when_timestamp", buildId)
 	var res ChangesResponse
 	err := b.getRestApi(url, &res)

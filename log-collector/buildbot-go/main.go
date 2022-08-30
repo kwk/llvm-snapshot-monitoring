@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -84,23 +83,13 @@ func main() {
 		logger.Fatal().AnErr("error", err).Msg("failed to construct main buildbot object")
 	}
 
-	// builderName := "standalone-build-x86_64"
-	// builder, _ := b.GetBuilderByName(builderName)
-	// lastBuildNumber, _ := b.GetBuildersLastBuildNumber(builder.Builderid)
-	// batchSize := 1
-	// buildResp, _ := b.GetBuildsForBuilder(builder.Builderid, lastBuildNumber, batchSize)
-	// fmt.Println(PrettyPrint(buildResp))
-	// for _, build := range buildResp.Builds {
-	// 	err = b.InsertOrUpdateBuildLog(*builder, build)
-	// 	logger.Err(err).Msg("inserting or updating build log")
-	// }
-
 	allBuildersResp, err := b.GetAllBuilders()
 	if err != nil {
 		logger.Fatal().AnErr("error", err).Msg("failed to get all builders")
 	}
 
 	g := new(errgroup.Group)
+	g.SetLimit(10) // limit the number of active goroutines
 
 	for _, builder := range allBuildersResp.Builders {
 		myBuilder := builder
@@ -110,7 +99,7 @@ func main() {
 			buildResp, _ := b.GetBuildsForBuilder(myBuilder.Builderid, lastBuildNumber, batchSize)
 			// augment builds with change information
 			for i := 0; i < len(buildResp.Builds); i++ {
-				changesResp, err := b.GetChangeForBuild(buildResp.Builds[i].Buildid)
+				changesResp, err := b.GetChangesForBuild(buildResp.Builds[i].Buildid)
 				if err != nil {
 					logger.Err(err).
 						Int("buildId", buildResp.Builds[i].Buildid).
@@ -137,32 +126,4 @@ func main() {
 	if err := g.Wait(); err != nil {
 		logger.Fatal().AnErr("error", err).Stack().Msg("and error occured")
 	}
-
-	// lastNumber, err := b.GetBuildersLastBuildNumber(209)
-	// if err != nil {
-	// 	logger.Log().AnErr("error", err)
-	// }
-	// fmt.Println("Last number: ", lastNumber)
-	// res, err := b.GetBuildsForBuilder(209, lastNumber, 2)
-	// if err != nil {
-	// 	logger.Log().AnErr("error", err)
-	// }
-	// fmt.Println(PrettyPrint(res))
-
-	// allBuilders, err := b.GetAllBuilders()
-	// if err != nil {
-	// 	logger.Log().AnErr("error", err)
-	// }
-	// _, err = b.GetAllBuilders()
-	// if err != nil {
-	// 	logger.Log().AnErr("error", err)
-	// }
-	// _ = allBuilders
-	// fmt.Println(PrettyPrint(allBuilders))
-}
-
-// PrettyPrint to print struct in a readable way
-func PrettyPrint(i interface{}) string {
-	s, _ := json.MarshalIndent(i, "", "\t")
-	return string(s)
 }

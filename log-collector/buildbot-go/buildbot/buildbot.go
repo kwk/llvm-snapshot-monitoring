@@ -28,7 +28,6 @@ type Buildbot struct {
 	logger   zerolog.Logger // a logger ready to use
 
 	preparedStatements map[string]*sql.Stmt // see GetBuildersLastBuildNumber
-	// getMaxBuildNumerStmt *sql.Stmt // see GetBuildersLastBuildNumber
 
 	allBuildersLock sync.RWMutex      // guards the builder response and maps
 	allBuilders     *BuildersResponse // you should use the GetBuilderByXXX() functions
@@ -136,16 +135,7 @@ func (b *Buildbot) InsertOrUpdateBuildLogs(builder Builder, builds ...Build) err
 			buildbot_instance=excluded.buildbot_instance
 		;`
 
-	// stmt, err := b.Db.Prepare(query)
-	// if err != nil {
-	// 	b.Logger.Err(err).Stack().
-	// 		Str("builderName", builder.Name).
-	// 		Str("query", query).
-	// 		Msg("failed to prepare statement")
-	// }
-	// _, err = stmt.Exec(params...)
 	_, err := b.db.Exec(query, params...)
-	// spew.Dump(params)
 
 	b.logger.Err(err).Stack().
 		Str("builderName", builder.Name).
@@ -168,8 +158,6 @@ func (b *Buildbot) getRestApi(url string, target interface{}) error {
 	if err != nil {
 		return errors.WithStack(err)
 	}
-	if err := json.Unmarshal(body, &target); err != nil {
-		return errors.WithStack(err)
-	}
-	return nil
+	err = json.Unmarshal(body, &target)
+	return errors.WithStack(err)
 }
