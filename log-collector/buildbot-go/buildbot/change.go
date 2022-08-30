@@ -65,9 +65,12 @@ func (b *Buildbot) GetChangesForBuild(buildId int) (*ChangesResponse, error) {
 		num_total_changes = res.Meta.Total
 		num_changes_in_batch = len(res.Changes)
 	}
-	b.logger.Err(err).
+	logEvent := b.logger.Debug()
+	if err != nil {
+		logEvent = b.logger.Error().Err(err)
+	}
+	logEvent.
 		Str("url", url).
-		Stack().
 		Int("buildId", buildId).
 		Int("num_total_changes", num_total_changes).
 		Int("num_changes_in_batch", num_changes_in_batch).

@@ -7,7 +7,9 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"strings"
 	"sync/atomic"
+	"syscall"
 	"time"
 
 	"buildbot-go/buildbot"
@@ -35,7 +37,7 @@ func main() {
 
 	var numGoRoutines = flag.Int("num-go-routines", 10, "number of go routines to use")
 
-	var debug = flag.Bool("debug", false, "sets log level to debug")
+	var logLevel = flag.String("log-level", "info", "sets log level")
 	var logJson = flag.Bool("log-json", false, "outputs logs as JSON")
 
 	flag.Parse()
@@ -58,8 +60,13 @@ func main() {
 
 	// Default level for this example is info, unless debug flag is present
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
-	if *debug {
+	switch *logLevel {
+	case "debug":
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	case "warn":
+		zerolog.SetGlobalLevel(zerolog.WarnLevel)
+	case "info":
+		zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	}
 
 	if !*logJson {
@@ -69,8 +76,8 @@ func main() {
 	// Validate CLI arguments
 	// ----------------------
 
-	if *numGoRoutines < 2 {
-		logger.Fatal().Msg("cannot run with -num-go-routines < 2")
+	if *numGoRoutines < 3 {
+		logger.Fatal().Msg("cannot run with -num-go-routines < 3")
 	}
 
 	// Connect to Database
@@ -108,21 +115,35 @@ func main() {
 		logger.Fatal().AnErr("error", err).Msg("failed to get all builders")
 	}
 
-	// Setup ctr+c exit handler
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt)
-	go func() {
-		for sig := range c {
-			logger.Warn().Str("signal", sig.String()).Msg("caught interrupt exiting")
-			os.Exit(0)
-			// sig is a ^C, handle it
+	ctx, done := context.WithCancel(context.Background())
+	g, gctx := errgroup.WithContext(ctx)
+	// Limit the number of active goroutines.
+	g.SetLimit(*numGoRoutines)
+
+	// Graceful shutdown handler
+	g.Go(func() error {
+		logger.Debug().Msg("starting signal handler")
+		defer logger.Debug().Msg("existing signal handler")
+
+		signalChannel := make(chan os.Signal, 1)
+		signal.Notify(signalChannel, os.Interrupt, syscall.SIGTERM)
+
+		select {
+		case sig := <-signalChannel:
+			str := fmt.Sprintf("caught signal: %s. gracefully shutting down", sig.String())
+			border := strings.Repeat("-", len(str))
+			fmt.Fprintf(os.Stderr, "\n%s\n%s\n%s\n\n", border, str, border)
+			logger.Warn().Str("signal", sig.String()).Msg("received signal")
+			done()
+		case <-gctx.Done():
+			logger.Warn().Msg("closing signal go routine")
+			return gctx.Err()
 		}
-	}()
 
-	g, ctx := errgroup.WithContext(context.Background())
-	g.SetLimit(*numGoRoutines) // limit the number of active goroutines
+		return nil
+	})
 
-	batchSize := 10
+	batchSize := 300
 
 	// When a build is ready, we send it to this buffered channel to have it
 	// consumed for insertion
@@ -130,12 +151,13 @@ func main() {
 
 	// Consumer
 	g.Go(func() error {
-		logger.Debug().Msg("starting insertRoutine")
+		logger.Debug().Msg("starting build consumer")
+		defer logger.Debug().Msg("existing build consumer")
 		for {
 			select {
-			case <-ctx.Done():
+			case <-gctx.Done():
 				logger.Debug().Msg("context is done")
-				return errors.WithStack(ctx.Err())
+				return errors.WithStack(gctx.Err())
 			case build, ok := <-buildChan:
 				logger.Debug().Msgf("XXXX got build: %d", ok)
 				if ok {
@@ -145,12 +167,13 @@ func main() {
 						return errors.WithStack(err)
 					}
 					err = b.InsertOrUpdateBuildLogs(*builder, build)
+					logger.Err(err).
+						Int("builderId", builder.Builderid).
+						Str("builderName", builder.Name).
+						Int("buildId", build.Buildid).
+						Msg("insert/update build log")
 					if err != nil {
-						logger.Err(err).
-							Int("builderId", builder.Builderid).
-							Msg("failed to insert/update build log")
 						return errors.WithStack(err)
-
 					}
 				}
 			}
@@ -159,44 +182,70 @@ func main() {
 
 	// Producers
 	buildersLeftToProcess := int32(len(allBuildersResp.Builders))
-	for _, builder := range allBuildersResp.Builders {
+	for idx, builder := range allBuildersResp.Builders {
 		myBuilder := builder
 
-		g.Go(func() error {
-			defer func() {
-				// Last one out closes shop
-				if atomic.AddInt32(&buildersLeftToProcess, -1) == 0 {
-					close(buildChan)
-				}
-			}()
-			logger.Debug().Int("builderId", myBuilder.Builderid).Msg("processing builder")
-			lastBuildNumber, _ := b.GetBuildersLastBuildNumber(myBuilder.Builderid)
-			buildResp, _ := b.GetBuildsForBuilder(myBuilder.Builderid, lastBuildNumber, batchSize)
-			// augment builds with change information
-			numBuilds := len(buildResp.Builds)
-			for i := 0; i < numBuilds; i++ {
-				logger.Info().
-					Int("buildId", buildResp.Builds[i].Buildid).
-					Msgf("getting changes for %d/%d builds", i+1, numBuilds)
-				changesResp, err := b.GetChangesForBuild(buildResp.Builds[i].Buildid)
+		if idx < 3 {
+			g.Go(func() error {
+				logger.Debug().Str("builderName", myBuilder.Name).Msgf("starting build producer")
+				defer logger.Debug().Str("builderName", myBuilder.Name).Msgf("exiting build producer")
+				defer func() {
+					// Last one out closes shop
+					logger.Debug().Msgf("decreasing buildersLeftToProcess: %d", buildersLeftToProcess)
+					if atomic.AddInt32(&buildersLeftToProcess, -1) == 0 {
+						logger.Debug().Msg("closing buildChan")
+						close(buildChan)
+					}
+					logger.Debug().Msgf("done decreasing buildersLeftToProcess: %d", buildersLeftToProcess)
+				}()
+				logger.Debug().Int("builderId", myBuilder.Builderid).Msg("processing builder")
+				lastBuildNumber, err := b.GetBuildersLastBuildNumber(myBuilder.Builderid)
 				if err != nil {
-					logger.Err(err).
-						Int("buildId", buildResp.Builds[i].Buildid).
-						Stack().
-						Msg("failed to get changes for build")
 					return errors.WithStack(err)
 				}
-				buildResp.Builds[i].Changes = changesResp.Changes
+				buildResp, err := b.GetBuildsForBuilder(myBuilder.Builderid, lastBuildNumber, batchSize)
+				if err != nil {
+					return errors.WithStack(err)
+				}
+				// augment builds with change information
+				numBuilds := len(buildResp.Builds)
+				for i := 0; i < numBuilds; i++ {
+					select {
+					case <-gctx.Done():
+						logger.Debug().Msg("context is done")
+						return errors.WithStack(gctx.Err())
+					default:
+					}
+					logger.Debug().
+						Int("buildId", buildResp.Builds[i].Buildid).
+						Msgf("getting changes for %d/%d builds", i+1, numBuilds)
+					changesResp, err := b.GetChangesForBuild(buildResp.Builds[i].Buildid)
+					if err != nil {
+						logger.Err(err).
+							Int("buildId", buildResp.Builds[i].Buildid).
+							Stack().
+							Msg("failed to get changes for build")
+						return errors.WithStack(err)
+					}
+					buildResp.Builds[i].Changes = changesResp.Changes
 
-				logger.Debug().Msg("sending build to channel")
-				buildChan <- buildResp.Builds[i]
-				logger.Debug().Msg("done sending build to channel")
-			}
-			return nil
-		})
+					logger.Debug().Msg("sending build to channel")
+					buildChan <- buildResp.Builds[i]
+					logger.Debug().Msg("done sending build to channel")
+				}
+				return nil
+			})
+		}
 	}
 
+	// wait for all errgroup goroutines
 	if err := g.Wait(); err != nil {
-		logger.Fatal().AnErr("error", err).Stack().Msg("and error occured")
+		if errors.Is(err, context.Canceled) {
+			logger.Warn().AnErr("error", err).Stack().Msg("context was canceled")
+		} else {
+			logger.Error().AnErr("error", err).Stack().Msg("got an error")
+		}
+	} else {
+		logger.Info().Stack().Msg("clean finish")
 	}
 }

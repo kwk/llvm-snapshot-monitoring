@@ -46,8 +46,11 @@ func New(instance string, apiBase string, db *sql.DB, logger zerolog.Logger) (*B
 		logger:   logger,
 	}
 	err := b.prepareStatements()
-	b.logger.Err(err).
-		Str("ApiBase", apiBase).
+	logEvent := b.logger.Debug()
+	if err != nil {
+		logEvent = b.logger.Error().Err(err)
+	}
+	logEvent.Str("ApiBase", apiBase).
 		Str("instance", instance).
 		Msg("creating new buildbot object")
 	return b, errors.WithStack(err)
@@ -57,13 +60,13 @@ func New(instance string, apiBase string, db *sql.DB, logger zerolog.Logger) (*B
 func (b *Buildbot) Close() error {
 	for name, stmt := range b.preparedStatements {
 		err := stmt.Close()
-		b.logger.Debug().AnErr("error", err).Str("name", name).Msg("closing prepared statement")
+		b.logger.Debug().Err(err).Str("name", name).Msg("closing prepared statement")
 		if err != nil {
 			return errors.WithStack(err)
 		}
 	}
 	err := b.db.Close()
-	b.logger.Debug().AnErr("error", err).Msg("closing database connection")
+	b.logger.Debug().Err(err).Msg("closing database connection")
 	return errors.WithStack(err)
 }
 
@@ -84,7 +87,7 @@ func (b *Buildbot) prepareStatements() error {
 	  build_complete_at IS NOT NULL 
 	  AND builder_builderid=$1 
 	  AND buildbot_instance=$2`)
-	b.logger.Debug().AnErr("error", err).Str("name", getMaxBuildNumerStmt).Msg("creating prepared statement")
+	b.logger.Debug().Err(err).Str("name", getMaxBuildNumerStmt).Msg("creating prepared statement")
 	if err != nil {
 		return errors.WithStack(err)
 	}
@@ -92,6 +95,7 @@ func (b *Buildbot) prepareStatements() error {
 	return nil
 }
 
+// TODO(kwk): This could need some cleanup *cough*
 func (b *Buildbot) InsertOrUpdateBuildLogs(builder Builder, builds ...Build) error {
 	if len(builds) == 0 {
 		return nil
@@ -103,8 +107,6 @@ func (b *Buildbot) InsertOrUpdateBuildLogs(builder Builder, builds ...Build) err
 	paramsLen := 0
 
 	for bId, build := range builds {
-		// fmt.Printf("XXX builder_builderid=%d build_buildid=%d buildbot_instance=%s\n", build.Builderid, build.Buildid, b.Instance)
-
 		params = append(params, builder.postgresValueList()...)
 		params = append(params, build.postgresValueList()...)
 		params = append(params, b.instance)
@@ -137,7 +139,11 @@ func (b *Buildbot) InsertOrUpdateBuildLogs(builder Builder, builds ...Build) err
 
 	_, err := b.db.Exec(query, params...)
 
-	b.logger.Err(err).Stack().
+	logEvent := b.logger.Debug()
+	if err != nil {
+		logEvent = b.logger.Error().Err(err)
+	}
+	logEvent.
 		Str("builderName", builder.Name).
 		// Str("query", query).
 		Msg("inserting or updating build logs")
@@ -149,7 +155,7 @@ func (b *Buildbot) InsertOrUpdateBuildLogs(builder Builder, builds ...Build) err
 // pointer to a target type to properly unmarshall into the target.
 func (b *Buildbot) getRestApi(url string, target interface{}) error {
 	resp, err := http.Get(url)
-	b.logger.Debug().AnErr("error", err).Str("url", url).Msg("querying REST")
+	b.logger.Debug().Err(err).Str("url", url).Msg("querying REST")
 	if err != nil {
 		return errors.WithStack(err)
 	}

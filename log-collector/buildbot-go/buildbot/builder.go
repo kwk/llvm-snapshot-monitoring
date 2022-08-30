@@ -66,10 +66,13 @@ func (b *Buildbot) GetAllBuilders() (*BuildersResponse, error) {
 		url := b.apiBase + "/builders"
 		err := b.getRestApi(url, &b.allBuilders)
 		num_total_builders := 0
+		logEvent := b.logger.Debug()
 		if err == nil {
 			num_total_builders = b.allBuilders.Meta.Total
+		} else {
+			logEvent = b.logger.Error().Err(err)
 		}
-		b.logger.Err(err).
+		logEvent.
 			Str("url", url).
 			Int("num_total_builders", num_total_builders).
 			Msg("getting all builders")
@@ -78,7 +81,7 @@ func (b *Buildbot) GetAllBuilders() (*BuildersResponse, error) {
 		}
 
 		// build a LUT by Id and name for faster lookups
-		b.logger.Info().Msg("building LUTs for builders")
+		b.logger.Debug().Msg("building LUTs for builders")
 		b.buildersById = make(builderByIdMap)
 		b.buildersByName = make(builderByNameMap)
 		b.buildersByTag = make(buildersByTagMap)
@@ -89,7 +92,7 @@ func (b *Buildbot) GetAllBuilders() (*BuildersResponse, error) {
 				b.buildersByTag[tag] = append(b.buildersByTag[tag], builder)
 			}
 		}
-		b.logger.Info().Msg("done building LUTs for builders")
+		b.logger.Debug().Msg("done building LUTs for builders")
 		// build a LUT by name
 	} else {
 		b.logger.Debug().Msg("using cached builders")
@@ -104,9 +107,6 @@ func (b *Buildbot) GetAllBuilders() (*BuildersResponse, error) {
 // result and are therefore faster.
 func (b *Buildbot) GetBuilderById(builderId int) (*Builder, error) {
 	_, err := b.GetAllBuilders()
-	b.logger.Err(err).
-		Int("builderId", builderId).
-		Msg("getting builder by Id")
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -124,9 +124,6 @@ func (b *Buildbot) GetBuilderById(builderId int) (*Builder, error) {
 // result and are therefore faster.
 func (b *Buildbot) GetBuilderByName(builderName string) (*Builder, error) {
 	_, err := b.GetAllBuilders()
-	b.logger.Err(err).
-		Str("builderName", builderName).
-		Msg("getting builder by name")
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -144,9 +141,6 @@ func (b *Buildbot) GetBuilderByName(builderName string) (*Builder, error) {
 // result and are therefore faster.
 func (b *Buildbot) GetBuildersByTag(tag string) ([]Builder, error) {
 	_, err := b.GetAllBuilders()
-	b.logger.Err(err).
-		Str("tag", tag).
-		Msg("getting builders by tag")
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
