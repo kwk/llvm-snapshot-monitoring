@@ -154,6 +154,9 @@ func (b *Buildbot) getRestApi(url string, target interface{}) error {
 		return errors.WithStack(err)
 	}
 	defer resp.Body.Close()
+	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
+		return errors.Errorf("request failed with status: %s (%d)", resp.Status, resp.StatusCode)
+	}
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return errors.WithStack(err)

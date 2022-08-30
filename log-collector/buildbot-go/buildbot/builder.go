@@ -62,6 +62,7 @@ func (b *Buildbot) GetAllBuilders() (*BuildersResponse, error) {
 	defer b.allBuildersLock.Unlock()
 
 	if b.allBuilders == nil {
+		b.allBuilders = &BuildersResponse{}
 		url := b.apiBase + "/builders"
 		err := b.getRestApi(url, &b.allBuilders)
 		num_total_builders := 0
@@ -77,16 +78,18 @@ func (b *Buildbot) GetAllBuilders() (*BuildersResponse, error) {
 		}
 
 		// build a LUT by Id and name for faster lookups
+		b.logger.Info().Msg("building LUTs for builders")
 		b.buildersById = make(builderByIdMap)
 		b.buildersByName = make(builderByNameMap)
 		b.buildersByTag = make(buildersByTagMap)
 		for _, builder := range b.allBuilders.Builders {
 			b.buildersById[builder.Builderid] = builder
 			b.buildersByName[builder.Name] = builder
-			// for _, tag := range builder.Tags {
-			// 	b.buildersByTag[tag] = append(b
-			// }
+			for _, tag := range builder.Tags {
+				b.buildersByTag[tag] = append(b.buildersByTag[tag], builder)
+			}
 		}
+		b.logger.Info().Msg("done building LUTs for builders")
 		// build a LUT by name
 	} else {
 		b.logger.Debug().Msg("using cached builders")
