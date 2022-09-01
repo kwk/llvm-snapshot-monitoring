@@ -11,9 +11,8 @@ import (
 // consumerData bundles everything a consumer needs
 type consumerData struct {
 	commonData
-	consumerNo             int
-	consumersLeftToProcess *int32
-	numStoredBuildLogs     *int32
+	consumerNo         int
+	numStoredBuildLogs *int32
 }
 
 // makeConsumer returns a function that can be used to run as a consumer

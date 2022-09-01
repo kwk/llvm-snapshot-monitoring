@@ -13,7 +13,6 @@ type producerData struct {
 	commonData
 	builder                  buildbot.Builder
 	producerNo               int
-	producersLeftToProcess   *int32
 	finishedBuilderIds       []int
 	finishedBuilderIdsLock   *sync.RWMutex
 	canceledBuilderStatusMap map[string]error // builderName -> error why canceled
@@ -25,7 +24,7 @@ type producerData struct {
 func makeProducer(d producerData) func() error {
 	return func() error {
 		// Sanity checks
-		if d.producersLeftToProcess == nil {
+		if d.virtualProducersLeftToProcess == nil {
 			return errors.Errorf("consumersLeftToProcess must not be nil")
 		}
 		if d.b == nil {
@@ -40,8 +39,11 @@ func makeProducer(d producerData) func() error {
 
 		d.logger.Debug().Str("builderName", d.builder.Name).Msg("starting build producer")
 		defer func() {
+			// Just keep track of how many producers we have active
+			atomic.AddInt32(d.activeProducers, -1)
+
 			// Last one out closes shop
-			if atomic.AddInt32(d.producersLeftToProcess, -1) == 0 {
+			if atomic.AddInt32(d.virtualProducersLeftToProcess, -1) == 0 {
 				d.logger.Info().Msg("all producers done")
 				d.logger.Debug().Msg("closing buildChan")
 				close(d.buildChan)

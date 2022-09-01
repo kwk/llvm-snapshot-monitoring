@@ -35,7 +35,7 @@ func printSummary(d summaryData) {
 				res := make([]string, len(d.canceledBuilderStatusMap))
 				i := 0
 				for builderName, err := range d.canceledBuilderStatusMap {
-					res[i] = fmt.Sprintf(" * %40s: %#v", builderName, err)
+					res[i] = fmt.Sprintf("%40s: %#v", builderName, err)
 					i++
 				}
 				return strings.Join(res, "\n")

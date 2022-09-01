@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"buildbot-go/buildbot"
@@ -19,11 +20,14 @@ import (
 
 // commonData holds information used by consumers and producers
 type commonData struct {
-	ctx           context.Context
-	ctxCancelFunc context.CancelFunc
-	logger        zerolog.Logger
-	b             *buildbot.Buildbot
-	buildChan     chan buildbot.Build
+	ctx                           context.Context
+	ctxCancelFunc                 context.CancelFunc
+	logger                        zerolog.Logger
+	b                             *buildbot.Buildbot
+	buildChan                     chan buildbot.Build
+	virtualProducersLeftToProcess *int32
+	consumersLeftToProcess        *int32
+	activeProducers               *int32
 }
 
 func main() {
@@ -42,7 +46,12 @@ func main() {
 	var buildbotInstance = flag.String("buildbot-instance", "staging", "the instance (staging or buildbot) to use")
 	var buildbotApiBase = flag.String("buildbot-api-base", "https://lab.llvm.org/staging/api/v2", "the HTTP API base URL")
 
-	var numProducers = flag.Int("num-producers", 0, "number of producer go routines to use leave at 0 to get as many producers as there are buildbot builders")
+	var numProducers = flag.Int("num-producers", 0, `
+		number of producer go routines to use.
+		Leave at 0 to get as many producers as there are buildbot builders.
+		Beware that there may be too many connections open to postgres when you
+		do this. I suggest to set this to 10 or something.
+	`)
 	var numConsumers = flag.Int("num-consumers", 10, "number of consumer go routines to use")
 
 	var logLevelFlag = flag.String("log-level", "info", "sets log level (e.g. info, debug, warn)")
@@ -139,17 +148,18 @@ func main() {
 	g, gctx := errgroup.WithContext(ctx)
 	// Limit the number of active goroutines
 	// One additional for the shutdown handler
-	g.SetLimit(*numProducers + *numConsumers + 1)
+	g.SetLimit(*numProducers + *numConsumers)
 
-	producersLeftToProcess := int32(*numProducers)
+	virtualProducersLeftToProcess := int32(len(allBuildersResp.Builders))
 	consumersLeftToProcess := int32(*numConsumers)
+	var activeProducers int32 = 0
 
-	logger = logger.Hook(
-		zerolog.HookFunc(
-			func(e *zerolog.Event, l zerolog.Level, msg string) {
-				e.Int32("producersLeftToProcess", producersLeftToProcess).
-					Int32("consumersLeftToProcess", consumersLeftToProcess)
-			}))
+	logger = logger.Hook(zerolog.HookFunc(
+		func(e *zerolog.Event, l zerolog.Level, msg string) {
+			e.Int32("consumers", consumersLeftToProcess).
+				Int32("virtualProducers", virtualProducersLeftToProcess).
+				Int32("activeProducers", activeProducers)
+		}))
 
 	batchSize := 10
 
@@ -163,20 +173,21 @@ func main() {
 
 	// shared data between producers and consumers
 	sharedData := commonData{
-		ctx:           gctx,
-		logger:        logger,
-		b:             b,
-		ctxCancelFunc: ctxCancelFunc,
-		buildChan:     buildChan,
+		ctx:                           gctx,
+		logger:                        logger,
+		b:                             b,
+		ctxCancelFunc:                 ctxCancelFunc,
+		buildChan:                     buildChan,
+		virtualProducersLeftToProcess: &virtualProducersLeftToProcess,
+		consumersLeftToProcess:        &consumersLeftToProcess,
+		activeProducers:               &activeProducers,
 	}
 
 	// Graceful shutdown handler
 	// -------------------------
 
 	d := gracefulShutdownData{
-		commonData:             sharedData,
-		producersLeftToProcess: &producersLeftToProcess,
-		consumersLeftToProcess: &consumersLeftToProcess,
+		commonData: sharedData,
 	}
 	d.logger = d.logger.
 		With().
@@ -187,19 +198,25 @@ func main() {
 	// Consumers
 	// ---------
 
+consumerloop:
 	for i := 0; i < *numConsumers; i++ {
-		d := consumerData{
-			commonData:             sharedData,
-			numStoredBuildLogs:     &numStoredBuildLogs,
-			consumersLeftToProcess: &consumersLeftToProcess,
-			consumerNo:             i + 1,
+		select {
+		case <-gctx.Done():
+			logger.Debug().Msg("not creating any new consumers")
+			break consumerloop
+		default:
+			d := consumerData{
+				commonData:         sharedData,
+				numStoredBuildLogs: &numStoredBuildLogs,
+				consumerNo:         i + 1,
+			}
+			d.logger = d.logger.
+				With().
+				Str("is", "consumer").
+				Int("consumerNo", d.consumerNo).
+				Logger()
+			g.Go(makeConsumer(d))
 		}
-		d.logger = d.logger.
-			With().
-			Str("is", "consumer").
-			Int("consumerNo", d.consumerNo).
-			Logger()
-		g.Go(makeConsumer(d))
 	}
 
 	// Producers
@@ -210,26 +227,34 @@ func main() {
 	canceledBuilderStatusMap := map[string]error{} // builderName -> error why canceled
 	canceledBuilderIdsLock := sync.RWMutex{}
 
-	for i := 0; i < *numProducers; i++ {
-		builder := allBuildersResp.Builders[i]
-		d := producerData{
-			commonData:               sharedData,
-			producersLeftToProcess:   &producersLeftToProcess,
-			finishedBuilderIds:       finishedBuilderIds,
-			canceledBuilderStatusMap: canceledBuilderStatusMap,
-			finishedBuilderIdsLock:   &finishedBuilderIdsLock,
-			canceledBuilderIdsLock:   &canceledBuilderIdsLock,
-			producerNo:               i + 1,
-			builder:                  builder,
+producerloop:
+	for i := 0; i < len(allBuildersResp.Builders); i++ {
+		select {
+		case <-gctx.Done():
+			logger.Debug().Msg("not creating any new producers")
+			break producerloop
+		default:
+			// capturing builder
+			builder := allBuildersResp.Builders[i]
+			d := producerData{
+				commonData:               sharedData,
+				finishedBuilderIds:       finishedBuilderIds,
+				canceledBuilderStatusMap: canceledBuilderStatusMap,
+				finishedBuilderIdsLock:   &finishedBuilderIdsLock,
+				canceledBuilderIdsLock:   &canceledBuilderIdsLock,
+				producerNo:               i + 1,
+				builder:                  builder,
+			}
+			d.logger = d.logger.
+				With().
+				Str("is", "producer").
+				Int("producerNo", d.producerNo).
+				Str("builderName", d.builder.Name).
+				Int("builderId", d.builder.Builderid).
+				Logger()
+			atomic.AddInt32(&activeProducers, 1)
+			g.Go(makeProducer(d))
 		}
-		d.logger = d.logger.
-			With().
-			Str("is", "producer").
-			Int("producerNo", d.producerNo).
-			Str("builderName", d.builder.Name).
-			Int("builderId", d.builder.Builderid).
-			Logger()
-		g.Go(makeProducer(d))
 	}
 
 	// Wait for all errgroup goroutines

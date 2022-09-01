@@ -10,8 +10,6 @@ import (
 
 type gracefulShutdownData struct {
 	commonData
-	producersLeftToProcess *int32
-	consumersLeftToProcess *int32
 }
 
 func makeGracefulShutdown(d gracefulShutdownData) func() error {
@@ -34,8 +32,9 @@ func makeGracefulShutdown(d gracefulShutdownData) func() error {
 				d.logger.Warn().Msg("closing signal go routine")
 				return d.ctx.Err()
 			default:
-				if *d.producersLeftToProcess == 0 && *d.consumersLeftToProcess == 0 {
-					d.logger.Debug().Msg("stopping gracefulShutdownData")
+				if *d.virtualProducersLeftToProcess == 0 || *d.consumersLeftToProcess == 0 {
+					d.logger.Debug().Msg("all producers and consumers stopped, shutting down")
+					d.ctxCancelFunc()
 					return nil
 				}
 			}
