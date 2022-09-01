@@ -144,6 +144,12 @@ func main() {
 	producersLeftToProcess := int32(*numProducers)
 	consumersLeftToProcess := int32(*numConsumers)
 
+	logger = logger.Hook(zerolog.HookFunc(
+		func(e *zerolog.Event, l zerolog.Level, msg string) {
+			e.Int32("producersLeftToProcess", producersLeftToProcess).
+				Int32("consumersLeftToProcess", consumersLeftToProcess)
+		}))
+
 	batchSize := 10
 
 	// When a build is ready, we send it to this buffered channel to have it
@@ -174,7 +180,6 @@ func main() {
 	d.logger = d.logger.
 		With().
 		Str("is", "shutdownHandler").
-		// Int32("consumersLeftToProcess", consumersLeftToProcess). // must be evaluated at runtime
 		Logger()
 	g.Go(makeGracefulShutdown(d))
 
@@ -192,7 +197,6 @@ func main() {
 			With().
 			Str("is", "consumer").
 			Int("consumerNo", d.consumerNo).
-			// Int32("consumersLeftToProcess", consumersLeftToProcess). // must be evaluated at runtime
 			Logger()
 		g.Go(makeConsumer(d))
 	}
@@ -223,7 +227,6 @@ func main() {
 			Int("producerNo", d.producerNo).
 			Str("builderName", d.builder.Name).
 			Int("builderId", d.builder.Builderid).
-			// Int32("producersLeftToProcess", producersLeftToProcess).// must be evaluated at runtime
 			Logger()
 		g.Go(makeProducer(d))
 	}
