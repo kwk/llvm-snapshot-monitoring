@@ -144,11 +144,12 @@ func main() {
 	producersLeftToProcess := int32(*numProducers)
 	consumersLeftToProcess := int32(*numConsumers)
 
-	logger = logger.Hook(zerolog.HookFunc(
-		func(e *zerolog.Event, l zerolog.Level, msg string) {
-			e.Int32("producersLeftToProcess", producersLeftToProcess).
-				Int32("consumersLeftToProcess", consumersLeftToProcess)
-		}))
+	logger = logger.Hook(
+		zerolog.HookFunc(
+			func(e *zerolog.Event, l zerolog.Level, msg string) {
+				e.Int32("producersLeftToProcess", producersLeftToProcess).
+					Int32("consumersLeftToProcess", consumersLeftToProcess)
+			}))
 
 	batchSize := 10
 
