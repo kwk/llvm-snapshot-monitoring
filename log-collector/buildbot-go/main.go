@@ -6,10 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"os/signal"
-	"strings"
 	"sync"
-	"syscall"
 	"time"
 
 	"buildbot-go/buildbot"
@@ -140,42 +137,6 @@ func main() {
 
 	batchSize := 10
 
-	// Graceful shutdown handler
-	g.Go(func() error {
-		logger.Debug().Msg("starting signal handler")
-		defer logger.Debug().Msg("exiting signal handler")
-
-		signalChannel := make(chan os.Signal, 1)
-		signal.Notify(signalChannel, os.Interrupt, syscall.SIGTERM)
-
-		select {
-		case sig := <-signalChannel:
-			str := fmt.Sprintf("caught signal: %s. gracefully shutting down", sig.String())
-			border := strings.Repeat("-", len(str))
-			fmt.Fprintf(os.Stderr, "\n%s\n%s\n%s\n\n", border, str, border)
-			logger.Warn().Str("signal", sig.String()).Msg("received signal")
-			ctxCancelFunc()
-		case <-gctx.Done():
-			logger.Warn().Msg("closing signal go routine")
-			return gctx.Err()
-			// default:
-			// 	if producersLeftToProcess == 0 || consumersLeftToProcess == 0 {
-			// 		logger.Debug().Msg("XXXXXX XXXX XXXX stopping grace handler")
-			// 		ctxCancelFunc()
-			// 		return nil
-			// 	}
-		}
-
-		if producersLeftToProcess == 0 /*int32(*numProducers)*/ {
-			logger.Warn().Msgf("all %d producers have finished", *numProducers)
-			ctxCancelFunc()
-		} else {
-			logger.Warn().Int32("producersLeftToProcess", producersLeftToProcess).Msg("not all builders finished")
-		}
-
-		return nil
-	})
-
 	// When a build is ready, we send it to this buffered channel to have it
 	// consumed for insertion
 	buildChan := make(chan buildbot.Build, batchSize)
@@ -193,7 +154,24 @@ func main() {
 		buildChan:     buildChan,
 	}
 
+	// Graceful shutdown handler
+	// -------------------------
+
+	d := gracefulShutdownData{
+		commonData:             sharedData,
+		producersLeftToProcess: &producersLeftToProcess,
+		consumersLeftToProcess: &consumersLeftToProcess,
+	}
+	d.logger = d.logger.
+		With().
+		Str("is", "shutdownHandler").
+		Int32("consumersLeftToProcess", consumersLeftToProcess).
+		Logger()
+	g.Go(makeGracefulShutdown(d))
+
 	// Consumers
+	// ---------
+
 	for i := 0; i < *numConsumers; i++ {
 		d := consumerData{
 			commonData:             sharedData,
@@ -203,18 +181,21 @@ func main() {
 		}
 		d.logger = d.logger.
 			With().
+			Str("is", "consumer").
 			Int("consumerNo", d.consumerNo).
 			Int32("consumersLeftToProcess", consumersLeftToProcess).
 			Logger()
 		g.Go(makeConsumer(d))
 	}
 
+	// Producers
+	// ---------
+
 	finishedBuilderIds := []int{}
 	finishedBuilderIdsLock := sync.RWMutex{}
 	canceledBuilderStatusMap := map[string]error{} // builderName -> error why canceled
 	canceledBuilderIdsLock := sync.RWMutex{}
 
-	// Producers
 	for i := 0; i < *numProducers; i++ {
 		builder := allBuildersResp.Builders[i]
 		d := producerData{
@@ -229,6 +210,7 @@ func main() {
 		}
 		d.logger = d.logger.
 			With().
+			Str("is", "producer").
 			Int("producerNo", d.producerNo).
 			Str("builderName", d.builder.Name).
 			Int("builderId", d.builder.Builderid).
@@ -238,6 +220,8 @@ func main() {
 	}
 
 	// Wait for all errgroup goroutines
+	// --------------------------------
+
 	if err := g.Wait(); err != nil {
 		//close(buildChan) // HOW TO AVOID panic: close of closed channel
 		if errors.Is(err, context.Canceled) {
@@ -249,36 +233,20 @@ func main() {
 		logger.Info().Stack().Msg("clean finish")
 	}
 
-	// Print summary
-	logger.Info().MsgFunc(func() string {
-		doneDuration := time.Since(startTime)
-		averageStoreDuration := time.Duration(int64(float64(doneDuration) / float64(numStoredBuildLogs)))
-		estimateDuration := 2500000 * averageStoreDuration
-		// TODO(kwk): Fix time
-		d := estimateDuration / (time.Hour * 24)
-		h := (estimateDuration - d*time.Hour) / time.Hour
-		m := (estimateDuration - h*time.Hour) / time.Minute
-		s := (estimateDuration - m*time.Minute) / time.Second
+	// Build summary
+	// -------------
 
-		res := "\nSummary\n"
-		res += "-------\n"
-		res += fmt.Sprintf("Elapsed time                            : %s\n", doneDuration)
-		res += fmt.Sprintf("Avg store time                          : %s\n", averageStoreDuration)
-		res += fmt.Sprintf("Estimated time for 2,500,000 log entries: %d day(s) %d hour(s) %d minute(s) %d second(s)\n", d, h, m, s)
-		res += fmt.Sprintf("Estimated time for 2,500,000 log entries: %s\n", averageStoreDuration*2500000)
-		res += fmt.Sprintf("Total stored log entries                : %d\n", numStoredBuildLogs)
-		res += fmt.Sprintf("Total builders                          : %d\n", len(allBuildersResp.Builders))
-		res += fmt.Sprintf("Total finished builders                 : %d\n", len(finishedBuilderIds))
-		res += fmt.Sprintf("Total canceled builders                 : %d\n", len(canceledBuilderStatusMap))
-		res += fmt.Sprintf("Canceled builder names                  : \n%s\n", func() string {
-			res := make([]string, len(canceledBuilderStatusMap))
-			i := 0
-			for builderName, err := range canceledBuilderStatusMap {
-				res[i] = fmt.Sprintf(" * %40s: %#v", builderName, err)
-				i++
-			}
-			return strings.Join(res, "\n")
-		}())
-		return res
-	})
+	s := summaryData{
+		commonData:               sharedData,
+		startTime:                startTime,
+		numStoredBuildLogs:       numStoredBuildLogs,
+		totalBuilders:            len(allBuildersResp.Builders),
+		finishedBuilderIds:       finishedBuilderIds,
+		canceledBuilderStatusMap: canceledBuilderStatusMap,
+	}
+	d.logger = d.logger.
+		With().
+		Str("is", "summary").
+		Logger()
+	printSummary(s)
 }
