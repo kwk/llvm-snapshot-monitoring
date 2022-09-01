@@ -9,7 +9,6 @@ import (
 	"os/signal"
 	"strings"
 	"sync"
-	"sync/atomic"
 	"syscall"
 	"time"
 
@@ -20,6 +19,15 @@ import (
 	"github.com/rs/zerolog"
 	"golang.org/x/sync/errgroup"
 )
+
+// commonData holds information used by consumers and producers
+type commonData struct {
+	ctx           context.Context
+	ctxCancelFunc context.CancelFunc
+	logger        zerolog.Logger
+	b             *buildbot.Buildbot
+	buildChan     chan buildbot.Build
+}
 
 func main() {
 	var err error
@@ -37,7 +45,7 @@ func main() {
 	var buildbotInstance = flag.String("buildbot-instance", "staging", "the instance (staging or buildbot) to use")
 	var buildbotApiBase = flag.String("buildbot-api-base", "https://lab.llvm.org/staging/api/v2", "the HTTP API base URL")
 
-	var numProducers = flag.Int("num-producers", 10, "number of producer go routines to use")
+	var numProducers = flag.Int("num-producers", 0, "number of producer go routines to use leave at 0 to get as many producers as there are buildbot builders")
 	var numConsumers = flag.Int("num-consumers", 10, "number of consumer go routines to use")
 
 	var logLevelFlag = flag.String("log-level", "info", "sets log level (e.g. info, debug, warn)")
@@ -61,7 +69,7 @@ func main() {
 
 	logger := zerolog.New(os.Stderr).With().Timestamp().Logger()
 
-	// Add file and line number to loghttps://github.com/rs/zerolog#add-file-and-line-number-to-log
+	// Add file and line number to log https://github.com/rs/zerolog#add-file-and-line-number-to-log
 	logger = logger.With().Caller().Logger()
 
 	if !*logJson {
@@ -78,9 +86,6 @@ func main() {
 	// Validate CLI arguments
 	// ----------------------
 
-	if *numProducers < 1 {
-		logger.Fatal().Int("num-producers", *numProducers).Msg("cannot run with -num-producers < 1")
-	}
 	if *numConsumers < 1 {
 		logger.Fatal().Int("num-consumers", *numConsumers).Msg("cannot run with -num-consumers < 1")
 	}
@@ -104,7 +109,7 @@ func main() {
 	// was 100% correct.
 	err = db.Ping()
 	if err != nil {
-		logger.Fatal().AnErr("error", err).Msg("failed to ping postgres")
+		logger.Fatal().AnErr("error", err).Msg("failed to ping database")
 	}
 
 	// Begin processing
@@ -120,7 +125,11 @@ func main() {
 		logger.Fatal().AnErr("error", err).Msg("failed to get all builders")
 	}
 
-	ctx, done := context.WithCancel(context.Background())
+	if *numProducers <= 0 {
+		*numProducers = len(allBuildersResp.Builders)
+	}
+
+	ctx, ctxCancelFunc := context.WithCancel(context.Background())
 	g, gctx := errgroup.WithContext(ctx)
 	// Limit the number of active goroutines
 	// One additional for the shutdown handler
@@ -130,12 +139,6 @@ func main() {
 	consumersLeftToProcess := int32(*numConsumers)
 
 	batchSize := 10
-
-	// When a build is ready, we send it to this buffered channel to have it
-	// consumed for insertion
-	buildChan := make(chan buildbot.Build, batchSize)
-
-	var numStoredBuildLogs int32 = 0
 
 	// Graceful shutdown handler
 	g.Go(func() error {
@@ -151,21 +154,21 @@ func main() {
 			border := strings.Repeat("-", len(str))
 			fmt.Fprintf(os.Stderr, "\n%s\n%s\n%s\n\n", border, str, border)
 			logger.Warn().Str("signal", sig.String()).Msg("received signal")
-			done()
+			ctxCancelFunc()
 		case <-gctx.Done():
 			logger.Warn().Msg("closing signal go routine")
 			return gctx.Err()
 			// default:
 			// 	if producersLeftToProcess == 0 || consumersLeftToProcess == 0 {
 			// 		logger.Debug().Msg("XXXXXX XXXX XXXX stopping grace handler")
-			// 		done()
+			// 		ctxCancelFunc()
 			// 		return nil
 			// 	}
 		}
 
 		if producersLeftToProcess == 0 /*int32(*numProducers)*/ {
 			logger.Warn().Msgf("all %d producers have finished", *numProducers)
-			done()
+			ctxCancelFunc()
 		} else {
 			logger.Warn().Int32("producersLeftToProcess", producersLeftToProcess).Msg("not all builders finished")
 		}
@@ -173,64 +176,38 @@ func main() {
 		return nil
 	})
 
-	// Consumers
-	for i := 0; i < *numConsumers; i++ {
-		consumerNo := i + 1
-		g.Go(func() error {
-			logger.Debug().Msgf("starting build consumer no %d/%d", consumerNo, *numConsumers)
-			defer func() {
-				// Last one out closes shop
-				logger.Debug().Msgf("decreasing consumersLeftToProcess: %d", consumersLeftToProcess)
-				if atomic.AddInt32(&consumersLeftToProcess, -1) == 0 {
-					logger.Info().Msg("all consumers done")
-				}
-				logger.Debug().Msgf("done decreasing consumersLeftToProcess: %d", producersLeftToProcess)
-			}()
+	// When a build is ready, we send it to this buffered channel to have it
+	// consumed for insertion
+	buildChan := make(chan buildbot.Build, batchSize)
 
-			defer logger.Debug().Msgf("exiting build consumer %d/%d", consumerNo, *numConsumers)
-			for {
-				_startTime := time.Now()
-				var ok bool
-				var build buildbot.Build
+	// This stores the total log entries that were stored. Use atomic.AddInt32
+	// on it only to make it usable concurrently.
+	var numStoredBuildLogs int32 = 0
 
-				select {
-				case <-gctx.Done():
-					logger.Debug().Msgf("consumer %d: context is done", consumerNo)
-					return errors.WithStack(gctx.Err())
-				case build, ok = <-buildChan:
-					if !ok {
-						logger.Debug().Msgf("build channel is closed. stopping consumer %d", consumerNo)
-						return nil
-					}
-
-					builder, err := b.GetBuilderById(build.Builderid)
-					if err != nil {
-						logger.Err(err).Int("builderId", build.Buildid).Msg("failed to get builder")
-						return errors.WithStack(err)
-					}
-					err = b.InsertOrUpdateBuildLogs(*builder, build)
-					logger.Err(err).
-						Int("consumerNo", consumerNo).
-						Int("builderId", builder.Builderid).
-						Str("builderName", builder.Name).
-						Int("buildId", build.Buildid).
-						Int("buildNumber", build.Number).
-						Msgf("insert/update build log in %s", time.Since(_startTime))
-					if err != nil {
-						return errors.WithStack(err)
-					}
-					atomic.AddInt32(&numStoredBuildLogs, 1)
-				default:
-				}
-			}
-		})
+	// shared data between producers and consumers
+	sharedData := commonData{
+		ctx:           gctx,
+		logger:        logger,
+		b:             b,
+		ctxCancelFunc: ctxCancelFunc,
+		buildChan:     buildChan,
 	}
 
-	// Idea:
-	// 1. Stop just one builder if we run into a HTTP 504 timeout. Let the others continue.
-	// 2. Collect data about inserts/updates and cancelled builders in the end.
-
-	// TODO(kwk): Have two log targets, one JSON file and one console writer
+	// Consumers
+	for i := 0; i < *numConsumers; i++ {
+		d := consumerData{
+			commonData:             sharedData,
+			numStoredBuildLogs:     &numStoredBuildLogs,
+			consumersLeftToProcess: &consumersLeftToProcess,
+			consumerNo:             i + 1,
+		}
+		d.logger = d.logger.
+			With().
+			Int("consumerNo", d.consumerNo).
+			Int32("consumersLeftToProcess", consumersLeftToProcess).
+			Logger()
+		g.Go(makeConsumer(d))
+	}
 
 	finishedBuilderIds := []int{}
 	finishedBuilderIdsLock := sync.RWMutex{}
@@ -238,88 +215,26 @@ func main() {
 	canceledBuilderIdsLock := sync.RWMutex{}
 
 	// Producers
-	for idx, builder := range allBuildersResp.Builders {
-		myBuilder := builder
-		// TODO(kwk): Remove this if when going into production
-		// if idx >= *numProducers {
-		// 	break
-		// }
-		_ = idx
-		g.Go(func() error {
-			logger.Debug().Str("builderName", myBuilder.Name).Msgf("starting build producer")
-			defer func() {
-				// Last one out closes shop
-				logger.Debug().Msgf("decreasing producersLeftToProcess: %d", producersLeftToProcess)
-				if atomic.AddInt32(&producersLeftToProcess, -1) == 0 {
-					logger.Info().Msg("all producers done")
-					logger.Debug().Msg("closing buildChan")
-					close(buildChan)
-				}
-				logger.Debug().Msgf("done decreasing producersLeftToProcess: %d", producersLeftToProcess)
-			}()
-			logger.Debug().Int("builderId", myBuilder.Builderid).Msg("processing builder")
-			lastBuildNumber, err := b.GetBuildersLastBuildNumber(myBuilder.Builderid)
-			if err != nil {
-				return errors.WithStack(err)
-			}
-			buildResp, err := b.GetBuildsForBuilder(myBuilder.Builderid, lastBuildNumber, batchSize)
-			if err != nil {
-				return errors.WithStack(err)
-			}
-			// augment builds with change information
-			numBuilds := len(buildResp.Builds)
-			for i := 0; i < numBuilds; i++ {
-				build := buildResp.Builds[i]
-				select {
-				case <-gctx.Done():
-					logger.Debug().Msg("producer: context is done")
-					return errors.WithStack(gctx.Err())
-				default:
-				}
-				logger.Debug().
-					Int("buildId", build.Buildid).
-					Msgf("getting changes for %d/%d builds", i+1, numBuilds)
-				changesResp, err := b.GetChangesForBuild(build.Buildid)
-				if err != nil {
-					logger.Err(err).
-						Int("buildId", build.Buildid).
-						Stack().
-						Msg("failed to get changes for build")
-					defer canceledBuilderIdsLock.Unlock()
-					canceledBuilderStatusMap[myBuilder.Name] = errors.WithStack(err)
-					return errors.WithStack(err)
-				}
-				if changesResp != nil {
-					build.Changes = changesResp.Changes
-				} else {
-					logger.Warn().
-						Int("buildId", build.Buildid).
-						Str("builderName", myBuilder.Name).
-						Int("builderId", myBuilder.Builderid).
-						Msg("something went wrong when getting changes for build. cancelling collection of logs for builder")
-					// Store in cancelled builder array
-					canceledBuilderIdsLock.Lock()
-					defer canceledBuilderIdsLock.Unlock()
-					canceledBuilderStatusMap[myBuilder.Name] = errors.Errorf("something went wrong")
-					return nil
-				}
-
-				logger.Debug().Msg("sending build to channel")
-				select {
-				case <-gctx.Done():
-					logger.Debug().Msg("producer: context is done")
-					return errors.WithStack(gctx.Err())
-				case buildChan <- build:
-					logger.Debug().Msg("done sending build to channel")
-				default:
-				}
-			}
-			// Store in completed builder array
-			finishedBuilderIdsLock.Lock()
-			defer finishedBuilderIdsLock.Unlock()
-			finishedBuilderIds = append(finishedBuilderIds, myBuilder.Builderid)
-			return nil
-		})
+	for i := 0; i < *numProducers; i++ {
+		builder := allBuildersResp.Builders[i]
+		d := producerData{
+			commonData:               sharedData,
+			producersLeftToProcess:   &producersLeftToProcess,
+			finishedBuilderIds:       finishedBuilderIds,
+			canceledBuilderStatusMap: canceledBuilderStatusMap,
+			finishedBuilderIdsLock:   &finishedBuilderIdsLock,
+			canceledBuilderIdsLock:   &canceledBuilderIdsLock,
+			producerNo:               i + 1,
+			builder:                  builder,
+		}
+		d.logger = d.logger.
+			With().
+			Int("producerNo", d.producerNo).
+			Str("builderName", d.builder.Name).
+			Int("builderId", d.builder.Builderid).
+			Int32("producersLeftToProcess", producersLeftToProcess).
+			Logger()
+		g.Go(makeProducer(d))
 	}
 
 	// Wait for all errgroup goroutines

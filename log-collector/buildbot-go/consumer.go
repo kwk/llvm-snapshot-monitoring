@@ -31,17 +31,15 @@ func makeConsumer(d consumerData) func() error {
 			return errors.Errorf("b must not be nil")
 		}
 
-		d.logger.Debug().Msgf("starting build consumer no %d", d.consumerNo)
+		d.logger.Debug().Msg("starting build consumer no")
 		defer func() {
 			// Last one out closes shop
-			d.logger.Debug().Msgf("decreasing consumersLeftToProcess: %d", *d.consumersLeftToProcess)
 			if atomic.AddInt32(d.consumersLeftToProcess, -1) == 0 {
 				d.logger.Info().Msg("all consumers done")
 			}
-			d.logger.Debug().Msgf("done decreasing consumersLeftToProcess: %d", *d.consumersLeftToProcess)
 		}()
 
-		defer d.logger.Debug().Msgf("exiting build consumer %d/%d", d.consumerNo)
+		defer d.logger.Debug().Msgf("exiting build consumer")
 		for {
 			_startTime := time.Now()
 			var ok bool
@@ -49,11 +47,11 @@ func makeConsumer(d consumerData) func() error {
 
 			select {
 			case <-d.ctx.Done():
-				d.logger.Debug().Msgf("consumer %d: context is done", d.consumerNo)
+				d.logger.Debug().Msg("context is done")
 				return errors.WithStack(d.ctx.Err())
 			case build, ok = <-d.buildChan:
 				if !ok {
-					d.logger.Debug().Msgf("build channel is closed. stopping consumer %d", d.consumerNo)
+					d.logger.Debug().Msg("build channel is closed. stopping consumer")
 					return nil
 				}
 
@@ -64,7 +62,6 @@ func makeConsumer(d consumerData) func() error {
 				}
 				err = d.b.InsertOrUpdateBuildLogs(*builder, build)
 				d.logger.Err(err).
-					Int("consumerNo", d.consumerNo).
 					Int("builderId", builder.Builderid).
 					Str("builderName", builder.Name).
 					Int("buildId", build.Buildid).

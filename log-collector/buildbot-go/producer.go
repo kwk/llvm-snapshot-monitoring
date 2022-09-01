@@ -38,18 +38,15 @@ func makeProducer(d producerData) func() error {
 			return errors.Errorf("finishedBuilderIdsLock must not be null")
 		}
 
-		d.logger.Debug().Str("builderName", d.builder.Name).Msgf("starting build producer: %d", d.producerNo)
+		d.logger.Debug().Str("builderName", d.builder.Name).Msg("starting build producer")
 		defer func() {
 			// Last one out closes shop
-			d.logger.Debug().Msgf("decreasing producersLeftToProcess: %d", d.producersLeftToProcess)
 			if atomic.AddInt32(d.producersLeftToProcess, -1) == 0 {
 				d.logger.Info().Msg("all producers done")
 				d.logger.Debug().Msg("closing buildChan")
 				close(d.buildChan)
 			}
-			d.logger.Debug().Msgf("done decreasing producersLeftToProcess: %d", d.producersLeftToProcess)
 		}()
-		d.logger.Debug().Int("builderId", d.builder.Builderid).Msg("processing builder")
 		lastBuildNumber, err := d.b.GetBuildersLastBuildNumber(d.builder.Builderid)
 		if err != nil {
 			return errors.WithStack(err)
@@ -65,7 +62,7 @@ func makeProducer(d producerData) func() error {
 			build := buildResp.Builds[i]
 			select {
 			case <-d.ctx.Done():
-				d.logger.Debug().Msg("producer: context is done")
+				d.logger.Debug().Msg("context is done")
 				return errors.WithStack(d.ctx.Err())
 			default:
 			}
@@ -76,7 +73,6 @@ func makeProducer(d producerData) func() error {
 			if err != nil {
 				d.logger.Err(err).
 					Int("buildId", build.Buildid).
-					Stack().
 					Msg("failed to get changes for build")
 				d.canceledBuilderIdsLock.Lock()
 				defer d.canceledBuilderIdsLock.Unlock()
@@ -88,8 +84,6 @@ func makeProducer(d producerData) func() error {
 			} else {
 				d.logger.Warn().
 					Int("buildId", build.Buildid).
-					Str("builderName", d.builder.Name).
-					Int("builderId", d.builder.Builderid).
 					Msg("something went wrong when getting changes for build. cancelling collection of logs for builder")
 				// Store in cancelled builder array
 				d.canceledBuilderIdsLock.Lock()
@@ -101,7 +95,7 @@ func makeProducer(d producerData) func() error {
 			d.logger.Debug().Msg("sending build to channel")
 			select {
 			case <-d.ctx.Done():
-				d.logger.Debug().Msg("producer: context is done")
+				d.logger.Debug().Msg("context is done")
 				return errors.WithStack(d.ctx.Err())
 			case d.buildChan <- build:
 				d.logger.Debug().Msg("done sending build to channel")
