@@ -31,11 +31,11 @@ func makeConsumer(d consumerData) func() error {
 			return errors.Errorf("b must not be nil")
 		}
 
-		d.logger.Debug().Msg("starting build consumer no")
+		d.logger.Debug().Msg("starting build consumer")
 		defer func() {
 			// Last one out closes shop
 			if atomic.AddInt32(d.consumersLeftToProcess, -1) == 0 {
-				d.logger.Info().Msg("all consumers done")
+				d.logger.Info().Msgf("all consumers done: %d", *d.consumersLeftToProcess)
 			}
 		}()
 

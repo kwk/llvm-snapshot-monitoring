@@ -129,7 +129,7 @@ func (b *Buildbot) GetBuildsForBuilder(builderId int, greaterThanNumber int, bat
 // builder by Id in our database. Only builds that are `Complete` are respected.
 func (b *Buildbot) GetBuildersLastBuildNumber(builderId int) (int, error) {
 	var lastNumber int = 0
-	err := b.preparedStatements[getMaxBuildNumerStmt].QueryRow(builderId, b.instance).Scan(&lastNumber)
+	err := b.preparedStatements[getMaxBuildNumberStmt].QueryRow(builderId, b.instance).Scan(&lastNumber)
 	logEvent := b.logger.Debug()
 	if err != nil {
 		logEvent = b.logger.Error().Err(err)

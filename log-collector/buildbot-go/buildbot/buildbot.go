@@ -50,9 +50,7 @@ func New(instance string, apiBase string, db *sql.DB, logger zerolog.Logger) (*B
 	if err != nil {
 		logEvent = b.logger.Error().Err(err)
 	}
-	logEvent.Str("ApiBase", apiBase).
-		Str("instance", instance).
-		Msg("creating new buildbot object")
+	logEvent.Msg("creating new buildbot object")
 	return b, errors.WithStack(err)
 }
 
@@ -71,7 +69,7 @@ func (b *Buildbot) Close() error {
 }
 
 const (
-	getMaxBuildNumerStmt = "getMaxBuildNumer"
+	getMaxBuildNumberStmt = "getMaxBuildNumber"
 )
 
 // prepareStatments sets up the database with a bunch of queries we want to use
@@ -80,14 +78,14 @@ func (b *Buildbot) prepareStatements() error {
 	var err error
 	b.preparedStatements = make(map[string]*sql.Stmt)
 
-	b.preparedStatements[getMaxBuildNumerStmt], err = b.db.Prepare(`
+	b.preparedStatements[getMaxBuildNumberStmt], err = b.db.Prepare(`
 	SELECT COALESCE(max(build_number), 0)
 	FROM buildbot_build_logs
 	WHERE
 	  build_complete_at IS NOT NULL 
 	  AND builder_builderid=$1 
 	  AND buildbot_instance=$2`)
-	b.logger.Debug().Err(err).Str("name", getMaxBuildNumerStmt).Msg("creating prepared statement")
+	b.logger.Debug().Err(err).Str("name", getMaxBuildNumberStmt).Msg("creating prepared statement")
 	if err != nil {
 		return errors.WithStack(err)
 	}

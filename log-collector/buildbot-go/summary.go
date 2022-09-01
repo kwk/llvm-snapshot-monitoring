@@ -30,15 +30,17 @@ func printSummary(d summaryData) {
 		res += fmt.Sprintf("Total builders                          : %d\n", d.totalBuilders)
 		res += fmt.Sprintf("Total finished builders                 : %d\n", len(d.finishedBuilderIds))
 		res += fmt.Sprintf("Total canceled builders                 : %d\n", len(d.canceledBuilderStatusMap))
-		res += fmt.Sprintf("Canceled builder names                  : \n%s\n", func() string {
-			res := make([]string, len(d.canceledBuilderStatusMap))
-			i := 0
-			for builderName, err := range d.canceledBuilderStatusMap {
-				res[i] = fmt.Sprintf(" * %40s: %#v", builderName, err)
-				i++
-			}
-			return strings.Join(res, "\n")
-		}())
+		if len(d.canceledBuilderStatusMap) > 0 {
+			res += fmt.Sprintf("Canceled builder names                  : \n%s\n", func() string {
+				res := make([]string, len(d.canceledBuilderStatusMap))
+				i := 0
+				for builderName, err := range d.canceledBuilderStatusMap {
+					res[i] = fmt.Sprintf(" * %40s: %#v", builderName, err)
+					i++
+				}
+				return strings.Join(res, "\n")
+			}())
+		}
 		return res
 	})
 }

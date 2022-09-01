@@ -112,7 +112,16 @@ func main() {
 	// Begin processing
 	// ----------------
 
-	b, err := buildbot.New(*buildbotInstance, *buildbotApiBase, db, logger)
+	b, err := buildbot.New(
+		*buildbotInstance,
+		*buildbotApiBase,
+		db,
+		logger.
+			With().
+			Str("is", "buildbot").
+			Str("buildbotInstance", *buildbotInstance).
+			Str("buildbotApiBase", *buildbotApiBase).
+			Logger())
 	if err != nil {
 		logger.Fatal().AnErr("error", err).Msg("failed to construct main buildbot object")
 	}
@@ -132,7 +141,7 @@ func main() {
 	// One additional for the shutdown handler
 	g.SetLimit(*numProducers + *numConsumers + 1)
 
-	producersLeftToProcess := int32(len(allBuildersResp.Builders))
+	producersLeftToProcess := int32(*numProducers)
 	consumersLeftToProcess := int32(*numConsumers)
 
 	batchSize := 10
@@ -165,7 +174,7 @@ func main() {
 	d.logger = d.logger.
 		With().
 		Str("is", "shutdownHandler").
-		Int32("consumersLeftToProcess", consumersLeftToProcess).
+		// Int32("consumersLeftToProcess", consumersLeftToProcess). // must be evaluated at runtime
 		Logger()
 	g.Go(makeGracefulShutdown(d))
 
@@ -183,7 +192,7 @@ func main() {
 			With().
 			Str("is", "consumer").
 			Int("consumerNo", d.consumerNo).
-			Int32("consumersLeftToProcess", consumersLeftToProcess).
+			// Int32("consumersLeftToProcess", consumersLeftToProcess). // must be evaluated at runtime
 			Logger()
 		g.Go(makeConsumer(d))
 	}
@@ -214,7 +223,7 @@ func main() {
 			Int("producerNo", d.producerNo).
 			Str("builderName", d.builder.Name).
 			Int("builderId", d.builder.Builderid).
-			Int32("producersLeftToProcess", producersLeftToProcess).
+			// Int32("producersLeftToProcess", producersLeftToProcess).// must be evaluated at runtime
 			Logger()
 		g.Go(makeProducer(d))
 	}
