@@ -150,23 +150,28 @@ func (b *Buildbot) InsertOrUpdateBuildLogs(builder Builder, builds ...Build) err
 	return errors.WithStack(err)
 }
 
+func (b *Buildbot) getRestApi(url string, target interface{}) error {
+	_, err := b.getRestApiWithStatus(url, target)
+	return err
+}
+
 // getRestApi performs an HTTP GET request on the given URL and tries to
 // unmarshal the response into the given target. NOTE: Make sure to pass int a
 // pointer to a target type to properly unmarshall into the target.
-func (b *Buildbot) getRestApi(url string, target interface{}) error {
+func (b *Buildbot) getRestApiWithStatus(url string, target interface{}) (int, error) {
 	resp, err := http.Get(url)
 	b.logger.Debug().Err(err).Str("url", url).Msg("querying REST")
 	if err != nil {
-		return errors.WithStack(err)
+		return -1, errors.WithStack(err)
 	}
 	defer resp.Body.Close()
 	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
-		return errors.Errorf("request failed with status: %s (%d)", resp.Status, resp.StatusCode)
+		return resp.StatusCode, fmt.Errorf("request failed with status: %s (%d)", resp.Status, resp.StatusCode)
 	}
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return errors.WithStack(err)
+		return resp.StatusCode, errors.WithStack(err)
 	}
 	err = json.Unmarshal(body, &target)
-	return errors.WithStack(err)
+	return resp.StatusCode, errors.WithStack(err)
 }

@@ -1,6 +1,9 @@
 package buildbot
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/lib/pq"
 	"github.com/pkg/errors"
 )
@@ -54,49 +57,62 @@ func (b Builder) postgresOnUpdateSetList() string {
 	`
 }
 
+func (b *Buildbot) BuilderIdsToNames(builderIds []int) string {
+	builderNames := make([]string, len(builderIds))
+	for i, id := range builderIds {
+		builder, err := b.GetBuilderById(id)
+		if err != nil {
+			builderNames[i] = fmt.Sprintf("<ERROR:%v>", err)
+		}
+		builderNames[i] = builder.Name
+	}
+	return strings.Join(builderNames, ", ")
+}
+
 // GetAllBuilders returns all builders for the current buildbot instance.
 func (b *Buildbot) GetAllBuilders() (*BuildersResponse, error) {
 	// b.allBuildersLock.RLock()
 	// defer b.allBuildersLock.RUnlock()
-	b.allBuildersLock.Lock()
-	defer b.allBuildersLock.Unlock()
+	// b.allBuildersLock.Lock()
+	// defer b.allBuildersLock.Unlock()
 
-	if b.allBuilders == nil {
-		b.allBuilders = &BuildersResponse{}
-		url := b.apiBase + "/builders"
-		err := b.getRestApi(url, &b.allBuilders)
-		num_total_builders := 0
-		logEvent := b.logger.Debug()
-		if err == nil {
-			num_total_builders = b.allBuilders.Meta.Total
-		} else {
-			logEvent = b.logger.Error().Err(err)
-		}
-		logEvent.
-			Str("url", url).
-			Int("num_total_builders", num_total_builders).
-			Msg("getting all builders")
-		if err != nil {
-			return b.allBuilders, errors.WithStack(err)
-		}
-
-		// build a LUT by Id and name for faster lookups
-		b.logger.Debug().Msg("building LUTs for builders")
-		b.buildersById = make(builderByIdMap)
-		b.buildersByName = make(builderByNameMap)
-		b.buildersByTag = make(buildersByTagMap)
-		for _, builder := range b.allBuilders.Builders {
-			b.buildersById[builder.Builderid] = builder
-			b.buildersByName[builder.Name] = builder
-			for _, tag := range builder.Tags {
-				b.buildersByTag[tag] = append(b.buildersByTag[tag], builder)
-			}
-		}
-		b.logger.Debug().Msg("done building LUTs for builders")
-		// build a LUT by name
-	} else {
+	if b.allBuilders != nil {
 		b.logger.Debug().Msg("using cached builders")
+		return b.allBuilders, nil
 	}
+
+	b.allBuilders = &BuildersResponse{}
+	url := b.apiBase + "/builders"
+	err := b.getRestApi(url, &b.allBuilders)
+	num_total_builders := 0
+	logEvent := b.logger.Debug()
+	if err == nil {
+		num_total_builders = b.allBuilders.Meta.Total
+	} else {
+		logEvent = b.logger.Error().Err(err)
+	}
+	logEvent.
+		Str("url", url).
+		Int("num_total_builders", num_total_builders).
+		Msg("getting all builders")
+	if err != nil {
+		return b.allBuilders, errors.WithStack(err)
+	}
+
+	// build a LUT by Id and name for faster lookups
+	b.logger.Debug().Msg("building LUTs for builders")
+	b.buildersById = make(builderByIdMap)
+	b.buildersByName = make(builderByNameMap)
+	b.buildersByTag = make(buildersByTagMap)
+	for _, builder := range b.allBuilders.Builders {
+		b.buildersById[builder.Builderid] = builder
+		b.buildersByName[builder.Name] = builder
+		for _, tag := range builder.Tags {
+			b.buildersByTag[tag] = append(b.buildersByTag[tag], builder)
+		}
+	}
+	b.logger.Debug().Msg("done building LUTs for builders")
+
 	return b.allBuilders, nil
 }
 

@@ -69,6 +69,7 @@ func (b Build) postgresValueList() []interface{} {
 		"{}",             // 9 aka b.Properties
 		pq.FormatTimestamp(time.Unix(b.CompleteAt, 0)), // 10
 		pq.FormatTimestamp(time.Unix(b.StartedAt, 0)),  // 11
+		// "[]", // 12
 		b.Changes, // 12
 	}
 }

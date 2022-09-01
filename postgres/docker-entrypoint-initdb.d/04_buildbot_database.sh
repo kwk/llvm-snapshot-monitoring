@@ -76,7 +76,10 @@ CREATE TABLE "public"."buildbot_build_logs" (
         jsonb_array_length(changes)
     ) STORED,
     "first_change_committed" timestamp  NOT NULL GENERATED ALWAYS AS (
-        to_timestamp(CAST(COALESCE(changes[0]->>'when_timestamp', '0'::text) AS INTEGER))
+        CASE jsonb_array_length(changes)
+            WHEN 0 THEN to_timestamp(0) 
+            ELSE to_timestamp(CAST(COALESCE(changes[0]->>'when_timestamp', '0'::text) AS INTEGER))
+        END
     ) STORED,
     "secs_from_commit_to_build_started" BIGINT GENERATED ALWAYS AS (
         CASE jsonb_array_length(changes)

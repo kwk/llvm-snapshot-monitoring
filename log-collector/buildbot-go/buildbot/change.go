@@ -4,6 +4,7 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"fmt"
+	"net/http"
 
 	"github.com/pkg/errors"
 )
@@ -58,7 +59,10 @@ type Change struct {
 func (b *Buildbot) GetChangesForBuild(buildId int) (*ChangesResponse, error) {
 	url := fmt.Sprintf(b.apiBase+"/builds/%d/changes?order=when_timestamp", buildId)
 	var res ChangesResponse
-	err := b.getRestApi(url, &res)
+	statusCode, err := b.getRestApiWithStatus(url, &res)
+	if statusCode == http.StatusGatewayTimeout {
+		return nil, nil
+	}
 	num_total_changes := 0
 	num_changes_in_batch := 0
 	if err == nil {
