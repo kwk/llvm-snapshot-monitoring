@@ -71,11 +71,6 @@ func (b *Buildbot) BuilderIdsToNames(builderIds []int) string {
 
 // GetAllBuilders returns all builders for the current buildbot instance.
 func (b *Buildbot) GetAllBuilders() (*BuildersResponse, error) {
-	// b.allBuildersLock.RLock()
-	// defer b.allBuildersLock.RUnlock()
-	// b.allBuildersLock.Lock()
-	// defer b.allBuildersLock.Unlock()
-
 	if b.allBuilders != nil {
 		b.logger.Debug().Msg("using cached builders")
 		return b.allBuilders, nil

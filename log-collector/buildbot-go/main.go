@@ -46,7 +46,7 @@ func main() {
 	var buildbotInstance = flag.String("buildbot-instance", "staging", "the instance (staging or buildbot) to use")
 	var buildbotApiBase = flag.String("buildbot-api-base", "https://lab.llvm.org/staging/api/v2", "the HTTP API base URL")
 
-	var numProducers = flag.Int("num-producers", 0, `
+	var numProducers = flag.Int("num-producers", 10, `
 		number of producer go routines to use.
 		Leave at 0 to get as many producers as there are buildbot builders.
 		Beware that there may be too many connections open to postgres when you
@@ -54,6 +54,8 @@ func main() {
 	`)
 	var numConsumers = flag.Int("num-consumers", 10, "number of consumer go routines to use")
 
+	var batchSize = flag.Int("batch-size", 100, "number of builds to fetch per builder in a batch")
+	var changesBatchSize = flag.Int("changes-batch-size", 100, "number of changes to fetch per build in a batch")
 	var logLevelFlag = flag.String("log-level", "info", "sets log level (e.g. info, debug, warn)")
 	var logJson = flag.Bool("log-json", false, "outputs logs as JSON")
 
@@ -148,7 +150,7 @@ func main() {
 	g, gctx := errgroup.WithContext(ctx)
 	// Limit the number of active goroutines
 	// One additional for the shutdown handler
-	g.SetLimit(*numProducers + *numConsumers)
+	g.SetLimit(*numProducers + *numConsumers + 1)
 
 	virtualProducersLeftToProcess := int32(len(allBuildersResp.Builders))
 	consumersLeftToProcess := int32(*numConsumers)
@@ -161,11 +163,9 @@ func main() {
 				Int32("activeProducers", activeProducers)
 		}))
 
-	batchSize := 10
-
 	// When a build is ready, we send it to this buffered channel to have it
 	// consumed for insertion
-	buildChan := make(chan buildbot.Build, batchSize)
+	buildChan := make(chan buildbot.Build, *batchSize)
 
 	// This stores the total log entries that were stored. Use atomic.AddInt32
 	// on it only to make it usable concurrently.
@@ -244,6 +244,8 @@ producerloop:
 				canceledBuilderIdsLock:   &canceledBuilderIdsLock,
 				producerNo:               i + 1,
 				builder:                  builder,
+				batchSize:                *batchSize,
+				changesBatchSize:         *changesBatchSize,
 			}
 			d.logger = d.logger.
 				With().

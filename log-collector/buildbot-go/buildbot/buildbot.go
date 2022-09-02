@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
-	"sync"
 
 	_ "github.com/lib/pq"
 	"github.com/pkg/errors"
@@ -29,11 +28,10 @@ type Buildbot struct {
 
 	preparedStatements map[string]*sql.Stmt // see GetBuildersLastBuildNumber
 
-	allBuildersLock sync.RWMutex      // guards the builder response and maps
-	allBuilders     *BuildersResponse // you should use the GetBuilderByXXX() functions
-	buildersById    builderByIdMap    // use GetBuilderById()
-	buildersByName  builderByNameMap  // use GetBuilderByName()
-	buildersByTag   buildersByTagMap  // use GetBuildersByTag()
+	allBuilders    *BuildersResponse // you should use the GetBuilderByXXX() functions
+	buildersById   builderByIdMap    // use GetBuilderById()
+	buildersByName builderByNameMap  // use GetBuilderByName()
+	buildersByTag  buildersByTagMap  // use GetBuildersByTag()
 }
 
 // New returns a new Buildbot object which allows you to talk to the Buildbot's
@@ -45,13 +43,15 @@ func New(instance string, apiBase string, db *sql.DB, logger zerolog.Logger) (*B
 		db:       db,
 		logger:   logger,
 	}
-	err := b.prepareStatements()
-	logEvent := b.logger.Debug()
-	if err != nil {
-		logEvent = b.logger.Error().Err(err)
+	if err := b.prepareStatements(); err != nil {
+		b.logger.Error().Err(err).Msg("failed to prepare statements")
+		return nil, errors.WithStack(err)
 	}
-	logEvent.Msg("creating new buildbot object")
-	return b, errors.WithStack(err)
+	if _, err := b.GetAllBuilders(); err != nil {
+		b.logger.Error().Err(err).Msg("failed to get all builders upfront")
+		return nil, errors.WithStack(err)
+	}
+	return b, nil
 }
 
 // Close closes the database connection and all prepared statements.
@@ -148,28 +148,23 @@ func (b *Buildbot) InsertOrUpdateBuildLogs(builder Builder, builds ...Build) err
 	return errors.WithStack(err)
 }
 
-func (b *Buildbot) getRestApi(url string, target interface{}) error {
-	_, err := b.getRestApiWithStatus(url, target)
-	return err
-}
-
 // getRestApi performs an HTTP GET request on the given URL and tries to
 // unmarshal the response into the given target. NOTE: Make sure to pass int a
 // pointer to a target type to properly unmarshall into the target.
-func (b *Buildbot) getRestApiWithStatus(url string, target interface{}) (int, error) {
+func (b *Buildbot) getRestApi(url string, target interface{}) error {
 	resp, err := http.Get(url)
 	b.logger.Debug().Err(err).Str("url", url).Msg("querying REST")
 	if err != nil {
-		return -1, errors.WithStack(err)
+		return errors.WithStack(err)
 	}
 	defer resp.Body.Close()
-	if !(resp.StatusCode >= 200 && resp.StatusCode <= 299) {
-		return resp.StatusCode, fmt.Errorf("request failed with status: %s (%d)", resp.Status, resp.StatusCode)
+	if resp.StatusCode != http.StatusOK {
+		return errors.Errorf(`HTTP GET failed with "%s"`, http.StatusText(resp.StatusCode))
 	}
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return resp.StatusCode, errors.WithStack(err)
+		return errors.WithStack(err)
 	}
 	err = json.Unmarshal(body, &target)
-	return resp.StatusCode, errors.WithStack(err)
+	return errors.WithStack(err)
 }
